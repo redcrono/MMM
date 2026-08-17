@@ -1,0 +1,100 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  articleDate?: Date;
+  articleAuthor?: string;
+  category?: string;
+}
+
+const {
+  title,
+  description,
+  image = '/images/og-default.png',
+  articleDate,
+  articleAuthor,
+  category,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://moneyinsight.kr');
+const siteTitle = '머니인사이트(MoneyInsight) | 금융·세무·정책 나침반';
+const fullTitle = title === siteTitle ? title : `${title} | 머니인사이트`;
+
+// Schema.org Structured Data
+const jsonLd = articleDate
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: title,
+      description: description,
+      author: {
+        '@type': 'Organization',
+        name: articleAuthor || '머니인사이트 금융리서치팀',
+        url: Astro.site?.toString() || 'https://moneyinsight.kr',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: '머니인사이트(MoneyInsight)',
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/favicon.svg', Astro.site || 'https://moneyinsight.kr').toString(),
+        },
+      },
+      datePublished: articleDate.toISOString(),
+      dateModified: (articleDate).toISOString(),
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL.toString(),
+      },
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: '머니인사이트',
+      url: Astro.site?.toString() || 'https://moneyinsight.kr',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${Astro.site || 'https://moneyinsight.kr'}/search?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
+    };
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="canonical" href={canonicalURL} />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Primary Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={articleDate ? 'article' : 'website'} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, canonicalURL)} />
+<meta property="og:site_name" content="머니인사이트" />
+<meta property="og:locale" content="ko_KR" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalURL} />
+<meta property="twitter:title" content={fullTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, canonicalURL)} />
+
+<!-- RSS Feed -->
+<link rel="alternate" type="application/rss+xml" title="머니인사이트 RSS 피드" href="/rss.xml" />
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<!-- Google AdSense Code Placeholder (심사 시 본인의 클라이언트 ID 입력) -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->

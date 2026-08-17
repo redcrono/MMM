@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TaxSavingsCalculator from '../components/TaxSavingsCalculator.astro';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featuredPosts = sortedPosts.filter((p) => p.data.featured).slice(0, 4);
+
+const categories = [
+  { slug: 'tax', name: '절세·세무 실무', desc: '연말정산, 종합소득세, 양도·증여세 절세 전략', badge: 'badge-tax', icon: '📑' },
+  { slug: 'wealth', name: '자산관리·ISA', desc: '중개형 ISA, IRP, 연금저축, 고금리 파킹통장', badge: 'badge-wealth', icon: '📈' },
+  { slug: 'subsidy', name: '정부지원금·정책', desc: '2026 청년·서민 맞춤형 복지 혜택 및 대출', badge: 'badge-subsidy', icon: '🏛️' },
+  { slug: 'credit', name: '대출·신용관리', desc: '신용점수 올리기, 대환대출, 금리 비교 노하우', badge: 'badge-credit', icon: '💳' },
+];
+---
+
+<BaseLayout
+  title="머니인사이트(MoneyInsight) | 2026 대한민국 금융·세무·정책 나침반"
+  description="국세청, 기획재정부, 금융감독원 공공데이터 기반 팩트체크 금융 미디어. 연말정산 절세, 중개형 ISA 비과세 혜택, 2026 정부지원금 신청 자격 총정리."
+>
+  <!-- Hero Section -->
+  <section class="container" style="text-align: center; padding: 2rem 0 3.5rem 0;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); color: var(--primary); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; margin-bottom: 1.25rem;">
+      <span>💡 2026 최신 세법 및 금융 정책 완벽 반영</span>
+    </div>
+    <h1 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 1.25rem; color: var(--text-main);">
+      어려운 금융·세무·정책 정보,<br />
+      <span style="color: var(--primary);">팩트와 데이터</span>로 가장 명쾌하게.
+    </h1>
+    <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.5rem auto; line-height: 1.7; word-break: keep-all;">
+      국세청, 금융감독원 공식 고시를 직접 검증하여 광고성 정보 없이 실질적으로 내 돈을 지키고 불리는 절세 및 지원금 가이드를 제공합니다.
+    </p>
+
+    <!-- Category Quick Navigation -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+      {
+        categories.map((c) => (
+          <a
+            href={`/category/${c.slug}`}
+            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: left; transition: all 0.2s ease; box-shadow: var(--shadow-sm);"
+            class="category-hover-card"
+          >
+            <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">{c.icon}</div>
+            <h2 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+              {c.name}
+            </h2>
+            <p style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+              {c.desc}
+            </p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Interactive Calculator Section (Information Gain) -->
+  <section class="container" style="margin-bottom: 3rem;">
+    <TaxSavingsCalculator />
+  </section>
+
+  <!-- Latest Articles Section -->
+  <section class="container">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border-color);">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+        <span>🔥</span> 실시간 금융·세무 심층 가이드
+      </h2>
+      <span style="font-size: 0.875rem; color: var(--text-muted); font-weight: 600;">총 {allPosts.length}편의 검증된 리포트</span>
+    </div>
+
+    <div class="blog-grid">
+      {
+        sortedPosts.map((post) => (
+          <article class="blog-card">
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span class={`badge-category badge-${post.data.category}`}>
+                  {post.data.categoryName}
+                </span>
+                <span>•</span>
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(post.data.pubDate)}
+                </time>
+              </div>
+              <h3 class="blog-card-title">
+                <a href={`/blog/${post.slug}`} style="color: inherit;">
+                  {post.data.title}
+                </a>
+              </h3>
+              <p class="blog-card-desc">{post.data.description}</p>
+              <div class="blog-card-footer">
+                <a href={`/blog/${post.slug}`} style="display: inline-flex; align-items: center; gap: 0.35rem; color: var(--primary);">
+                  상세 가이드 읽기 <span>→</span>
+                </a>
+                <span style="font-size: 0.8rem; color: var(--text-light);">
+                  ⏱️ {post.data.readingTime}
+                </span>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .category-hover-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+  }
+</style>

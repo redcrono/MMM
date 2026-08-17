@@ -1,0 +1,40 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import AdSenseScript from '../components/AdSenseScript.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  articleDate?: Date;
+  articleAuthor?: string;
+  category?: string;
+}
+
+const { title, description, image, articleDate, articleAuthor, category } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      articleDate={articleDate}
+      articleAuthor={articleAuthor}
+      category={category}
+    />
+    <AdSenseScript />
+  </head>
+  <body>
+    <Header />
+    <main id="main-content" style="flex: 1; padding: 2.5rem 0 4rem 0;">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

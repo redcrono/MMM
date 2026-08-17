@@ -1,0 +1,95 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import AuthorBio from '../components/AuthorBio.astro';
+import FinancialDisclaimer from '../components/FinancialDisclaimer.astro';
+import OfficialSourceBadge from '../components/OfficialSourceBadge.astro';
+import InArticleAd from '../components/InArticleAd.astro';
+
+export interface Props {
+  post: CollectionEntry<'blog'>;
+  headings: Array<{ depth: number; slug: string; text: string }>;
+}
+
+const { post, headings } = Astro.props;
+const { title, description, pubDate, updatedDate, category, categoryName, author, officialSources, readingTime, tags } = post.data;
+
+const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(pubDate);
+
+const badgeClass = `badge-${category}`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  articleDate={pubDate}
+  articleAuthor={author}
+  category={category}
+>
+  <article class="container-article">
+    <!-- Article Header -->
+    <header class="article-header">
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <span class={`badge-category ${badgeClass}`}>{categoryName}</span>
+        <span style="font-size: 0.85rem; color: var(--text-light);">⏱️ 읽는 시간: {readingTime}</span>
+      </div>
+      <h1 class="article-title">{title}</h1>
+      <div class="article-meta-bar">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span>✍️ 작성: <strong>{author}</strong></span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span>📅 발행: <time datetime={pubDate.toISOString()}>{formattedDate}</time></span>
+        </div>
+        {
+          updatedDate && (
+            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--secondary);">
+              <span>🔄 업데이트: {new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(updatedDate)}</span>
+            </div>
+          )
+        }
+      </div>
+    </header>
+
+    <!-- Table of Contents -->
+    <TableOfContents headings={headings} />
+
+    <!-- Top In-Article Ad Slot (Highest CTR Position) -->
+    <InArticleAd label="스폰서 추천 정보" />
+
+    <!-- Main Content Body -->
+    <div class="article-content">
+      <slot />
+    </div>
+
+    <!-- Official Source Citations (E-E-A-T) -->
+    <OfficialSourceBadge sources={officialSources} />
+
+    <!-- Mid-Bottom In-Article Ad Slot -->
+    <InArticleAd label="관련 금융 정보 및 혜택" />
+
+    <!-- Tags -->
+    {
+      tags && tags.length > 0 && (
+        <div style="margin: 2rem 0; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          {tags.map((tag) => (
+            <span style="font-size: 0.8rem; background: var(--bg-muted); color: var(--text-muted); padding: 0.3rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- Author Profile Card (E-E-A-T) -->
+    <AuthorBio authorName={author} />
+
+    <!-- YMYL Financial Legal Disclaimer -->
+    <FinancialDisclaimer />
+  </article>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+export interface Props {
+  publisherId?: string; // 예: "ca-pub-1234567890123456"
+  isProduction?: boolean;
+}
+
+const { publisherId = 'ca-pub-XXXXXXXXXXXXXXXX', isProduction = true } = Astro.props;
+---
+
+<!-- Google AdSense Universal Script -->
+{
+  publisherId && publisherId !== 'ca-pub-XXXXXXXXXXXXXXXX' ? (
+    <script
+      async
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${publisherId}`}
+      crossorigin="anonymous"
+    />
+  ) : (
+    <!-- 애드센스 승인 전 또는 로컬 개발 환경용 안내 주석 -->
+    <meta name="adsense-status" content="pending-setup" />
+  )
+}

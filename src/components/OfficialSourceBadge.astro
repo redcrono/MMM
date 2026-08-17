@@ -1,0 +1,37 @@
+---
+export interface Props {
+  sources?: Array<{
+    name: string;
+    url: string;
+  }>;
+}
+
+const { sources } = Astro.props;
+---
+
+{
+  sources && sources.length > 0 && (
+    <div style="margin: 2rem 0; padding: 1rem 1.25rem; background: var(--bg-muted); border-radius: var(--radius-md); border-left: 3px solid var(--secondary);">
+      <div style="font-size: 0.85rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        공식 검증 출처 및 근거 자료
+      </div>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+        {sources.map((s) => (
+          <li>
+            <a
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.85rem; color: var(--text-main); background: var(--bg-card); padding: 0.25rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-weight: 500;"
+            >
+              {s.name} <span style="font-size: 0.75rem; color: var(--text-light);">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

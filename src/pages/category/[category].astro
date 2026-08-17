@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const categories = [
+    { slug: 'tax', name: '절세·세무 실무', desc: '연말정산, 종합소득세, 양도·증여세 절세 전략 및 세법 개정안 분석' },
+    { slug: 'wealth', name: '자산관리·ISA', desc: '중개형 ISA, IRP, 연금저축펀드, 파킹통장 및 절세계좌 복리 투자법' },
+    { slug: 'subsidy', name: '정부지원금·정책', desc: '2026 청년 월세 지원, 디딤돌/버팀목 대출, 근로장려금 및 정책자금' },
+    { slug: 'credit', name: '대출·신용관리', desc: '신용점수 올리기, 대환대출 플랫폼 비교, 소득공제 카드 황금비율' },
+  ];
+
+  const allPosts = await getCollection('blog');
+
+  return categories.map((cat) => {
+    const filteredPosts = allPosts
+      .filter((post) => post.data.category === cat.slug)
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    return {
+      params: { category: cat.slug },
+      props: {
+        categoryInfo: cat,
+        posts: filteredPosts,
+      },
+    };
+  });
+}
+
+const { categoryInfo, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`${categoryInfo.name} 가이드`}
+  description={categoryInfo.desc}
+>
+  <div class="container">
+    <header style="margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color);">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+        <span class={`badge-category badge-${categoryInfo.slug}`}>{categoryInfo.name}</span>
+        <span style="font-size: 0.85rem; color: var(--text-light);">{posts.length}개의 심층 가이드</span>
+      </div>
+      <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">
+        {categoryInfo.name}
+      </h1>
+      <p style="font-size: 1rem; color: var(--text-muted); max-width: 700px; margin: 0;">
+        {categoryInfo.desc}
+      </p>
+    </header>
+
+    <div class="blog-grid">
+      {
+        posts.map((post) => (
+          <article class="blog-card">
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span class={`badge-category badge-${post.data.category}`}>
+                  {post.data.categoryName}
+                </span>
+                <span>•</span>
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(post.data.pubDate)}
+                </time>
+              </div>
+              <h2 class="blog-card-title">
+                <a href={`/blog/${post.slug}`} style="color: inherit;">
+                  {post.data.title}
+                </a>
+              </h2>
+              <p class="blog-card-desc">{post.data.description}</p>
+              <div class="blog-card-footer">
+                <a href={`/blog/${post.slug}`} style="display: inline-flex; align-items: center; gap: 0.35rem; color: var(--primary);">
+                  가이드 보기 <span>→</span>
+                </a>
+                <span style="font-size: 0.8rem; color: var(--text-light);">
+                  ⏱️ {post.data.readingTime}
+                </span>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
