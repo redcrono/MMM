@@ -17,9 +17,9 @@ const {
   category,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://moneyinsight.kr');
-const siteTitle = '머니인사이트(MoneyInsight) | 금융·세무·정책 나침반';
-const fullTitle = title === siteTitle ? title : `${title} | 머니인사이트`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://megamoneymomentum.com');
+const siteTitle = '메가머니모멘텀(MegaMoneyMomentum) | 금융·세무·정책 나침반';
+const fullTitle = title === siteTitle ? title : `${title} | 메가머니모멘텀`;
 
 // Schema.org Structured Data
 const jsonLd = articleDate
@@ -30,15 +30,15 @@ const jsonLd = articleDate
       description: description,
       author: {
         '@type': 'Organization',
-        name: articleAuthor || '머니인사이트 금융리서치팀',
-        url: Astro.site?.toString() || 'https://moneyinsight.kr',
+        name: articleAuthor || '메가머니모멘텀 금융리서치팀',
+        url: Astro.site?.toString() || 'https://megamoneymomentum.com',
       },
       publisher: {
         '@type': 'Organization',
-        name: '머니인사이트(MoneyInsight)',
+        name: '메가머니모멘텀(MegaMoneyMomentum)',
         logo: {
           '@type': 'ImageObject',
-          url: new URL('/favicon.svg', Astro.site || 'https://moneyinsight.kr').toString(),
+          url: new URL('/favicon.svg', Astro.site || 'https://megamoneymomentum.com').toString(),
         },
       },
       datePublished: articleDate.toISOString(),
@@ -51,11 +51,11 @@ const jsonLd = articleDate
   : {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: '머니인사이트',
-      url: Astro.site?.toString() || 'https://moneyinsight.kr',
+      name: '메가머니모멘텀',
+      url: Astro.site?.toString() || 'https://megamoneymomentum.com',
       potentialAction: {
         '@type': 'SearchAction',
-        target: `${Astro.site || 'https://moneyinsight.kr'}/search?q={search_term_string}`,
+        target: `${Astro.site || 'https://megamoneymomentum.com'}/search?q={search_term_string}`,
         'query-input': 'required name=search_term_string',
       },
     };
@@ -80,7 +80,7 @@ const jsonLd = articleDate
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, canonicalURL)} />
-<meta property="og:site_name" content="머니인사이트" />
+<meta property="og:site_name" content="메가머니모멘텀" />
 <meta property="og:locale" content="ko_KR" />
 
 <!-- Twitter -->
@@ -91,7 +91,7 @@ const jsonLd = articleDate
 <meta property="twitter:image" content={new URL(image, canonicalURL)} />
 
 <!-- RSS Feed -->
-<link rel="alternate" type="application/rss+xml" title="머니인사이트 RSS 피드" href="/rss.xml" />
+<link rel="alternate" type="application/rss+xml" title="메가머니모멘텀 RSS 피드" href="/rss.xml" />
 
 <!-- Structured Data (JSON-LD) -->
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

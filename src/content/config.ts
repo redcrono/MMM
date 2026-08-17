@@ -10,7 +10,7 @@ const blogCollection = defineCollection({
     category: z.enum(['tax', 'wealth', 'subsidy', 'credit']),
     categoryName: z.string(),
     tags: z.array(z.string()).default([]),
-    author: z.string().default('머니인사이트 리서치팀'),
+    author: z.string().default('메가머니모멘텀 리서치팀'),
     officialSources: z.array(
       z.object({
         name: z.string(),

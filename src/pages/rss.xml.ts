@@ -7,9 +7,9 @@ export const GET: APIRoute = async (context) => {
   const sortedPosts = blog.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({
-    title: '머니인사이트(MoneyInsight) | 금융·세무·정책 나침반',
+    title: '메가머니모멘텀(MegaMoneyMomentum) | 금융·세무·정책 나침반',
     description: '국세청, 기획재정부, 금융감독원 공공데이터 기반 팩트체크 금융 리서치 미디어',
-    site: context.site?.toString() || 'https://moneyinsight.kr',
+    site: context.site?.toString() || 'https://megamoneymomentum.com',
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.pubDate,

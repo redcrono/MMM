@@ -4,7 +4,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://moneyinsight.kr', // 추후 실 도메인으로 교체 가능
+  site: 'https://megamoneymomentum.com', // 추후 실 도메인으로 교체 가능
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/admin'),

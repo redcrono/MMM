@@ -12,7 +12,7 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
-Sitemap: https://moneyinsight.kr/sitemap-index.xml
+Sitemap: https://megamoneymomentum.com/sitemap-index.xml
 `.trim();
 
 export const GET: APIRoute = () => {
