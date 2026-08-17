@@ -17,7 +17,7 @@ const {
   category,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://megamoneymomentum.com');
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://megamomo.co.kr');
 const siteTitle = '메가머니모멘텀(MegaMoneyMomentum) | 금융·세무·정책 나침반';
 const fullTitle = title === siteTitle ? title : `${title} | 메가머니모멘텀`;
 
@@ -31,14 +31,14 @@ const jsonLd = articleDate
       author: {
         '@type': 'Organization',
         name: articleAuthor || '메가머니모멘텀 금융리서치팀',
-        url: Astro.site?.toString() || 'https://megamoneymomentum.com',
+        url: Astro.site?.toString() || 'https://megamomo.co.kr',
       },
       publisher: {
         '@type': 'Organization',
         name: '메가머니모멘텀(MegaMoneyMomentum)',
         logo: {
           '@type': 'ImageObject',
-          url: new URL('/favicon.svg', Astro.site || 'https://megamoneymomentum.com').toString(),
+          url: new URL('/favicon.svg', Astro.site || 'https://megamomo.co.kr').toString(),
         },
       },
       datePublished: articleDate.toISOString(),
@@ -52,10 +52,10 @@ const jsonLd = articleDate
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: '메가머니모멘텀',
-      url: Astro.site?.toString() || 'https://megamoneymomentum.com',
+      url: Astro.site?.toString() || 'https://megamomo.co.kr',
       potentialAction: {
         '@type': 'SearchAction',
-        target: `${Astro.site || 'https://megamoneymomentum.com'}/search?q={search_term_string}`,
+        target: `${Astro.site || 'https://megamomo.co.kr'}/search?q={search_term_string}`,
         'query-input': 'required name=search_term_string',
       },
     };

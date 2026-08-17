@@ -12,7 +12,7 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
-Sitemap: https://megamoneymomentum.com/sitemap-index.xml
+Sitemap: https://megamomo.co.kr/sitemap-index.xml
 `.trim();
 
 export const GET: APIRoute = () => {
