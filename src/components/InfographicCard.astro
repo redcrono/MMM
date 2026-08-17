@@ -2,11 +2,10 @@
 export interface Props {
   title: string;
   subtitle?: string;
-  badge?: string;
   type?: 'primary' | 'success' | 'amber';
 }
 
-const { title, subtitle, badge = '핵심 인포그래픽', type = 'primary' } = Astro.props;
+const { title, subtitle, type = 'primary' } = Astro.props;
 
 const borderColors = {
   primary: 'var(--primary)',
@@ -21,19 +20,15 @@ const bgColors = {
 };
 ---
 
-<figure class="infographic-container" style={`margin: 2.5rem 0; background: var(--bg-card); border: 2px solid ${borderColors[type]}; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md);`}>
-  <div style={`background: ${bgColors[type]}; padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;`}>
-    <div>
-      <span style={`font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: ${borderColors[type]}; letter-spacing: 0.05em; display: block; margin-bottom: 0.15rem;`}>
-        📊 {badge}
-      </span>
-      <figcaption style="font-size: 1.05rem; font-weight: 800; color: var(--text-main); margin: 0;">
-        {title}
-      </figcaption>
-    </div>
+<figure class="infographic-container" style={`margin: 2rem 0; background: var(--bg-card); border: 1px solid var(--border-color); border-left: 4px solid ${borderColors[type]}; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm);`}>
+  <div style={`background: ${bgColors[type]}; padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;`}>
+    <figcaption style="font-size: 0.975rem; font-weight: 700; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+      <span style={`color: ${borderColors[type]}; font-size: 1.1rem;`}>💡</span>
+      <span>{title}</span>
+    </figcaption>
     {subtitle && <span style="font-size: 0.8rem; color: var(--text-muted);">{subtitle}</span>}
   </div>
-  <div style="padding: 1.5rem;">
+  <div style="padding: 1.25rem;">
     <slot />
   </div>
 </figure>
