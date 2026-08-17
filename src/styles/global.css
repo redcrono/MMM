@@ -403,6 +403,18 @@ button {
   word-break: keep-all;
 }
 
+.article-content img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  margin: 2rem 0;
+  display: block;
+  object-fit: cover;
+}
+
 .article-content ul,
 .article-content ol {
   margin-bottom: 1.75rem;
