@@ -1,120 +1,115 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import InArticleAd from '../../components/InArticleAd.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TaxSavingsCalculator from '../../components/TaxSavingsCalculator.astro';
 
 const allPosts = await getCollection('blog');
-const enPosts = allPosts
-  .filter((post) => post.slug.startsWith('en-') || post.slug.startsWith('korea-') || post.slug.startsWith('open-') || post.slug.startsWith('best-korea-') || post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('travel-cards'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const enPosts = allPosts.filter(
+  (p) => p.slug.startsWith('en-') || p.slug.startsWith('korea-') || p.slug.startsWith('open-') || p.slug.startsWith('best-korea-') || p.slug.includes('-expats') || p.slug.includes('-foreigners') || p.slug.includes('travel-cards')
+);
+const sortedPosts = enPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const featuredEnPost = enPosts[0];
-const otherEnPosts = enPosts.slice(1);
+const categories = [
+  { slug: 'tax', name: 'Tax & Expat Settlement', desc: 'Yeonmaljeongsan, Global Income Tax, Capital Gains & 19% Flat Rate', badge: 'badge-tax', icon: '📑' },
+  { slug: 'wealth', name: 'Wealth & Investment', desc: 'ISA Tax-Free Accounts, IRP, US Index ETFs & High-Yield Banking', badge: 'badge-wealth', icon: '📈' },
+  { slug: 'subsidy', name: 'Living & Subsidies', desc: '2026 Youth Housing Grants, Health Insurance Refunds & Travel Money', badge: 'badge-subsidy', icon: '🏛️' },
+  { slug: 'credit', name: 'Banking & Credit', desc: 'Bank Accounts without ARC, Credit Score 900+ & Low-Fee Loans', badge: 'badge-credit', icon: '💳' },
+];
 ---
 
 <BaseLayout
-  title="MegaMoneyMomentum | Korea Finance, Tax & Living Guide for Expats & Global Investors"
-  description="Comprehensive English financial and tax guides for foreigners, expats, and travelers in South Korea. Year-end tax settlement, visa finance, banking, and travel payment tips."
+  title="MegaMoneyMomentum (MMM) | Korea Finance, Tax & Living Guide for Expats & Global Citizens"
+  description="Fact-checked digital finance media based on official National Tax Service, MOEF, and Bank of Korea data. Year-end tax settlements, ISA accounts, and living guides in South Korea."
 >
-  <!-- English Hero Section -->
-  <section class="hero-section">
-    <div class="container hero-container">
-      <div class="hero-badge">
-        <span class="pulse-dot"></span>
-        <span>GLOBAL FINANCIAL NAVIGATOR IN SOUTH KOREA</span>
-      </div>
-      <h1 class="hero-title">
-        Smart Finance & Tax Guide for <span class="highlight">Expats & Global Citizens in Korea</span>
-      </h1>
-      <p class="hero-desc">
-        Demystifying Korean year-end tax settlements, banking, foreign stock capital gains tax, and smart travel payments with verified official data from the National Tax Service (NTS) and Bank of Korea.
-      </p>
-      <div class="hero-actions">
-        <a href="#featured-guides" class="btn btn-primary">
-          Explore Expat Guides ➔
-        </a>
-        <a href="/" class="btn btn-secondary">
-          Switch to Korean (한국어) 🌐
-        </a>
-      </div>
+  <!-- Hero Section -->
+  <section class="container" style="text-align: center; padding: 2rem 0 3.5rem 0;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); color: var(--primary); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; margin-bottom: 1.25rem;">
+      <span>💡 2026 Latest Korea Finance & Tax Regulations</span>
+    </div>
+    <h1 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 1.25rem; color: var(--text-main);">
+      Complex Korean Finance & Taxes,<br />
+      Demystified with <span style="color: var(--primary);">Facts and Verified Data</span>.
+    </h1>
+    <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.5rem auto; line-height: 1.7; word-break: keep-all;">
+      Fact-checked by our data research team against official National Tax Service (NTS) and Financial Supervisory Service (FSS) standards to help expats and global investors protect and grow their wealth.
+    </p>
+
+    <!-- Category Quick Navigation -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+      {
+        categories.map((c) => (
+          <a
+            href={`/en/category/${c.slug}`}
+            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: left; transition: all 0.2s ease; box-shadow: var(--shadow-sm);"
+            class="category-hover-card"
+          >
+            <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">{c.icon}</div>
+            <h2 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+              {c.name}
+            </h2>
+            <p style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+              {c.desc}
+            </p>
+          </a>
+        ))
+      }
     </div>
   </section>
 
-  <!-- 4 Pillars for Expats -->
-  <section class="categories-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Essential Financial Topics for Foreign Residents</h2>
-        <p class="section-desc">Key legal, tax, and banking guides verified by data research team</p>
-      </div>
-
-      <div class="category-grid">
-        <a href="#tax" class="category-card cat-tax">
-          <div class="cat-icon">📑</div>
-          <h3 class="cat-name">Tax & Expat Settlement</h3>
-          <p class="cat-desc">13th month salary refund, 19% flat tax rate for foreign workers, and income tax filing.</p>
-        </a>
-
-        <a href="#wealth" class="category-card cat-wealth">
-          <div class="cat-icon">📈</div>
-          <h3 class="cat-name">Investing & Brokerage</h3>
-          <p class="cat-desc">How foreigners can open stock accounts, US ETF investing, and capital gains exemptions.</p>
-        </a>
-
-        <a href="#subsidies" class="category-card cat-subsidy">
-          <div class="cat-icon">🎁</div>
-          <h3 class="cat-name">Living & Travel Money</h3>
-          <p class="cat-desc">NHIS health insurance refunds, transit cards (WOWPASS vs Climate Card), and tax refunds.</p>
-        </a>
-
-        <a href="#credit" class="category-card cat-credit">
-          <div class="cat-icon">💳</div>
-          <h3 class="cat-name">Banking & Remittance</h3>
-          <p class="cat-desc">Opening bank accounts without ARC, low-fee international wire transfers, and credit ratings.</p>
-        </a>
-      </div>
-    </div>
+  <!-- Interactive Calculator Section -->
+  <section class="container" style="margin-bottom: 3rem;">
+    <TaxSavingsCalculator />
   </section>
 
-  <!-- Main Expat Content Stream -->
-  <section id="featured-guides" class="posts-section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Latest English Financial Guides</h2>
-        <p class="section-desc">Fact-checked deep-dive guides for living and investing in Korea</p>
-      </div>
+  <!-- Latest Articles Section -->
+  <section class="container">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border-color);">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+        <span>🔥</span> Real-Time Expat Finance & Tax Guides
+      </h2>
+      <span style="font-size: 0.875rem; color: var(--text-muted); font-weight: 600;">Total {enPosts.length} Verified Reports</span>
+    </div>
 
-      <div class="post-grid">
-        {
-          enPosts.map((post) => (
-            <article class="post-card">
-              <div class="post-card-body">
-                <div class="post-meta">
-                  <span class={`category-badge badge-${post.data.category}`}>
-                    {post.data.category.toUpperCase()}
-                  </span>
-                  <span class="reading-time">⏱️ {post.data.readingTime}</span>
-                </div>
-                <h3 class="post-title">
-                  <a href={`/blog/${post.slug}`}>{post.data.title}</a>
-                </h3>
-                <p class="post-excerpt">{post.data.description}</p>
-                <div class="post-footer">
-                  <span class="post-date">
-                    {post.data.pubDate.toISOString().split('T')[0]}
-                  </span>
-                  <a href={`/blog/${post.slug}`} class="read-more-link">
-                    Read Guide ➔
-                  </a>
-                </div>
+    <div class="blog-grid">
+      {
+        sortedPosts.map((post) => (
+          <article class="blog-card">
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <span class={`badge-category badge-${post.data.category}`}>
+                  {post.data.categoryName}
+                </span>
+                <span>•</span>
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(post.data.pubDate)}
+                </time>
               </div>
-            </article>
-          ))
-        }
-      </div>
-
-      <!-- In-Article Ad Container -->
-      <InArticleAd slotId="7788990011" />
+              <h3 class="blog-card-title">
+                <a href={`/blog/${post.slug}`} style="color: inherit;">
+                  {post.data.title}
+                </a>
+              </h3>
+              <p class="blog-card-desc">{post.data.description}</p>
+              <div class="blog-card-footer">
+                <a href={`/blog/${post.slug}`} style="display: inline-flex; align-items: center; gap: 0.35rem; color: var(--primary);">
+                  Read Full Guide <span>→</span>
+                </a>
+                <span style="font-size: 0.8rem; color: var(--text-light);">
+                  ⏱️ {post.data.readingTime}
+                </span>
+              </div>
+            </div>
+          </article>
+        ))
+      }
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .category-hover-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+  }
+</style>
