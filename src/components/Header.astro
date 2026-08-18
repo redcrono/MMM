@@ -53,18 +53,18 @@ if (isEn) {
     <div class="nav-wrap">
       <!-- Logo Brand -->
       <a href={isEn ? '/en' : '/'} class="logo-brand" aria-label={isEn ? "Go to MegaMoneyMomentum Home" : "메가머니모멘텀 홈으로 이동"}>
-        <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
           <rect width="100" height="100" rx="24" fill="#2563eb" />
           <path d="M50 20 L75 40 L75 80 L25 80 L25 40 Z" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" />
           <circle cx="50" cy="55" r="12" fill="#ffffff" />
           <path d="M50 48 L50 62 M44 52 C44 48 56 48 56 55 C56 62 44 62 44 62" stroke="#2563eb" stroke-width="3" stroke-linecap="round" />
         </svg>
-        <span>{isEn ? 'MegaMoneyMomentum' : '메가머니모멘텀'}</span>
+        <span class="logo-title">{isEn ? 'MegaMoneyMomentum' : '메가머니모멘텀'}</span>
         <span class="brand-badge">MMM</span>
       </a>
 
       <!-- Desktop Nav Links -->
-      <nav aria-label={isEn ? "Main Menu" : "메인 메뉴"}>
+      <nav class="desktop-nav" aria-label={isEn ? "Main Menu" : "메인 메뉴"}>
         <ul class="nav-links">
           {
             navItems.map((item) => (
@@ -82,16 +82,15 @@ if (isEn) {
       </nav>
 
       <!-- Right Actions (Language Switcher + Theme Toggle) -->
-      <div class="nav-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+      <div class="nav-actions">
         <!-- Language Switcher Button -->
         <a
           href={targetLangUrl}
           class="lang-switch-btn"
-          style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.65rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; border: 1px solid var(--border-color); background: var(--bg-muted); color: var(--text-main); text-decoration: none; transition: all var(--transition-fast);"
           title={isEn ? "한국어로 변경" : "Switch to English"}
         >
           <span style="font-size: 0.95rem;">🌐</span>
-          <span>{isEn ? '한국어 (KO)' : 'English (EN)'}</span>
+          <span class="lang-text">{isEn ? '한국어 (KO)' : 'English (EN)'}</span>
         </a>
 
         <button id="theme-toggle" class="theme-toggle-btn" aria-label="다크 모드 전환" title="다크 모드 전환">
@@ -112,6 +111,24 @@ if (isEn) {
         </button>
       </div>
     </div>
+
+    <!-- Mobile Horizontal Scrollable Category Bar -->
+    <nav class="mobile-subnav" aria-label={isEn ? "Category Navigation" : "카테고리 네비게이션"}>
+      <ul class="mobile-nav-list">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class={`mobile-nav-chip ${currentPath.startsWith(item.href) ? 'active' : ''}`}
+              >
+                {item.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
   </div>
 </header>
 
