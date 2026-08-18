@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact Us | MegaMoneyMomentum (MMM)"
+  description="Contact the editorial and research team at MegaMoneyMomentum for corrections, partnerships, and financial data inquiries."
+>
+  <article class="article-container">
+    <header class="article-header">
+      <div class="article-category-badge" style="background-color: var(--primary-light); color: var(--primary);">
+        Contact & Support
+      </div>
+      <h1 class="article-title">Get in Touch with MegaMoneyMomentum</h1>
+      <div class="article-meta">
+        <span>Editorial Office: Seoul, Republic of Korea</span>
+        <span>•</span>
+        <span>Operating Hours: 09:00 - 18:00 KST</span>
+      </div>
+    </header>
+
+    <div class="article-content">
+      <p>
+        Have a question about Korean tax laws, found an outdated policy figure, or interested in a media partnership? Reach out to our research editors directly.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">✉️</div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;">General Inquiries</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">For general questions, reader feedback, and site navigation:</p>
+          <a href="mailto:contact@megamomo.co.kr" style="font-size: 1rem; font-weight: 700; color: var(--primary);">
+            contact@megamomo.co.kr
+          </a>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📰</div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;">Editorial & Partnerships</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">For fact-checking corrections, news coverage, and sponsor collaborations:</p>
+          <a href="mailto:editor@megamomo.co.kr" style="font-size: 1rem; font-weight: 700; color: var(--secondary);">
+            editor@megamomo.co.kr
+          </a>
+        </div>
+      </div>
+
+      <div class="callout-box">
+        <div class="callout-title">⚠️ Financial & Legal Notice</div>
+        <p style="font-size: 0.875rem; margin: 0; line-height: 1.6;">
+          MegaMoneyMomentum does not provide individual financial advisory services or tax filing representation. For specific individual tax disputes or legal claims, please consult a certified Korean Certified Public Tax Accountant (CPTA) or the National Tax Service (Call Center 126).
+        </p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,120 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import InArticleAd from '../../components/InArticleAd.astro';
+
+const allPosts = await getCollection('blog');
+const enPosts = allPosts
+  .filter((post) => post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('korea-') || post.slug.includes('travel-cards'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const featuredEnPost = enPosts[0];
+const otherEnPosts = enPosts.slice(1);
+---
+
+<BaseLayout
+  title="MegaMoneyMomentum | Korea Finance, Tax & Living Guide for Expats & Global Investors"
+  description="Comprehensive English financial and tax guides for foreigners, expats, and travelers in South Korea. Year-end tax settlement, visa finance, banking, and travel payment tips."
+>
+  <!-- English Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        <span>GLOBAL FINANCIAL NAVIGATOR IN SOUTH KOREA</span>
+      </div>
+      <h1 class="hero-title">
+        Smart Finance & Tax Guide for <span class="highlight">Expats & Global Citizens in Korea</span>
+      </h1>
+      <p class="hero-desc">
+        Demystifying Korean year-end tax settlements, banking, foreign stock capital gains tax, and smart travel payments with verified official data from the National Tax Service (NTS) and Bank of Korea.
+      </p>
+      <div class="hero-actions">
+        <a href="#featured-guides" class="btn btn-primary">
+          Explore Expat Guides ➔
+        </a>
+        <a href="/" class="btn btn-secondary">
+          Switch to Korean (한국어) 🌐
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 Pillars for Expats -->
+  <section class="categories-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Essential Financial Topics for Foreign Residents</h2>
+        <p class="section-desc">Key legal, tax, and banking guides verified by data research team</p>
+      </div>
+
+      <div class="category-grid">
+        <a href="#tax" class="category-card cat-tax">
+          <div class="cat-icon">📑</div>
+          <h3 class="cat-name">Tax & Expat Settlement</h3>
+          <p class="cat-desc">13th month salary refund, 19% flat tax rate for foreign workers, and income tax filing.</p>
+        </a>
+
+        <a href="#wealth" class="category-card cat-wealth">
+          <div class="cat-icon">📈</div>
+          <h3 class="cat-name">Investing & Brokerage</h3>
+          <p class="cat-desc">How foreigners can open stock accounts, US ETF investing, and capital gains exemptions.</p>
+        </a>
+
+        <a href="#subsidies" class="category-card cat-subsidy">
+          <div class="cat-icon">🎁</div>
+          <h3 class="cat-name">Living & Travel Money</h3>
+          <p class="cat-desc">NHIS health insurance refunds, transit cards (WOWPASS vs Climate Card), and tax refunds.</p>
+        </a>
+
+        <a href="#credit" class="category-card cat-credit">
+          <div class="cat-icon">💳</div>
+          <h3 class="cat-name">Banking & Remittance</h3>
+          <p class="cat-desc">Opening bank accounts without ARC, low-fee international wire transfers, and credit ratings.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Expat Content Stream -->
+  <section id="featured-guides" class="posts-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Latest English Financial Guides</h2>
+        <p class="section-desc">Fact-checked deep-dive guides for living and investing in Korea</p>
+      </div>
+
+      <div class="post-grid">
+        {
+          enPosts.map((post) => (
+            <article class="post-card">
+              <div class="post-card-body">
+                <div class="post-meta">
+                  <span class={`category-badge badge-${post.data.category}`}>
+                    {post.data.category.toUpperCase()}
+                  </span>
+                  <span class="reading-time">⏱️ {post.data.readingTime}</span>
+                </div>
+                <h3 class="post-title">
+                  <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+                </h3>
+                <p class="post-excerpt">{post.data.description}</p>
+                <div class="post-footer">
+                  <span class="post-date">
+                    {post.data.pubDate.toISOString().split('T')[0]}
+                  </span>
+                  <a href={`/blog/${post.slug}`} class="read-more-link">
+                    Read Guide ➔
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <!-- In-Article Ad Container -->
+      <InArticleAd slotId="7788990011" />
+    </div>
+  </section>
+</BaseLayout>

@@ -1,32 +1,44 @@
 ---
 const currentPath = Astro.url.pathname;
+const isEn = currentPath.startsWith('/en');
 
-const navItems = [
+const koNavItems = [
   { name: '절세·세무', href: '/category/tax' },
   { name: '자산관리·ISA', href: '/category/wealth' },
   { name: '정부지원금', href: '/category/subsidy' },
   { name: '대출·신용', href: '/category/credit' },
   { name: '소개', href: '/about' },
 ];
+
+const enNavItems = [
+  { name: 'Tax & Expat', href: '/en#tax' },
+  { name: 'Wealth & Invest', href: '/en#wealth' },
+  { name: 'Subsidies & Travel', href: '/en#subsidies' },
+  { name: 'Banking & Credit', href: '/en#credit' },
+  { name: 'About', href: '/en/about' },
+];
+
+const navItems = isEn ? enNavItems : koNavItems;
+const targetLangUrl = isEn ? '/' : '/en';
 ---
 
 <header class="site-header">
   <div class="container">
     <div class="nav-wrap">
       <!-- Logo Brand -->
-      <a href="/" class="logo-brand" aria-label="메가머니모멘텀 홈으로 이동">
+      <a href={isEn ? '/en' : '/'} class="logo-brand" aria-label={isEn ? "Go to MegaMoneyMomentum Home" : "메가머니모멘텀 홈으로 이동"}>
         <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="100" height="100" rx="24" fill="#2563eb" />
           <path d="M50 20 L75 40 L75 80 L25 80 L25 40 Z" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" />
           <circle cx="50" cy="55" r="12" fill="#ffffff" />
           <path d="M50 48 L50 62 M44 52 C44 48 56 48 56 55 C56 62 44 62 44 62" stroke="#2563eb" stroke-width="3" stroke-linecap="round" />
         </svg>
-        <span>메가머니모멘텀</span>
+        <span>{isEn ? 'MegaMoneyMomentum' : '메가머니모멘텀'}</span>
         <span class="brand-badge">MMM</span>
       </a>
 
       <!-- Desktop Nav Links -->
-      <nav aria-label="메인 메뉴">
+      <nav aria-label={isEn ? "Main Menu" : "메인 메뉴"}>
         <ul class="nav-links">
           {
             navItems.map((item) => (
@@ -43,8 +55,19 @@ const navItems = [
         </ul>
       </nav>
 
-      <!-- Right Actions (Theme Toggle) -->
-      <div class="nav-actions">
+      <!-- Right Actions (Language Switcher + Theme Toggle) -->
+      <div class="nav-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+        <!-- Language Switcher Button -->
+        <a
+          href={targetLangUrl}
+          class="lang-switch-btn"
+          style="display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.65rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; border: 1px solid var(--border-color); background: var(--bg-muted); color: var(--text-main); text-decoration: none; transition: all var(--transition-fast);"
+          title={isEn ? "한국어로 변경" : "Switch to English"}
+        >
+          <span style="font-size: 0.95rem;">🌐</span>
+          <span>{isEn ? '한국어 (KO)' : 'English (EN)'}</span>
+        </a>
+
         <button id="theme-toggle" class="theme-toggle-btn" aria-label="다크 모드 전환" title="다크 모드 전환">
           <svg id="theme-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
             <circle cx="12" cy="12" r="5"></circle>
@@ -66,29 +89,29 @@ const navItems = [
   </div>
 </header>
 
-<script is:inline>
+<script>
+  // Dark mode toggle functionality
   const themeToggle = document.getElementById('theme-toggle');
   const sunIcon = document.getElementById('theme-sun');
   const moonIcon = document.getElementById('theme-moon');
 
-  const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-  function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    if (theme === 'dark') {
-      sunIcon.style.display = 'block';
-      moonIcon.style.display = 'none';
-    } else {
-      sunIcon.style.display = 'none';
-      moonIcon.style.display = 'block';
+  function updateIcons(isDark: boolean) {
+    if (sunIcon && moonIcon) {
+      sunIcon.style.display = isDark ? 'block' : 'none';
+      moonIcon.style.display = isDark ? 'none' : 'block';
     }
   }
 
-  setTheme(currentTheme);
+  // Initial check
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  updateIcons(currentTheme === 'dark');
 
   themeToggle?.addEventListener('click', () => {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    setTheme(isDark ? 'light' : 'dark');
+    const newTheme = isDark ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateIcons(!isDark);
   });
 </script>
