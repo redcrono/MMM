@@ -5,7 +5,7 @@ import InArticleAd from '../../components/InArticleAd.astro';
 
 const allPosts = await getCollection('blog');
 const enPosts = allPosts
-  .filter((post) => post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('korea-') || post.slug.includes('travel-cards'))
+  .filter((post) => post.slug.startsWith('en-') || post.slug.startsWith('korea-') || post.slug.startsWith('open-') || post.slug.startsWith('best-korea-') || post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('travel-cards'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const featuredEnPost = enPosts[0];

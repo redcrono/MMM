@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
   return categories.map((cat) => {
     const filteredPosts = allPosts
-      .filter((post) => post.data.category === cat.slug)
+      .filter((post) => post.data.category === cat.slug && !post.slug.startsWith('en-') && !post.slug.startsWith('korea-') && !post.slug.startsWith('open-') && !post.slug.startsWith('best-korea-'))
       .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
     return {
