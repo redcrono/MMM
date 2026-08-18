@@ -1,3 +1,2 @@
 # Google AdSense Publisher verification
-# 애드센스 승인 후 아래 pub-XXXXXXXXXXXXXXXX 부분을 본인의 퍼블리셔 ID로 변경하세요.
-google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+google.com, pub-1414525586943831, DIRECT, f08c47fec0942fa0
