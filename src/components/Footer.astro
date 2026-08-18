@@ -1,5 +1,7 @@
 ---
 const currentYear = new Date().getFullYear();
+const currentPath = Astro.url.pathname;
+const isEn = currentPath.startsWith('/en');
 ---
 
 <footer class="site-footer">
@@ -7,62 +9,87 @@ const currentYear = new Date().getFullYear();
     <div class="footer-grid">
       <!-- Brand & Mission -->
       <div class="footer-col">
-        <a href="/" class="logo-brand" style="margin-bottom: 1rem; display: inline-flex;">
+        <a href={isEn ? "/en" : "/"} class="logo-brand" style="margin-bottom: 1rem; display: inline-flex;">
           <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="100" height="100" rx="24" fill="#2563eb" />
             <path d="M50 20 L75 40 L75 80 L25 80 L25 40 Z" fill="none" stroke="#ffffff" stroke-width="6" />
           </svg>
-          <span>메가머니모멘텀</span>
+          <span>{isEn ? "MegaMoneyMomentum" : "메가머니모멘텀"}</span>
         </a>
         <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-          복잡한 세무, 절세 계좌, 정책 금융 정보를 알기 쉽게 분석하여 누구나 합리적인 금융 결정을 내릴 수 있도록 돕는 독립 금융 리서치 미디어입니다.
+          {isEn
+            ? "An independent digital financial research media dedicated to demystifying complex tax laws, savings accounts, and living policies in South Korea."
+            : "복잡한 세무, 절세 계좌, 정책 금융 정보를 알기 쉽게 분석하여 누구나 합리적인 금융 결정을 내릴 수 있도록 돕는 독립 금융 리서치 미디어입니다."}
         </p>
         <p style="font-size: 0.8rem; color: var(--text-light);">
-          문의: contact@megamomo.co.kr
+          {isEn ? "Email: contact@megamomo.co.kr" : "문의: contact@megamomo.co.kr"}
         </p>
       </div>
 
       <!-- Categories -->
       <div class="footer-col">
-        <h5>카테고리</h5>
+        <h5>{isEn ? "Categories" : "카테고리"}</h5>
         <ul class="footer-links">
-          <li><a href="/category/tax">절세·세무 실무</a></li>
-          <li><a href="/category/wealth">자산관리·ISA</a></li>
-          <li><a href="/category/subsidy">정부지원금·정책</a></li>
-          <li><a href="/category/credit">대출·신용관리</a></li>
+          {isEn ? (
+            <>
+              <li><a href="/en/category/tax">Tax & Expat Settlement</a></li>
+              <li><a href="/en/category/wealth">Wealth & Investment</a></li>
+              <li><a href="/en/category/subsidy">Living & Subsidies</a></li>
+              <li><a href="/en/category/credit">Banking & Credit</a></li>
+            </>
+          ) : (
+            <>
+              <li><a href="/category/tax">절세·세무 실무</a></li>
+              <li><a href="/category/wealth">자산관리·ISA</a></li>
+              <li><a href="/category/subsidy">정부지원금·정책</a></li>
+              <li><a href="/category/credit">대출·신용관리</a></li>
+            </>
+          )}
         </ul>
       </div>
 
       <!-- Legal & Trust Pages (AdSense Essential) -->
       <div class="footer-col">
-        <h5>법적 고지 및 신뢰도</h5>
+        <h5>{isEn ? "Legal & Trust" : "법적 고지 및 신뢰도"}</h5>
         <ul class="footer-links">
-          <li><a href="/about">사이트 소개 (About Us)</a></li>
-          <li><a href="/privacy">개인정보처리방침</a></li>
-          <li><a href="/terms">이용약관</a></li>
-          <li><a href="/disclaimer">금융 면책조항 (Disclaimer)</a></li>
+          {isEn ? (
+            <>
+              <li><a href="/en/about">About Us</a></li>
+              <li><a href="/en/privacy">Privacy Policy</a></li>
+              <li><a href="/en/contact">Contact Us</a></li>
+            </>
+          ) : (
+            <>
+              <li><a href="/about">사이트 소개 (About Us)</a></li>
+              <li><a href="/privacy">개인정보처리방침</a></li>
+              <li><a href="/terms">이용약관</a></li>
+              <li><a href="/disclaimer">금융 면책조항 (Disclaimer)</a></li>
+            </>
+          )}
         </ul>
       </div>
 
       <!-- Official Portals & Contact -->
       <div class="footer-col">
-        <h5>공식 포털 바로가기</h5>
+        <h5>{isEn ? "Official Portals" : "공식 포털 바로가기"}</h5>
         <ul class="footer-links">
-          <li><a href="https://www.hometax.go.kr" target="_blank" rel="noopener noreferrer">국세청 홈택스 ↗</a></li>
-          <li><a href="https://www.gov.kr" target="_blank" rel="noopener noreferrer">정부24 ↗</a></li>
-          <li><a href="https://fine.fss.or.kr" target="_blank" rel="noopener noreferrer">금융소비자 파인 ↗</a></li>
-          <li><a href="/contact">제휴 및 문의하기</a></li>
-          <li><a href="/rss.xml">RSS 피드 구독</a></li>
+          <li><a href="https://www.nts.go.kr/english" target="_blank" rel="noopener noreferrer">{isEn ? "NTS English Portal ↗" : "국세청 홈택스 ↗"}</a></li>
+          <li><a href="https://www.gov.kr" target="_blank" rel="noopener noreferrer">{isEn ? "Korea Gov24 Portal ↗" : "정부24 ↗"}</a></li>
+          <li><a href="https://fine.fss.or.kr" target="_blank" rel="noopener noreferrer">{isEn ? "FSS Fine Portal ↗" : "금융소비자 파인 ↗"}</a></li>
+          <li><a href={isEn ? "/en/contact" : "/contact"}>{isEn ? "Partnership & Inquiries" : "제휴 및 문의하기"}</a></li>
+          <li><a href="/rss.xml">{isEn ? "Subscribe via RSS" : "RSS 피드 구독"}</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
       <div>
-        © {currentYear} 메가머니모멘텀(MegaMoneyMomentum). All rights reserved.
+        © {currentYear} {isEn ? "MegaMoneyMomentum (MMM). All rights reserved." : "메가머니모멘텀(MegaMoneyMomentum). All rights reserved."}
       </div>
       <div style="font-size: 0.8rem; color: var(--text-light);">
-        본 사이트의 콘텐츠는 정보 제공 목적으로 작성되었으며, 투자 및 세무 판단의 최종 책임은 이용자 본인에게 있습니다.
+        {isEn
+          ? "The content on this website is for informational and educational purposes only. Readers are responsible for their own financial and tax decisions."
+          : "본 사이트의 콘텐츠는 정보 제공 목적으로 작성되었으며, 투자 및 세무 판단의 최종 책임은 이용자 본인에게 있습니다."}
       </div>
     </div>
   </div>
