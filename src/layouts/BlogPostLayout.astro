@@ -15,9 +15,11 @@ export interface Props {
 const { post, headings } = Astro.props;
 const { title, description, pubDate, updatedDate, category, categoryName, author, officialSources, readingTime, tags } = post.data;
 
-const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+const isEn = post.slug.startsWith('en-') || post.slug.startsWith('korea-') || post.slug.startsWith('open-') || post.slug.startsWith('best-korea-') || post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('travel-cards');
+
+const formattedDate = new Intl.DateTimeFormat(isEn ? 'en-US' : 'ko-KR', {
   year: 'numeric',
-  month: 'long',
+  month: isEn ? 'short' : 'long',
   day: 'numeric',
 }).format(pubDate);
 
@@ -36,20 +38,22 @@ const badgeClass = `badge-${category}`;
     <header class="article-header">
       <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
         <span class={`badge-category ${badgeClass}`}>{categoryName}</span>
-        <span style="font-size: 0.85rem; color: var(--text-light);">⏱️ 읽는 시간: {readingTime}</span>
+        <span style="font-size: 0.85rem; color: var(--text-light);">
+          ⏱️ {isEn ? `Reading time: ${readingTime}` : `읽는 시간: ${readingTime}`}
+        </span>
       </div>
       <h1 class="article-title">{title}</h1>
       <div class="article-meta-bar">
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span>✍️ 작성: <strong>{author}</strong></span>
+          <span>✍️ {isEn ? "Author: " : "작성: "}<strong>{author}</strong></span>
         </div>
         <div style="display: flex; align-items: center; gap: 0.5rem;">
-          <span>📅 발행: <time datetime={pubDate.toISOString()}>{formattedDate}</time></span>
+          <span>📅 {isEn ? "Published: " : "발행: "}<time datetime={pubDate.toISOString()}>{formattedDate}</time></span>
         </div>
         {
           updatedDate && (
             <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--secondary);">
-              <span>🔄 업데이트: {new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(updatedDate)}</span>
+              <span>🔄 {isEn ? "Updated: " : "업데이트: "}{new Intl.DateTimeFormat(isEn ? 'en-US' : 'ko-KR', { year: 'numeric', month: 'short', day: 'numeric' }).format(updatedDate)}</span>
             </div>
           )
         }
@@ -57,10 +61,10 @@ const badgeClass = `badge-${category}`;
     </header>
 
     <!-- Table of Contents -->
-    <TableOfContents headings={headings} />
+    <TableOfContents headings={headings} isEn={isEn} />
 
     <!-- Top In-Article Ad Slot (Highest CTR Position) -->
-    <InArticleAd label="스폰서 추천 정보" />
+    <InArticleAd label={isEn ? "Sponsored Resources" : "스폰서 추천 정보"} />
 
     <!-- Main Content Body -->
     <div class="article-content">
@@ -68,10 +72,10 @@ const badgeClass = `badge-${category}`;
     </div>
 
     <!-- Official Source Citations (E-E-A-T) -->
-    <OfficialSourceBadge sources={officialSources} />
+    <OfficialSourceBadge sources={officialSources} isEn={isEn} />
 
     <!-- Mid-Bottom In-Article Ad Slot -->
-    <InArticleAd label="관련 금융 정보 및 혜택" />
+    <InArticleAd label={isEn ? "Relevant Financial Resources" : "관련 금융 정보 및 혜택"} />
 
     <!-- Tags -->
     {
@@ -87,9 +91,9 @@ const badgeClass = `badge-${category}`;
     }
 
     <!-- Author Profile Card (E-E-A-T) -->
-    <AuthorBio authorName={author} />
+    <AuthorBio authorName={author} isEn={isEn} />
 
     <!-- YMYL Financial Legal Disclaimer -->
-    <FinancialDisclaimer />
+    <FinancialDisclaimer isEn={isEn} />
   </article>
 </BaseLayout>
