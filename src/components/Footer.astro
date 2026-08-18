@@ -1,7 +1,15 @@
 ---
 const currentYear = new Date().getFullYear();
 const currentPath = Astro.url.pathname;
-const isEn = currentPath.startsWith('/en');
+const isEn =
+  currentPath.startsWith('/en') ||
+  currentPath.includes('/en-') ||
+  currentPath.includes('/korea-') ||
+  currentPath.includes('/open-korea-') ||
+  currentPath.includes('/best-korea-') ||
+  currentPath.includes('-expats') ||
+  currentPath.includes('-foreigners') ||
+  currentPath.includes('travel-cards');
 ---
 
 <footer class="site-footer">
