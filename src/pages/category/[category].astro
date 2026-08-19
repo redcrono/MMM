@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const categories = [
+    { slug: 'economy', name: '경제 트렌드·이슈', desc: '한국은행 기준금리 변동, 수도권 스트레스 DSR 대출 규제, 환율 및 거시경제 팩트체크' },
     { slug: 'tax', name: '절세·세무 실무', desc: '연말정산, 종합소득세, 양도·증여세 절세 전략 및 세법 개정안 분석' },
     { slug: 'wealth', name: '자산관리·ISA', desc: '중개형 ISA, IRP, 연금저축펀드, 파킹통장 및 절세계좌 복리 투자법' },
     { slug: 'subsidy', name: '정부지원금·정책', desc: '2026 청년 월세 지원, 디딤돌/버팀목 대출, 근로장려금 및 정책자금' },
