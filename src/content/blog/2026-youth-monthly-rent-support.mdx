@@ -1,75 +1,118 @@
 ---
 title: "2026 청년 월세 특별지원 신청 자격 및 지급일 총정리: 월 20만원 지원금"
-description: "사회초년생과 대학생의 주거비 부담을 덜어주는 국토교통부 청년 월세 특별지원 2차 사업. 최대 240만원(월 20만원 x 12개월) 지급 조건, 소득·재산 기준, 복지로 신청법."
+description: "사회초년생과 대학생의 주거비 부담을 덜어주는 국토교통부 청년 월세 특별지원 사업. 최대 240만원(월 20만원 x 12개월) 지급 조건, 2026 중위소득 기준, 원가구 소득 면제 특례, 복지로 신청법 총정리."
 pubDate: 2026-03-01
 category: "subsidy"
 categoryName: "정부지원금·정책"
-tags: ["청년월세지원", "월세지원금", "복지로", "주거지원", "청년정책"]
+tags: ["청년월세지원", "월세지원금", "복지로", "주거지원", "청년정책", "국토교통부", "중위소득"]
 author: "메가머니모멘텀 금융데이터 리서치팀"
 featured: true
-readingTime: "5분"
+readingTime: "7분"
 officialSources:
-  - name: "국토교통부 주거복지기획과"
+  - name: "국토교통부 주거복지기획과 청년월세특별지원 사업지침"
     url: "https://www.molit.go.kr"
-  - name: "복지로 청년월세특별지원 신청"
+  - name: "보건복지부 복지로 청년월세특별지원 모의계산 및 전자신청"
     url: "https://www.bokjiro.go.kr"
+  - name: "마이홈포털 (국토교통부 주거복지 포털)"
+    url: "https://www.myhome.go.kr"
 ---
 
 import InfographicCard from '../../components/InfographicCard.astro';
 import StepFlow from '../../components/StepFlow.astro';
 
-자취를 시작한 사회초년생이나 대학생들에게 매달 빠져나가는 50만~70만 원의 월세는 숨만 쉬어도 나가는 가장 큰 고정비입니다.
+혼자 자취를 시작한 사회초년생, 취업준비생, 대학생들에게 매달 빠져나가는 50만~70만 원의 월세는 숨만 쉬어도 나가는 가장 뼈아픈 고정 지출입니다.
 
-저 역시 처음 서울에 올라와 독립했을 때 통장에 찍히는 월세 이체 내역을 보며 한숨 쉬던 시절이 있었습니다. 
+국토교통부에서 주관하는 **'청년 월세 특별지원'**은 부모님과 떨어져 독립 거주하는 무주택 청년들에게 **매달 20만 원씩 12개월 동안 총 240만 원의 현금을 계좌로 직접 꽂아주는 대표적인 주거비 지원 복지 사업**입니다.
 
-하지만 정부(국토교통부)에서 **1인당 매달 20만 원씩 최대 12개월 동안 총 240만 원을 통장으로 쏴주는 '청년 월세 특별지원'** 제도를 꼼꼼히 챙기면 1년 치 고정비를 대폭 절약할 수 있습니다!
-
-![2026 청년 월세 특별지원 240만원 신청 가이드](/images/youth_rent_hero.jpg)
+본 가이드에서는 2026년 기준 중위소득 및 재산 기준, 원가구(부모) 소득 심사를 면제받는 3대 특례 요건, 그리고 복지로 온라인 신청 절차를 총정리합니다.
 
 ---
 
-## 1. 청년 월세 특별지원 3대 자격 조건 (자가진단)
+## 1. 2026 청년 월세 특별지원 3대 핵심 자격 요건
 
-내가 신청 대상인지 1분 만에 체크해 보세요:
-
-<InfographicCard title="청년 월세 특별지원 자격 요건 3가지" type="primary" subtitle="2026년 기준 중위소득 반영">
+<InfographicCard title="청년 월세 특별지원 신청 자격 3대 평가 기준" type="primary" subtitle="국토교통부 주거복지기획과 고시">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-    <div style="background: var(--bg-main); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-      <h4 style="color: var(--primary); margin-bottom: 0.25rem;">1. 연령 및 거주</h4>
-      <p style="font-size: 0.85rem; margin: 0; line-height: 1.5;">만 19세 ~ 34세 이하 무주택 청년으로, <strong>부모님과 별도로 독립 거주</strong>하는 자</p>
+    <div style="background: var(--bg-card); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+      <h4 style="color: var(--primary); margin: 0 0 0.5rem 0; font-size: 1rem;">1. 연령 및 거주</h4>
+      <p style="font-size: 0.85rem; margin: 0; line-height: 1.6; color: var(--text-main);">
+        <strong>만 19세 ~ 34세 이하 무주택 청년</strong>으로, 부모님과 주민등록상 주소지가 분리된 독립 거주자 (전입신고 필수).
+      </p>
     </div>
-    <div style="background: var(--bg-main); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-      <h4 style="color: var(--secondary); margin-bottom: 0.25rem;">2. 주택 및 임차료</h4>
-      <p style="font-size: 0.85rem; margin: 0; line-height: 1.5;">임차보증금 <strong>5,000만 원 이하</strong> 및 월세 <strong>70만 원 이하</strong> 주택 (보증금 월세환산액 고려)</p>
+    <div style="background: var(--bg-card); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+      <h4 style="color: var(--secondary); margin: 0 0 0.5rem 0; font-size: 1rem;">2. 주택 및 임차료</h4>
+      <p style="font-size: 0.85rem; margin: 0; line-height: 1.6; color: var(--text-main);">
+        임차보증금 <strong>5,000만 원 이하</strong> 및 월세 <strong>70만 원 이하</strong> 주택 (보증금 월세환산액 합산 시 최대 90만 원까지 인정).
+      </p>
     </div>
-    <div style="background: var(--bg-main); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-      <h4 style="color: var(--accent-amber); margin-bottom: 0.25rem;">3. 소득 및 재산</h4>
-      <p style="font-size: 0.85rem; margin: 0; line-height: 1.5;">청년 본인 가구 중위소득 <strong>60% 이하</strong> (1인 약 145만 원) and 원가구(부모) <strong>100% 이하</strong></p>
+    <div style="background: var(--bg-card); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+      <h4 style="color: #d97706; margin: 0 0 0.5rem 0; font-size: 1rem;">3. 소득 및 재산</h4>
+      <p style="font-size: 0.85rem; margin: 0; line-height: 1.6; color: var(--text-main);">
+        <strong>청년독립가구 중위소득 60% 이하</strong> (1인 약 145만 원) & <strong>원가구(부모 합산) 중위소득 100% 이하</strong>.
+      </p>
     </div>
   </div>
 </InfographicCard>
 
 ---
 
-## 2. 복지로 모바일 앱 3분 신청 절차
+## 2. 2026년 기준 중위소득 및 가구 소득 판정 기준표
 
-<StepFlow
-  steps={[
-    { num: "1", title: "복지로 접속", desc: "복지로(bokjiro.go.kr) 또는 모바일 앱 간편인증 로그인", icon: "📱" },
-    { num: "2", title: "모의계산 자가진단", desc: "[복지서비스] -> [청년월세특별지원 모의계산]으로 대상 여부 즉시 확인", icon: "🔍" },
-    { num: "3", title: "서류 첨부 및 신청", desc: "임대차계약서, 월세이체내역, 가족관계증명서 사진 업로드 후 신청 완료", icon: "📝" },
-  ]}
-/>
+| 가구원 수 | 청년가구 (중위소득 60% 이하) | 원가구 부모합산 (중위소득 100% 이하) |
+|:---|:---:|:---:|
+| **1인 가구 (청년 단독)** | **월 1,450,000 원 이하** | - |
+| **2인 가구** | 월 2,360,000 원 이하 | 월 3,930,000 원 이하 |
+| **3인 가구** | 월 3,020,000 원 이하 | **월 5,030,000 원 이하** |
+| **4인 가구** | 월 3,680,000 원 이하 | **월 6,130,000 원 이하** |
 
----
-
-## 3. 에디터가 알려주는 실전 꿀팁 and 주의사항
-
-- **월세 이체 증빙 필수:** 집주인에게 현금으로 주지 마시고, 반드시 **본인 명의 은행 계좌에서 집주인 통장으로 이체한 이체확인증(최근 3개월)**을 캡처해 두세요.
-- **주민등록 전입신고 필수:** 임대차계약서 상 주소지와 주민등록등본 상 주소지가 100% 일치해야 하며, **확정일자**를 받아두셔야 심사가 즉시 통과됩니다.
+### 💡 부모님(원가구) 소득 심사를 완전히 면제받는 3대 특례
+아래 3가지 중 하나에 해당하면 부모님의 소득과 재산(4억 7,000만 원 이하 기준)을 일체 보지 않고 **'청년 본인 소득·재산(1억 2,200만 원 이하)'만 단독 심사**하여 수혜 자격을 부여합니다:
+1. **만 30세 이상**인 청년
+2. **혼인(결혼)**하였거나 이혼한 청년
+3. 만 30세 미만이라도 **기준 중위소득 50%(월 약 121만 원) 이상의 독립 소득**을 지속적으로 올리고 있는 청년
 
 ---
 
-> 🔗 **함께 읽으면 좋은 정부 주거지원 가이드**:
-> - [2026 청년 전세보증금 반환보증료 지원 사업](/blog/jeonse-deposit-return-guarantee-support)
-> - [디딤돌 대출 vs 버팀목 전세자금대출 비교 가이드](/blog/stepping-stone-vs-stepping-loan-guide)
+## 3. 지원 금액 및 지급 방식 (월 20만 원 × 12개월)
+
+- **지원 금액**: 실제 납부하는 월세 범위 내에서 **매월 최대 20만 원 지급** (관리비는 제외).
+- **지급 기간**: 생애 1회, **최대 12개월(1년) 동안 총 240만 원** 분할 지급.
+- **지급일**: 매월 **25일** 청년 본인 명의 계좌로 현금 입금.
+- **비과세 혜택**: 정부 복지 보조금이므로 소득세나 건강보험료 산정 시 소득에 일체 합산되지 않는 순수 비과세 혜택입니다.
+
+---
+
+## 4. 복지로 온라인 3분 신청 및 필수 서류 4종
+
+<StepFlow steps={[
+  {
+    num: "1",
+    title: "복지로(bokjiro.go.kr) 모의계산 자가진단",
+    desc: "복지로 웹사이트 또는 모바일 앱 로그인 후 [복지서비스] -> [청년월세특별지원 모의계산]으로 자격 확인.",
+    icon: "🔍"
+  },
+  {
+    num: "2",
+    title: "온라인 신청서 작성 및 확정일자 입력",
+    desc: "주민등록상 전입신고가 완료된 임차 주택 정보와 확정일자 부여 번호 입력.",
+    icon: "💻"
+  },
+  {
+    num: "3",
+    title: "필수 증빙 서류 4종 사진 업로드",
+    desc: "임대차계약서 사본, 최근 3개월 월세 계좌이체 영수증, 통장 사본, 가족관계증명서(상세) 첨부 후 접수 완료.",
+    icon: "📑"
+  }
+]} />
+
+---
+
+## 5. 자주 묻는 질문 (FAQ 3선)
+
+### Q1. 지원을 받던 중에 다른 월세방으로 이사를 가면 지원이 끊기나요?
+**끊기지 않습니다.** 이사 후 새로운 주소지로 **전입신고를 완료한 뒤 14일 이내에 복지로 또는 주민센터에 '주소지 변경 신청(계약서 첨부)'**을 하면, 남은 지원 개월 수만큼 새로운 주택의 월세로 지원금이 계속 승계 지급됩니다.
+
+### Q2. LH나 SH 공공임대주택, 청년안심주택 거주자도 신청 가능한가요?
+**원칙적으로 신청 불가합니다.** 공공임대주택(LH 행복주택, 청년안심주택, 역세권 청년주택 등)은 이미 정부의 주거복지 혜택이 적용된 주택이므로 청년 월세 지원 대상에서 제외됩니다. 민간 일반 원룸, 오피스텔, 빌라 월세 거주자만 지원 대상입니다.
+
+### Q3. 지자체(서울시, 경기도 등) 청년월세지원 사업과 중복 수령이 되나요?
+**중복 수령은 불가능합니다.** 국토부 청년월세지원과 지자체 자체 월세지원 사업은 중복 수혜가 금지되어 있으므로, 12개월 지원이 종료된 이후에 지자체 사업을 추가 신청하는 방식으로 연계해야 합니다.
