@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ArticleReadingModeSwitch from '../components/ArticleReadingModeSwitch.astro';
+import ArticleHeroBanner from '../components/ArticleHeroBanner.astro';
 import AuthorBio from '../components/AuthorBio.astro';
 import FinancialDisclaimer from '../components/FinancialDisclaimer.astro';
 import OfficialSourceBadge from '../components/OfficialSourceBadge.astro';
@@ -14,7 +15,7 @@ export interface Props {
 }
 
 const { post, headings } = Astro.props;
-const { title, description, pubDate, updatedDate, category, categoryName, author, officialSources, readingTime, tags } = post.data;
+const { title, description, pubDate, updatedDate, category, categoryName, author, officialSources, readingTime, tags, heroImage } = post.data;
 
 const isEn = post.slug.startsWith('en-') || post.slug.startsWith('korea-') || post.slug.startsWith('open-') || post.slug.startsWith('best-korea-') || post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('travel-cards');
 
@@ -82,6 +83,15 @@ const badgeClass = `badge-${category}`;
 
     <!-- Interactive Reading Mode Switcher (Pro Deep-Dive ⟷ Smart Brief) -->
     <ArticleReadingModeSwitch isEn={isEn} />
+
+    <!-- Article Hero Banner (Custom Image or 7-Category Theme Master Banner) -->
+    <ArticleHeroBanner
+      category={category}
+      categoryName={categoryName}
+      title={title}
+      heroImage={heroImage}
+      isEn={isEn}
+    />
 
     <!-- Table of Contents -->
     <TableOfContents headings={headings} isEn={isEn} />

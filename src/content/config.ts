@@ -19,6 +19,7 @@ const blogCollection = defineCollection({
     ).optional(),
     featured: z.boolean().default(false),
     readingTime: z.string().default('5분'),
+    heroImage: z.string().optional(),
   }),
 });
 

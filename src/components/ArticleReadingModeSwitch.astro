@@ -39,6 +39,17 @@ const { isEn = false } = Astro.props;
       </button>
     </div>
   </div>
+
+  <!-- Dynamic Smart Brief Banner (Rendered when Smart Mode is Active) -->
+  <div class="dynamic-smart-banner" id="dynamic-smart-banner" style="display: none;">
+    <div class="dsb-header">
+      <div class="dsb-badge">💡 {isEn ? '3-Minute Smart Brief Active' : '3분 스마트 요약 모드 활성화'}</div>
+      <span class="dsb-tip">{isEn ? 'Core takeaways & actionable rules highlighted' : '핵심 결론과 실전 행동 요령 위주로 요약되었습니다'}</span>
+    </div>
+    <div class="dsb-content" id="dsb-content-target">
+      <!-- Auto-populated or highlights native smart brief -->
+    </div>
+  </div>
 </div>
 
 <script>
@@ -58,7 +69,7 @@ const { isEn = false } = Astro.props;
   }
 
   function applyReadingMode(mode: string) {
-    // 1. Update Buttons
+    // 1. Update Buttons State
     const buttons = document.querySelectorAll('.mode-tab-btn');
     buttons.forEach((btn) => {
       if (btn.getAttribute('data-mode') === mode) {
@@ -71,16 +82,42 @@ const { isEn = false } = Astro.props;
     // 2. Update Root Attribute
     document.documentElement.setAttribute('data-reading-mode', mode);
 
-    // 3. Show/Hide In-Article Sections
-    const smartSections = document.querySelectorAll('.smart-brief-view');
-    const proSections = document.querySelectorAll('.pro-analysis-view');
+    // 3. Dynamic Smart Brief Synchronization
+    const dynamicBanner = document.getElementById('dynamic-smart-banner');
+    const existingSmartBox = document.querySelector('.smart-brief-box') as HTMLElement;
+    const articleBody = document.querySelector('.article-content') as HTMLElement;
 
     if (mode === 'smart') {
-      smartSections.forEach((el) => ((el as HTMLElement).style.display = 'block'));
-      proSections.forEach((el) => ((el as HTMLElement).style.display = 'none'));
+      if (existingSmartBox) {
+        existingSmartBox.style.display = 'block';
+        existingSmartBox.classList.add('pulse-highlight');
+        existingSmartBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (dynamicBanner) dynamicBanner.style.display = 'none';
+      } else {
+        // Fallback: Generate smart brief summary from article intro and key takeaways
+        if (dynamicBanner && articleBody) {
+          const introPara = articleBody.querySelector('p')?.textContent || '';
+          const firstHeading = articleBody.querySelector('h2')?.textContent || '';
+          const isEnDoc = document.documentElement.lang === 'en' || window.location.pathname.startsWith('/en');
+
+          const dsbTarget = document.getElementById('dsb-content-target');
+          if (dsbTarget) {
+            dsbTarget.innerHTML = `
+              <p class="dsb-summary-text"><strong>${isEnDoc ? 'Executive Summary:' : '핵심 30초 요약:'}</strong> ${introPara}</p>
+              <div class="dsb-action-pill">
+                👉 ${isEnDoc ? 'Check key takeaways under' : '주요 실천 행동요령:'} <strong>${firstHeading}</strong>
+              </div>
+            `;
+          }
+          dynamicBanner.style.display = 'block';
+          dynamicBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
     } else {
-      smartSections.forEach((el) => ((el as HTMLElement).style.display = 'none'));
-      proSections.forEach((el) => ((el as HTMLElement).style.display = 'block'));
+      if (dynamicBanner) dynamicBanner.style.display = 'none';
+      if (existingSmartBox) {
+        existingSmartBox.classList.remove('pulse-highlight');
+      }
     }
   }
 
@@ -92,7 +129,7 @@ const { isEn = false } = Astro.props;
 <style>
   .reading-mode-container {
     margin: 1.25rem 0 2rem 0;
-    padding: 0.75rem 1rem;
+    padding: 0.85rem 1.15rem;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
@@ -165,6 +202,67 @@ const { isEn = false } = Astro.props;
   .mode-tab-btn.active .mode-pill-badge {
     background: rgba(255, 255, 255, 0.25);
     color: #ffffff;
+  }
+
+  /* Dynamic Smart Banner */
+  .dynamic-smart-banner {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.08));
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-md);
+    animation: fadeIn 0.3s ease;
+  }
+  .dsb-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+  }
+  .dsb-badge {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #ffffff;
+    background: var(--primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+  }
+  .dsb-tip {
+    font-size: 0.775rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  :global(.dsb-summary-text) {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-main);
+    margin: 0 0 0.5rem 0;
+  }
+  :global(.dsb-action-pill) {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--bg-card);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    border: 1px solid var(--border-color);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  :global(.pulse-highlight) {
+    animation: pulseBorder 1.5s ease;
+  }
+  @keyframes pulseBorder {
+    0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
   }
 
   @media (max-width: 640px) {
