@@ -113,6 +113,17 @@ if (isEn) {
           <span class="lang-text">{isEn ? '한국어 (KO)' : 'English (EN)'}</span>
         </a>
 
+        <!-- Global Reading Mode Quick Toggle -->
+        <button
+          id="global-reading-mode-toggle"
+          class="reading-mode-toggle-btn"
+          aria-label={isEn ? "Toggle Reading Mode (Pro / Smart Brief)" : "읽기 모드 전환 (프로 / 스마트 요약)"}
+          title={isEn ? "Switch between Pro Deep-Dive and 3-Min Smart Brief" : "프로 정밀 분석 ⟷ 3분 스마트 요약 전환"}
+        >
+          <span class="mode-icon-display" id="header-mode-icon">📊</span>
+          <span class="mode-text-display" id="header-mode-text">{isEn ? 'Pro' : '프로'}</span>
+        </button>
+
         <button id="theme-toggle" class="theme-toggle-btn" aria-label="다크 모드 전환" title="다크 모드 전환">
           <svg id="theme-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
             <circle cx="12" cy="12" r="5"></circle>
@@ -176,5 +187,50 @@ if (isEn) {
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateIcons(!isDark);
+  });
+
+  // Global Reading Mode Toggle Functionality
+  const readingModeToggle = document.getElementById('global-reading-mode-toggle');
+  const modeIcon = document.getElementById('header-mode-icon');
+  const modeText = document.getElementById('header-mode-text');
+
+  function updateReadingModeHeader(mode: string) {
+    const isSmart = mode === 'smart';
+    if (modeIcon && modeText) {
+      modeIcon.textContent = isSmart ? '💡' : '📊';
+      modeText.textContent = isSmart ? 'Smart' : 'Pro';
+    }
+  }
+
+  const currentMode = localStorage.getItem('mmm-reading-mode') || 'pro';
+  document.documentElement.setAttribute('data-reading-mode', currentMode);
+  updateReadingModeHeader(currentMode);
+
+  readingModeToggle?.addEventListener('click', () => {
+    const activeMode = document.documentElement.getAttribute('data-reading-mode') || 'pro';
+    const nextMode = activeMode === 'pro' ? 'smart' : 'pro';
+    document.documentElement.setAttribute('data-reading-mode', nextMode);
+    localStorage.setItem('mmm-reading-mode', nextMode);
+    updateReadingModeHeader(nextMode);
+
+    // Sync any in-article switcher on page
+    const inArticleButtons = document.querySelectorAll('.mode-tab-btn');
+    inArticleButtons.forEach((btn) => {
+      if (btn.getAttribute('data-mode') === nextMode) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    const smartSections = document.querySelectorAll('.smart-brief-view');
+    const proSections = document.querySelectorAll('.pro-analysis-view');
+    if (nextMode === 'smart') {
+      smartSections.forEach((el) => ((el as HTMLElement).style.display = 'block'));
+      proSections.forEach((el) => ((el as HTMLElement).style.display = 'none'));
+    } else {
+      smartSections.forEach((el) => ((el as HTMLElement).style.display = 'none'));
+      proSections.forEach((el) => ((el as HTMLElement).style.display = 'block'));
+    }
   });
 </script>

@@ -1,0 +1,183 @@
+---
+interface Props {
+  isEn?: boolean;
+}
+
+const { isEn = false } = Astro.props;
+---
+
+<div class="reading-mode-container" id="reading-mode-switcher">
+  <div class="mode-switch-bar">
+    <div class="mode-label">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+      </svg>
+      <span>{isEn ? 'Reading Mode' : '읽기 모드 선택'}</span>
+    </div>
+    
+    <div class="mode-tabs">
+      <button
+        type="button"
+        class="mode-tab-btn active"
+        data-mode="pro"
+        aria-label={isEn ? "Switch to Pro Analysis Mode" : "전문가 정밀 분석 모드로 전환"}
+      >
+        <span class="tab-icon">📊</span>
+        <span class="tab-text">{isEn ? 'Pro Deep-Dive' : '전문가 정밀 분석'}</span>
+      </button>
+
+      <button
+        type="button"
+        class="mode-tab-btn"
+        data-mode="smart"
+        aria-label={isEn ? "Switch to Smart Brief 3-Min Mode" : "3분 스마트 브리프 모드로 전환"}
+      >
+        <span class="tab-icon">💡</span>
+        <span class="tab-text">{isEn ? '3-Min Smart Brief' : '3분 스마트 요약'}</span>
+        <span class="mode-pill-badge">{isEn ? 'POPULAR' : '추천'}</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initReadingMode() {
+    const savedMode = localStorage.getItem('mmm-reading-mode') || 'pro';
+    applyReadingMode(savedMode);
+
+    const buttons = document.querySelectorAll('.mode-tab-btn');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const mode = target.getAttribute('data-mode') || 'pro';
+        applyReadingMode(mode);
+        localStorage.setItem('mmm-reading-mode', mode);
+      });
+    });
+  }
+
+  function applyReadingMode(mode: string) {
+    // 1. Update Buttons
+    const buttons = document.querySelectorAll('.mode-tab-btn');
+    buttons.forEach((btn) => {
+      if (btn.getAttribute('data-mode') === mode) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // 2. Update Root Attribute
+    document.documentElement.setAttribute('data-reading-mode', mode);
+
+    // 3. Show/Hide In-Article Sections
+    const smartSections = document.querySelectorAll('.smart-brief-view');
+    const proSections = document.querySelectorAll('.pro-analysis-view');
+
+    if (mode === 'smart') {
+      smartSections.forEach((el) => ((el as HTMLElement).style.display = 'block'));
+      proSections.forEach((el) => ((el as HTMLElement).style.display = 'none'));
+    } else {
+      smartSections.forEach((el) => ((el as HTMLElement).style.display = 'none'));
+      proSections.forEach((el) => ((el as HTMLElement).style.display = 'block'));
+    }
+  }
+
+  // Run on load and astro transitions
+  initReadingMode();
+  document.addEventListener('astro:after-swap', initReadingMode);
+</script>
+
+<style>
+  .reading-mode-container {
+    margin: 1.25rem 0 2rem 0;
+    padding: 0.75rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mode-switch-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .mode-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-muted);
+  }
+
+  .mode-tabs {
+    display: flex;
+    align-items: center;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    padding: 0.25rem;
+    gap: 0.25rem;
+  }
+
+  .mode-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .mode-tab-btn:hover {
+    color: var(--text-main);
+  }
+
+  .mode-tab-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mode-pill-badge {
+    font-size: 0.675rem;
+    font-weight: 800;
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-full);
+    background: #fef08a;
+    color: #854d0e;
+    margin-left: 0.2rem;
+  }
+
+  .mode-tab-btn.active .mode-pill-badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+  }
+
+  @media (max-width: 640px) {
+    .mode-switch-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .mode-tabs {
+      width: 100%;
+    }
+    .mode-tab-btn {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+</style>
