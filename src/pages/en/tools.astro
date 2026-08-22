@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TaxSavingsCalculator from '../../components/TaxSavingsCalculator.astro';
+
+const toolCards = [
+  {
+    title: 'Year-End Tax Settlement Calculator (IRP/Pension)',
+    desc: 'Simulates exact tax refund windfalls (13.2% vs. 16.5% tax credit tiers) based on gross annual salary and contributions.',
+    category: 'Tax & Filing',
+    badge: 'badge-tax',
+    icon: '📊'
+  },
+  {
+    title: 'Seoul Stage 3 Stress DSR Mortgage Simulator',
+    desc: 'Models borrowing capacity haircuts and maximum allowable loan sizes under 3.0% stress add-on rates.',
+    category: 'Banking & Credit',
+    badge: 'badge-credit',
+    icon: '🏠'
+  },
+  {
+    title: 'Daily Compound Interest vs. Checking APY Tool',
+    desc: 'Calculates after-tax cash returns on high-yield digital bank parking accounts with KDIC 50M protection.',
+    category: 'Wealth & Savings',
+    badge: 'badge-wealth',
+    icon: '💰'
+  },
+  {
+    title: 'Loan Prepayment Penalty & Refinancing BEP Calculator',
+    desc: 'Evaluates pro-rata statutory daily prepayment penalties and multi-month break-even points for mortgage switches.',
+    category: 'Banking & Credit',
+    badge: 'badge-credit',
+    icon: '⚖️'
+  }
+];
+---
+
+<BaseLayout
+  title="Financial Calculators & Tax Simulators Hub | MegaMoneyMomentum (MMM)"
+  description="Interactive financial modeling tools for Korean Year-End Tax Settlement refunds, Seoul Stage 3 Stress DSR limits, daily compound interest, and loan refinancing break-even points."
+>
+  <div class="container" style="padding: 2rem 0 4rem 0;">
+    <!-- Hero Header -->
+    <header style="text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); color: var(--primary); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+          <line x1="8" y1="6" x2="16" y2="6"></line>
+          <line x1="16" y1="14" x2="16" y2="18"></line>
+          <path d="M16 10h.01"></path>
+          <path d="M12 10h.01"></path>
+          <path d="M8 10h.01"></path>
+          <path d="M12 14h.01"></path>
+          <path d="M8 14h.01"></path>
+          <path d="M12 18h.01"></path>
+          <path d="M8 18h.01"></path>
+        </svg>
+        <span>Interactive Financial Simulators</span>
+      </div>
+      <h1 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem;">
+        Financial Calculators & <span style="color: var(--primary);">Simulators Hub</span>
+      </h1>
+      <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 650px; margin: 0 auto; line-height: 1.6;">
+        Instantly simulate tax refunds, mortgage borrowing capacity, and compound interest returns without dealing with complex statutory tax formulas.
+      </p>
+    </header>
+
+    <!-- Main Interactive Calculator -->
+    <div style="max-width: 900px; margin: 0 auto 3.5rem auto;">
+      <TaxSavingsCalculator />
+    </div>
+
+    <!-- Simulator Cards Grid -->
+    <div style="max-width: 900px; margin: 0 auto;">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; text-align: center;">
+        Available Financial Simulation Tools
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+        {
+          toolCards.map((tool) => (
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                <span style="font-size: 1.75rem;">{tool.icon}</span>
+                <span class={`badge-category ${tool.badge}`} style="font-size: 0.75rem;">{tool.category}</span>
+              </div>
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">
+                {tool.title}
+              </h3>
+              <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin: 0 0 1rem 0; flex: 1;">
+                {tool.desc}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</BaseLayout>

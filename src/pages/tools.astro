@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TaxSavingsCalculator from '../components/TaxSavingsCalculator.astro';
+
+const toolCards = [
+  {
+    title: '연말정산 절세 계산기 (IRP/연금저축)',
+    desc: '총급여와 납입 금액을 입력하면 13월의 월급 환급액(13.2% vs 16.5%)을 즉시 실시간 계산합니다.',
+    category: '세무·절세',
+    badge: 'badge-tax',
+    icon: '📊'
+  },
+  {
+    title: '수도권 스트레스 DSR 주담대 한도 계산기',
+    desc: '연봉과 대출 기간, 금리를 기반으로 3단계 스트레스 DSR(가산금리 1.5%p) 적용 후 실제 대출 한도 축소액을 산출합니다.',
+    category: '대출·신용',
+    badge: 'badge-credit',
+    icon: '🏠'
+  },
+  {
+    title: '파킹통장 일복리 vs 단리 이자 계산기',
+    desc: '예치 금액과 기간에 따라 매일 지금 이자받기(일복리 APY)와 일반 입출금 통장 간 세후 실수령 이자 격차를 계산합니다.',
+    category: '자산관리',
+    badge: 'badge-wealth',
+    icon: '💰'
+  },
+  {
+    title: '대출 중도상환수수료 & 대환 BEP 계산기',
+    desc: '대출 실행일로부터 경과 일수를 일할 계산하여 현재 중도상환수수료와 타행 대환 시 손익분기점(회수 개월 수)을 계산합니다.',
+    category: '대출·신용',
+    badge: 'badge-credit',
+    icon: '⚖️'
+  }
+];
+---
+
+<BaseLayout
+  title="금융 계산기 & 절세 시뮬레이터 허브 | 메가머니모멘텀 (MMM)"
+  description="연말정산 절세 계산기, 수도권 스트레스 DSR 대출 한도 시뮬레이터, 파킹통장 일복리 이자 계산기, 중도상환수수료 BEP 계산기 등 실전 금융 도구 모음."
+>
+  <div class="container" style="padding: 2rem 0 4rem 0;">
+    <!-- Hero Header -->
+    <header style="text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); color: var(--primary); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+          <line x1="8" y1="6" x2="16" y2="6"></line>
+          <line x1="16" y1="14" x2="16" y2="18"></line>
+          <path d="M16 10h.01"></path>
+          <path d="M12 10h.01"></path>
+          <path d="M8 10h.01"></path>
+          <path d="M12 14h.01"></path>
+          <path d="M8 14h.01"></path>
+          <path d="M12 18h.01"></path>
+          <path d="M8 18h.01"></path>
+        </svg>
+        <span>인터랙티브 금융 시뮬레이션</span>
+      </div>
+      <h1 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem;">
+        금융 계산기 & <span style="color: var(--primary);">시뮬레이터 허브</span>
+      </h1>
+      <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 650px; margin: 0 auto; line-height: 1.6;">
+        복잡한 세법 공식과 은행 대출 규정을 직접 계산하지 않고, 실시간 입력만으로 나의 실제 절세 환급액과 대출 가능액을 시뮬레이션해 보세요.
+      </p>
+    </header>
+
+    <!-- Main Interactive Calculator -->
+    <div style="max-width: 900px; margin: 0 auto 3.5rem auto;">
+      <TaxSavingsCalculator />
+    </div>
+
+    <!-- Additional Simulator Cards Grid -->
+    <div style="max-width: 900px; margin: 0 auto;">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 1.5rem; text-align: center;">
+        제공되는 금융 시뮬레이터 안내
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+        {
+          toolCards.map((tool) => (
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                <span style="font-size: 1.75rem;">{tool.icon}</span>
+                <span class={`badge-category ${tool.badge}`} style="font-size: 0.75rem;">{tool.category}</span>
+              </div>
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">
+                {tool.title}
+              </h3>
+              <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin: 0 0 1rem 0; flex: 1;">
+                {tool.desc}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</BaseLayout>

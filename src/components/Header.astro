@@ -13,19 +13,23 @@ const isEn =
 const koNavItems = [
   { name: '경제·이슈', href: '/category/economy' },
   { name: '절세·세무', href: '/category/tax' },
-  { name: '자산관리·ISA', href: '/category/wealth' },
+  { name: '주식·ETF', href: '/category/stocks' },
+  { name: '자산관리', href: '/category/wealth' },
   { name: '정부지원금', href: '/category/subsidy' },
   { name: '대출·신용', href: '/category/credit' },
-  { name: '소개', href: '/about' },
+  { name: '계산기', href: '/tools' },
+  { name: 'Q&A', href: '/qna' },
 ];
 
 const enNavItems = [
   { name: 'Market & Trends', href: '/en/category/economy' },
   { name: 'Tax & Expat', href: '/en/category/tax' },
-  { name: 'Wealth & Invest', href: '/en/category/wealth' },
+  { name: 'Stocks & ETFs', href: '/en/category/stocks' },
+  { name: 'Wealth & ISA', href: '/en/category/wealth' },
   { name: 'Living & Grants', href: '/en/category/subsidy' },
   { name: 'Banking & Credit', href: '/en/category/credit' },
-  { name: 'About', href: '/en/about' },
+  { name: 'Calculators', href: '/en/tools' },
+  { name: 'Q&A', href: '/en/qna' },
 ];
 
 const navItems = isEn ? enNavItems : koNavItems;
@@ -35,6 +39,8 @@ let targetLangUrl = isEn ? '/' : '/en';
 if (isEn) {
   if (currentPath === '/en' || currentPath === '/en/') targetLangUrl = '/';
   else if (currentPath.startsWith('/en/category/')) targetLangUrl = currentPath.replace('/en/category/', '/category/');
+  else if (currentPath.startsWith('/en/tools')) targetLangUrl = '/tools';
+  else if (currentPath.startsWith('/en/qna')) targetLangUrl = '/qna';
   else if (currentPath.startsWith('/en/about')) targetLangUrl = '/about';
   else if (currentPath.startsWith('/en/privacy')) targetLangUrl = '/privacy';
   else if (currentPath.startsWith('/en/contact')) targetLangUrl = '/contact';
@@ -43,6 +49,8 @@ if (isEn) {
 } else {
   if (currentPath === '/' || currentPath === '') targetLangUrl = '/en';
   else if (currentPath.startsWith('/category/')) targetLangUrl = currentPath.replace('/category/', '/en/category/');
+  else if (currentPath.startsWith('/tools')) targetLangUrl = '/en/tools';
+  else if (currentPath.startsWith('/qna')) targetLangUrl = '/en/qna';
   else if (currentPath.startsWith('/about')) targetLangUrl = '/en/about';
   else if (currentPath.startsWith('/privacy')) targetLangUrl = '/en/privacy';
   else if (currentPath.startsWith('/contact')) targetLangUrl = '/en/contact';

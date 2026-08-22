@@ -7,7 +7,7 @@ const blogCollection = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    category: z.enum(['tax', 'wealth', 'subsidy', 'credit', 'economy']),
+    category: z.enum(['tax', 'wealth', 'subsidy', 'credit', 'economy', 'stocks', 'expats']),
     categoryName: z.string(),
     tags: z.array(z.string()).default([]),
     author: z.string().default('메가머니모멘텀 리서치팀'),

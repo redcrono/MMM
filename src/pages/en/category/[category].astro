@@ -6,16 +6,23 @@ export async function getStaticPaths() {
   const categories = [
     { slug: 'economy', name: 'Market & Economy Trends', desc: 'BOK interest rate decisions, Seoul Stress DSR mortgage regulations, FX trends and macroeconomic briefings' },
     { slug: 'tax', name: 'Tax & Expat Settlement', desc: 'Yeonmaljeongsan, Global Income Tax, Capital Gains Tax & Expat 19% Flat Rate Guides' },
-    { slug: 'wealth', name: 'Wealth & Investment', desc: 'ISA Tax-Free Accounts, IRP Pensions, US Index ETFs & High-Yield Banking Systems' },
-    { slug: 'subsidy', name: 'Living & Subsidies', desc: '2026 Youth Housing Grants, Health Insurance Refunds & Travel Payment Cards' },
+    { slug: 'stocks', name: 'Stocks & ETFs', desc: 'S&P500 vs Nasdaq100 DCA compounding, US High-Dividend ETFs (SCHD/JEPI), QQQM & Capital Gains' },
+    { slug: 'wealth', name: 'Wealth & Investment', desc: 'ISA Tax-Free Accounts, IRP Pensions, Retail Treasury Bonds & High-Yield Banking Systems' },
+    { slug: 'subsidy', name: 'Living & Subsidies', desc: '2026 Youth Housing Grants, Health Insurance Refunds & Tomorrow Learning Cards' },
     { slug: 'credit', name: 'Banking & Credit', desc: 'Opening Accounts without ARC, Credit Score 900+ & Low-Fee Emergency Loans' },
+    { slug: 'expats', name: 'Living & Expats in Korea', desc: 'Essential banking, health insurance refunds, transit cards, and tax guides for foreigners in Korea' },
   ];
 
   const allPosts = await getCollection('blog');
 
   return categories.map((cat) => {
     const filteredPosts = allPosts
-      .filter((post) => post.data.category === cat.slug && (post.slug.startsWith('en-') || post.slug.startsWith('korea-') || post.slug.startsWith('open-') || post.slug.startsWith('best-korea-') || post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('travel-cards')))
+      .filter((post) => {
+        if (cat.slug === 'expats') {
+          return post.data.category === 'expats' || post.slug.startsWith('korea-') || post.slug.startsWith('open-') || post.slug.startsWith('best-korea-');
+        }
+        return post.data.category === cat.slug && (post.slug.startsWith('en-') || post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('travel-cards'));
+      })
       .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
     return {

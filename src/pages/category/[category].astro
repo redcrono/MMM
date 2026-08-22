@@ -6,16 +6,24 @@ export async function getStaticPaths() {
   const categories = [
     { slug: 'economy', name: '경제 트렌드·이슈', desc: '한국은행 기준금리 변동, 수도권 스트레스 DSR 대출 규제, 환율 및 거시경제 팩트체크' },
     { slug: 'tax', name: '절세·세무 실무', desc: '연말정산, 종합소득세, 양도·증여세 절세 전략 및 세법 개정안 분석' },
+    { slug: 'stocks', name: '주식·ETF 투자', desc: 'S&P500·나스닥100 적립식 복리 투자, 미국 고배당 ETF(SCHD/JEPI), 해외주식 양도세' },
     { slug: 'wealth', name: '자산관리·ISA', desc: '중개형 ISA, IRP, 연금저축펀드, 파킹통장 및 절세계좌 복리 투자법' },
     { slug: 'subsidy', name: '정부지원금·정책', desc: '2026 청년 월세 지원, 디딤돌/버팀목 대출, 근로장려금 및 정책자금' },
     { slug: 'credit', name: '대출·신용관리', desc: '신용점수 올리기, 대환대출 플랫폼 비교, 소득공제 카드 황금비율' },
+    { slug: 'expats', name: '외국인 금융·생활', desc: '재한 외국인을 위한 은행 계좌개설, 건강보험료 환급, 연말정산 및 교통카드' },
   ];
 
   const allPosts = await getCollection('blog');
 
   return categories.map((cat) => {
     const filteredPosts = allPosts
-      .filter((post) => post.data.category === cat.slug && !post.slug.startsWith('en-') && !post.slug.startsWith('korea-') && !post.slug.startsWith('open-') && !post.slug.startsWith('best-korea-'))
+      .filter((post) => {
+        if (post.slug.startsWith('en-')) return false;
+        if (cat.slug === 'expats') {
+          return post.data.category === 'expats' || post.slug.startsWith('korea-') || post.slug.startsWith('open-') || post.slug.startsWith('best-korea-');
+        }
+        return post.data.category === cat.slug && !post.slug.startsWith('korea-') && !post.slug.startsWith('open-') && !post.slug.startsWith('best-korea-');
+      })
       .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
     return {

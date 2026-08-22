@@ -13,7 +13,7 @@ const categories = [
   {
     slug: 'economy',
     name: '경제 트렌드·이슈',
-    desc: '한국은행 기준금리, 수도권 스트레스 DSR, 거시경제 분석',
+    desc: '한국은행 기준금리, 수도권 스트레스 DSR, 잭슨홀 거시경제 분석',
     color: '#be185d',
     bg: '#fdf2f8',
     iconPath: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
@@ -21,15 +21,23 @@ const categories = [
   {
     slug: 'tax',
     name: '절세·세무 실무',
-    desc: '연말정산, 종합소득세, 양도·증여세 절세 전략',
+    desc: '연말정산, 종합소득세, 양도·증여세, 2026 종부세 개편안',
     color: 'var(--primary)',
     bg: 'var(--primary-light)',
     iconPath: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8',
   },
   {
+    slug: 'stocks',
+    name: '주식·ETF 투자',
+    desc: 'S&P500·나스닥100 복리 투자, 미국 고배당 ETF(SCHD/JEPI), 해외주식 양도세',
+    color: '#2563eb',
+    bg: '#eff6ff',
+    iconPath: 'M3 3v18h18 M18 9l-5 5-4-4-6 6',
+  },
+  {
     slug: 'wealth',
     name: '자산관리·ISA',
-    desc: '중개형 ISA, IRP, 연금저축, 고금리 파킹통장',
+    desc: '생산적금융 ISA, IRP, 연금저축펀드, 개인투자용 국채, 고금리 파킹통장',
     color: 'var(--accent-purple)',
     bg: 'var(--accent-purple-light)',
     iconPath: 'M23 6l-9.5 9.5-5-5L1 18 M17 6h6v6',
@@ -37,7 +45,7 @@ const categories = [
   {
     slug: 'subsidy',
     name: '정부지원금·정책',
-    desc: '2026 청년·서민 맞춤형 복지 혜택 및 대출',
+    desc: '2026 청년도약계좌, 월세지원, 신생아특례 주담대, 내일배움카드',
     color: 'var(--accent-amber)',
     bg: 'var(--accent-amber-light)',
     iconPath: 'M3 21h18 M6 18V11 M10 18V11 M14 18V11 M18 18V11 M12 2l8 5H4z',
@@ -45,10 +53,40 @@ const categories = [
   {
     slug: 'credit',
     name: '대출·신용관리',
-    desc: '신용점수 올리기, 대환대출, 금리 비교 노하우',
+    desc: '신용점수 900점 올리기, 금리인하요구권, 마이너스통장 DSR 산정법',
     color: 'var(--secondary)',
     bg: 'var(--secondary-light)',
     iconPath: 'M1 4h22v16H1z M1 10h22',
+  },
+];
+
+const specialHubs = [
+  {
+    href: '/tools',
+    name: '금융 계산기 & 시뮬레이터',
+    desc: '연말정산 환급금, DSR 대출 한도, 파킹통장 일복리 실시간 모의계산',
+    badge: 'INTERACTIVE',
+    color: 'var(--primary)',
+    bg: 'var(--primary-light)',
+    icon: '📊',
+  },
+  {
+    href: '/qna',
+    name: '금융 실무 Q&A 센터',
+    desc: '세무, 주식, ISA, 대출 독자 빈출 질문 TOP 20 & 1:1 질문하기',
+    badge: 'Q&A FAQ',
+    color: '#8b5cf6',
+    bg: '#f3e8ff',
+    icon: '💡',
+  },
+  {
+    href: '/category/expats',
+    name: '외국인 금융·생활 가이드',
+    desc: '외국인 계좌개설, 건강보험료 환급, 연말정산 19% 단일세율',
+    badge: 'FOR EXPATS',
+    color: '#059669',
+    bg: '#ecfdf5',
+    icon: '🌏',
   },
 ];
 ---
@@ -75,8 +113,8 @@ const categories = [
       국세청, 금융감독원 공식 고시를 직접 검증하여 광고성 정보 없이 실질적으로 내 돈을 지키고 불리는 절세 및 지원금 가이드를 제공합니다.
     </p>
 
-    <!-- Category Quick Navigation -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+    <!-- 6 Core Categories Grid (3x2) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
       {
         categories.map((c) => (
           <a
@@ -95,6 +133,41 @@ const categories = [
             <p style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
               {c.desc}
             </p>
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- 3 Interactive Special Hubs Row (3x1) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.25rem;">
+      {
+        specialHubs.map((h) => (
+          <a
+            href={h.href}
+            style={`background: ${h.bg}; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: left; transition: all 0.2s ease; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between;`}
+            class="category-hover-card"
+          >
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                <span style="font-size: 1.5rem;">{h.icon}</span>
+                <span style={`font-size: 0.75rem; font-weight: 800; color: ${h.color}; background: var(--bg-card); padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);`}>
+                  {h.badge}
+                </span>
+              </div>
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
+                {h.name}
+              </h3>
+              <p style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                {h.desc}
+              </p>
+            </div>
+            <div style={`margin-top: 1rem; font-size: 0.825rem; font-weight: 700; color: ${h.color}; display: flex; align-items: center; gap: 0.25rem;`}>
+              <span>바로가기</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
           </a>
         ))
       }

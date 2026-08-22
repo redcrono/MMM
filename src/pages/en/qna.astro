@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const qnaCategories = [
+  {
+    category: 'Tax & Expat Settlement',
+    badge: 'badge-tax',
+    items: [
+      {
+        q: 'Can foreign residents in Korea choose the 19% flat income tax rate?',
+        a: 'Yes. Under Article 18-2 of the Restriction of Special Taxation Act, foreign employees working in South Korea can elect either the standard progressive tax rate (6% to 45%) or a 19% flat income tax rate (excluding non-taxable allowances) for up to 20 years from their initial employment date.',
+        link: '/blog/korea-tax-settlement-guide-foreigners-2026',
+        linkText: 'Read 2026 Expat Year-End Tax Settlement Guide'
+      },
+      {
+        q: 'How do family loan agreements work without triggering Korean gift taxes?',
+        a: 'Under Article 41-4 of the Inheritance and Gift Tax Act, interest-free loans between immediate family members are statutory gift-tax-exempt up to 217 Million KRW, provided annual deemed interest at the 4.6% benchmark remains under 10 Million KRW. Executing notarization or date-stamping is essential for audit defense.',
+        link: '/blog/en-family-loan-agreement-gift-tax',
+        linkText: 'Read Family Loan Agreement & 217M KRW Guide'
+      }
+    ]
+  },
+  {
+    category: 'Stocks & ETFs',
+    badge: 'badge-stocks',
+    items: [
+      {
+        q: 'What is the cutoff date for the 2.5M KRW US stock capital gains tax deduction?',
+        a: 'US equity trades require T+1 business day settlement. Because global stock exchanges close on December 31, sell orders must execute on or before December 29–30 to settle within the current calendar tax year.',
+        link: '/blog/en-overseas-stock-capital-gains-tax',
+        linkText: 'Read Overseas Stock 2.5M Exemption & Tax Harvesting'
+      },
+      {
+        q: 'Why is QQQM superior to QQQ for long-term retail investors?',
+        a: 'Both ETFs track the NASDAQ-100 Index identically under Invesco. However, QQQM features a 0.15% annual expense ratio (25% cheaper than QQQs 0.20%) and accessible ~$200 share prices, compounding into over $11,000 in saved fees over a 20-year horizon.',
+        link: '/blog/en-us-etf-qqqm-vs-qqq-difference',
+        linkText: 'Read QQQ vs QQQM 20-Year Compounding Comparison'
+      }
+    ]
+  },
+  {
+    category: 'Wealth & Investment',
+    badge: 'badge-wealth',
+    items: [
+      {
+        q: 'Can foreign residents open a Brokerage ISA or Productive Finance ISA in Korea?',
+        a: 'Yes. Foreign nationals residing in Korea who hold an Alien Registration Card (ARC) and qualify as domestic tax residents under the Income Tax Act are fully eligible to open ISA tax-sheltered accounts.',
+        link: '/blog/en-2026-isa-account-benefits-drawbacks-korea',
+        linkText: 'Read Korea ISA Tax-Free Allowance Guide'
+      },
+      {
+        q: 'How does daily compound interest work on digital bank parking accounts?',
+        a: 'Digital banks (Kbank, Toss Bank) credit daily accrued interest into principal on demand, increasing the effective annual percentage yield (APY) above nominal rates while preserving 100% KDIC 50M KRW protection.',
+        link: '/blog/en-kakaobank-vs-toss-parking-account-battle',
+        linkText: 'Read KakaoBank vs Toss vs Kbank Daily Interest Guide'
+      }
+    ]
+  },
+  {
+    category: 'Banking & Credit',
+    badge: 'badge-credit',
+    items: [
+      {
+        q: 'Does an unused overdraft line (마이너스통장) reduce mortgage capacity?',
+        a: 'Yes. Under Korean Debt Service Ratio (DSR) regulations, 100% of the approved credit ceiling is calculated as 5-year amortizing debt regardless of drawn balance. A 50M KRW overdraft line can eliminate over 140M to 260M KRW in mortgage borrowing power.',
+        link: '/blog/en-minus-bankbook-dsr-limit-guide',
+        linkText: 'Read Overdraft Credit Line & DSR Reduction Guide'
+      },
+      {
+        q: 'Can foreign residents claim the statutory Right to Request Rate Reductions?',
+        a: 'Yes. Under Article 45-2 of the Financial Consumer Protection Act, all borrowers whose financial profile, income, or credit score has improved can mandate that their bank review and reduce loan interest spreads within 10 business days.',
+        link: '/blog/en-loan-interest-rate-reduction-right',
+        linkText: 'Read Rate Reduction Legal Guide & FSS Steps'
+      }
+    ]
+  }
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": qnaCategories.flatMap((cat) =>
+    cat.items.map((item) => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a
+      }
+    }))
+  )
+};
+---
+
+<BaseLayout
+  title="Financial Q&A Center | MegaMoneyMomentum (MMM)"
+  description="Verified answers to top frequently asked questions regarding Korean taxes, stock & ETF investments, ISA tax shelters, bank loans, and expat financial systems."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <div class="container" style="padding: 2rem 0 4rem 0;">
+    <!-- Q&A Hero Header -->
+    <header style="text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); color: var(--primary); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span>Research Team Fact-Checked Guidance</span>
+      </div>
+      <h1 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; color: var(--text-main); margin-bottom: 0.75rem;">
+        Financial <span style="color: var(--primary);">Q&A Center</span>
+      </h1>
+      <p style="font-size: 1.1rem; color: var(--text-muted); max-width: 650px; margin: 0 auto; line-height: 1.6;">
+        Authoritative legal interpretations and data-backed solutions to the most critical questions regarding Korean taxation, cross-border equities, and banking regulations.
+      </p>
+    </header>
+
+    <!-- Q&A Accordion Sections -->
+    <div style="display: flex; flex-direction: column; gap: 2.5rem; max-width: 900px; margin: 0 auto;">
+      {
+        qnaCategories.map((cat) => (
+          <section style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem 2rem; box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border-color);">
+              <span class={`badge-category ${cat.badge}`} style="font-size: 0.9rem; padding: 0.35rem 0.85rem;">{cat.category}</span>
+              <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin: 0;">Frequently Asked Questions</h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              {
+                cat.items.map((item) => (
+                  <details style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem 1.25rem; cursor: pointer; transition: all 0.2s ease;">
+                    <summary style="font-weight: 700; font-size: 1.05rem; color: var(--text-main); line-height: 1.5; outline: none;">
+                      Q. {item.q}
+                    </summary>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border-color); font-size: 0.95rem; color: var(--text-muted); line-height: 1.7;">
+                      <p style="margin: 0 0 0.75rem 0;">💡 <strong>Verified Answer:</strong> {item.a}</p>
+                      <a href={item.link} style="display: inline-flex; align-items: center; gap: 0.35rem; color: var(--primary); font-weight: 700; font-size: 0.875rem; text-decoration: none;">
+                        <span>{item.linkText}</span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </a>
+                    </div>
+                  </details>
+                ))
+              }
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <!-- Contact Card -->
+    <div style="max-width: 900px; margin: 3.5rem auto 0 auto; background: linear-gradient(135deg, var(--primary-light), var(--bg-card)); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center;">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem;">
+        Have a Specific Question?
+      </h3>
+      <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 550px; margin: 0 auto 1.5rem auto; line-height: 1.6;">
+        Reach out to our research team for customized insights or to suggest new investigative topic coverage.
+      </p>
+      <a href="/en/contact" class="btn btn-primary" style="padding: 0.75rem 1.75rem; font-size: 0.95rem; font-weight: 700; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 0.5rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Submit a Financial Inquiry</span>
+      </a>
+    </div>
+  </div>
+</BaseLayout>
