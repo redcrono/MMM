@@ -187,22 +187,35 @@ button {
 
 .desktop-nav {
   display: block;
+  flex: 1;
+  margin: 0 1rem;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  justify-content: center;
+  gap: clamp(0.35rem, 1vw, 0.75rem);
   list-style: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.nav-links li {
+  white-space: nowrap;
 }
 
 .nav-links a {
-  font-size: 0.95rem;
-  font-weight: 600;
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 700;
   color: var(--text-muted);
-  padding: 0.4rem 0.6rem;
+  padding: 0.35rem 0.5rem;
   border-radius: var(--radius-sm);
   transition: color 0.15s ease, background-color 0.15s ease;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
 .nav-links a:hover,
@@ -722,12 +735,12 @@ button {
 }
 
 /* Mobile & Responsive System (Meticulously Crafted) */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .desktop-nav {
     display: none;
   }
   .nav-wrap {
-    height: 3.5rem;
+    height: 3.75rem;
   }
   .logo-brand {
     font-size: 1.05rem;
