@@ -17,6 +17,7 @@ const categories = [
     color: '#be185d',
     bg: '#fdf2f8',
     iconPath: 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
+    count: enPosts.filter((p) => p.data.category === 'economy').length,
   },
   {
     slug: 'tax',
@@ -25,6 +26,7 @@ const categories = [
     color: 'var(--primary)',
     bg: 'var(--primary-light)',
     iconPath: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8',
+    count: enPosts.filter((p) => p.data.category === 'tax').length,
   },
   {
     slug: 'stocks',
@@ -33,6 +35,7 @@ const categories = [
     color: '#2563eb',
     bg: '#eff6ff',
     iconPath: 'M3 3v18h18 M18 9l-5 5-4-4-6 6',
+    count: enPosts.filter((p) => p.data.category === 'stocks').length,
   },
   {
     slug: 'wealth',
@@ -41,6 +44,7 @@ const categories = [
     color: 'var(--accent-purple)',
     bg: 'var(--accent-purple-light)',
     iconPath: 'M23 6l-9.5 9.5-5-5L1 18 M17 6h6v6',
+    count: enPosts.filter((p) => p.data.category === 'wealth').length,
   },
   {
     slug: 'subsidy',
@@ -49,6 +53,7 @@ const categories = [
     color: 'var(--accent-amber)',
     bg: 'var(--accent-amber-light)',
     iconPath: 'M3 21h18 M6 18V11 M10 18V11 M14 18V11 M18 18V11 M12 2l8 5H4z',
+    count: enPosts.filter((p) => p.data.category === 'subsidy').length,
   },
   {
     slug: 'credit',
@@ -57,6 +62,7 @@ const categories = [
     color: 'var(--secondary)',
     bg: 'var(--secondary-light)',
     iconPath: 'M1 4h22v16H1z M1 10h22',
+    count: enPosts.filter((p) => p.data.category === 'credit').length,
   },
 ];
 
@@ -65,28 +71,28 @@ const specialHubs = [
     href: '/en/tools',
     name: 'Financial Calculators & Simulators',
     desc: 'Tax refund simulators, DSR borrowing capacity, and daily compound interest APY',
-    badge: 'INTERACTIVE',
+    badge: 'INTERACTIVE TOOLS',
     color: 'var(--primary)',
     bg: 'var(--primary-light)',
-    icon: '📊',
+    iconPath: 'M4 2h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z M8 6h8 M16 14v4 M12 10h.01 M16 10h.01 M8 10h.01 M12 14h.01 M8 14h.01 M12 18h.01 M8 18h.01',
   },
   {
     href: '/en/qna',
     name: 'Financial Q&A Center',
     desc: 'Top 20 expat tax, ETF, ISA, and bank loan FAQs with fact-checked answers',
-    badge: 'Q&A FAQ',
-    color: '#8b5cf6',
-    bg: '#f3e8ff',
-    icon: '💡',
+    badge: 'Q&A FAQ HUB',
+    color: 'var(--accent-purple)',
+    bg: 'var(--accent-purple-light)',
+    iconPath: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3 M12 17h.01',
   },
   {
     href: '/en/category/expats',
     name: 'Living & Expats in Korea',
     desc: 'Essential bank setup, National Health Insurance refunds, WOWPASS & transit',
     badge: 'FOR EXPATS',
-    color: '#059669',
-    bg: '#ecfdf5',
-    icon: '🌏',
+    color: 'var(--secondary)',
+    bg: 'var(--secondary-light)',
+    iconPath: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z',
   },
 ];
 ---
@@ -96,8 +102,8 @@ const specialHubs = [
   description="Fact-checked digital finance media based on official National Tax Service, MOEF, and Bank of Korea data. Year-end tax settlements, ISA accounts, and living guides in South Korea."
 >
   <!-- Hero Section -->
-  <section class="container" style="text-align: center; padding: 2rem 0 3.5rem 0;">
-    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); color: var(--primary); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; margin-bottom: 1.25rem;">
+  <section class="container hero-section">
+    <div class="hero-badge">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9 18h6"></path>
         <path d="M10 22h4"></path>
@@ -105,64 +111,49 @@ const specialHubs = [
       </svg>
       <span>2026 Latest Korea Finance & Tax Regulations</span>
     </div>
-    <h1 style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 1.25rem; color: var(--text-main);">
+    <h1 class="hero-title">
       Complex Korean Finance & Taxes,<br />
-      Demystified with <span style="color: var(--primary);">Facts and Verified Data</span>.
+      Demystified with <span class="text-gradient">Facts and Verified Data</span>.
     </h1>
-    <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.5rem auto; line-height: 1.7; word-break: keep-all;">
+    <p class="hero-desc">
       Fact-checked by our data research team against official National Tax Service (NTS) and Financial Supervisory Service (FSS) standards to help expats and global investors protect and grow their wealth.
     </p>
+  </section>
 
-    <!-- 6 Core Categories Grid (3x2) -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
-      {
-        categories.map((c) => (
-          <a
-            href={`/en/category/${c.slug}`}
-            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: left; transition: all 0.2s ease; box-shadow: var(--shadow-sm);"
-            class="category-hover-card"
-          >
-            <div style={`width: 2.75rem; height: 2.75rem; border-radius: var(--radius-md); background: ${c.bg}; color: ${c.color}; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem;`}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d={c.iconPath} />
-              </svg>
-            </div>
-            <h2 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
-              {c.name}
-            </h2>
-            <p style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-              {c.desc}
-            </p>
-          </a>
-        ))
-      }
+  <!-- Section 1: 6 Core Categories (3x2 Grid) -->
+  <section class="container" style="margin-bottom: 3.5rem;">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          Core Financial & Tax Disciplines
+        </h2>
+        <p class="section-subtitle">Select a verified category to explore statutory guides and calculators.</p>
+      </div>
+      <span class="section-tag">6 Focus Areas</span>
     </div>
 
-    <!-- 3 Interactive Special Hubs Row (3x1) -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1.25rem;">
+    <div class="card-grid grid-3x2">
       {
-        specialHubs.map((h) => (
-          <a
-            href={h.href}
-            style={`background: ${h.bg}; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: left; transition: all 0.2s ease; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between;`}
-            class="category-hover-card"
-          >
-            <div>
-              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                <span style="font-size: 1.5rem;">{h.icon}</span>
-                <span style={`font-size: 0.75rem; font-weight: 800; color: ${h.color}; background: var(--bg-card); padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);`}>
-                  {h.badge}
-                </span>
+        categories.map((c) => (
+          <a href={`/en/category/${c.slug}`} class="unified-nav-card">
+            <div class="card-top">
+              <div class="card-icon-box" style={`background: ${c.bg}; color: ${c.color};`}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d={c.iconPath} />
+                </svg>
               </div>
-              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
-                {h.name}
-              </h3>
-              <p style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                {h.desc}
-              </p>
+              <span class="card-meta-badge">{c.count} Reports</span>
             </div>
-            <div style={`margin-top: 1rem; font-size: 0.825rem; font-weight: 700; color: ${h.color}; display: flex; align-items: center; gap: 0.25rem;`}>
-              <span>Explore</span>
+            <h3 class="card-title">{c.name}</h3>
+            <p class="card-desc">{c.desc}</p>
+            <div class="card-action">
+              <span>Explore Guides</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
@@ -174,21 +165,66 @@ const specialHubs = [
     </div>
   </section>
 
-  <!-- Interactive Calculator Section -->
-  <section class="container" style="margin-bottom: 3rem;">
+  <!-- Section 2: 3 Interactive Special Hubs (3x1 Grid) -->
+  <section class="container" style="margin-bottom: 3.5rem;">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Interactive Simulators & Q&A Hub
+        </h2>
+        <p class="section-subtitle">Real-time financial calculators and expat inquiry resolution center.</p>
+      </div>
+      <span class="section-tag" style="background: var(--accent-purple-light); color: var(--accent-purple);">Special Services</span>
+    </div>
+
+    <div class="card-grid grid-3x1">
+      {
+        specialHubs.map((h) => (
+          <a href={h.href} class="unified-nav-card special-hub-card">
+            <div class="card-top">
+              <div class="card-icon-box" style={`background: ${h.bg}; color: ${h.color};`}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d={h.iconPath} />
+                </svg>
+              </div>
+              <span class="card-badge-pill" style={`background: ${h.bg}; color: ${h.color};`}>{h.badge}</span>
+            </div>
+            <h3 class="card-title">{h.name}</h3>
+            <p class="card-desc">{h.desc}</p>
+            <div class="card-action" style={`color: ${h.color};`}>
+              <span>Launch Service</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Section 3: Interactive Calculator Section -->
+  <section class="container" style="margin-bottom: 3.5rem;">
     <TaxSavingsCalculator />
   </section>
 
-  <!-- Latest Articles Section -->
+  <!-- Section 4: Latest Articles Grid -->
   <section class="container">
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--border-color);">
-      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z"></path>
-        </svg>
-        Real-Time Expat Finance & Tax Guides
-      </h2>
-      <span style="font-size: 0.875rem; color: var(--text-muted); font-weight: 600;">Total {enPosts.length} Verified Reports</span>
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z"></path>
+          </svg>
+          Latest Research Reports & Legal Analysis
+        </h2>
+        <p class="section-subtitle">Updated daily with verified statutory interpretations and simulations</p>
+      </div>
+      <span class="section-tag">Total {enPosts.length} Guides</span>
     </div>
 
     <div class="blog-grid">
@@ -213,7 +249,7 @@ const specialHubs = [
               <p class="blog-card-desc">{post.data.description}</p>
               <div class="blog-card-footer">
                 <a href={`/blog/${post.slug}`} style="display: inline-flex; align-items: center; gap: 0.35rem; color: var(--primary);">
-                  Read Full Guide 
+                  Read Full Analysis 
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -236,9 +272,148 @@ const specialHubs = [
 </BaseLayout>
 
 <style>
-  .category-hover-card:hover {
+  .hero-section {
+    text-align: center;
+    padding: 1.5rem 0 3rem 0;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
+    margin-bottom: 1.25rem;
+    color: var(--text-main);
+  }
+  .text-gradient {
+    color: var(--primary);
+  }
+  .hero-desc {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.7;
+    word-break: keep-all;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-color);
+  }
+  .section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 0.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .section-tag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .grid-3x2, .grid-3x1 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .unified-nav-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.35rem;
+    text-align: left;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .unified-nav-card:hover {
     transform: translateY(-3px);
     border-color: var(--primary);
     box-shadow: var(--shadow-md);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .card-icon-box {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-meta-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-light);
+    background: var(--bg-main);
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+  }
+  .card-badge-pill {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-full);
+  }
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 0.4rem 0;
+  }
+  .card-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0 0 1.25rem 0;
+    flex: 1;
+  }
+  .card-action {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
 </style>
