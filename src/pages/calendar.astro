@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FinancialGoldenCalendar from '../components/FinancialGoldenCalendar.astro';
+---
+
+<BaseLayout
+  title="2026 세무·정부지원금 골든 캘린더 (실시간 D-Day 카운트다운) | 메가머니모멘텀 (MMM)"
+  description="종합소득세 신고, 종부세 특례, 해외주식 250만 비과세 매도 컷오프, 한국은행 금통위 등 놓치면 안 되는 2026 핵심 세무·지원금 일정을 실시간 D-Day로 확인하세요."
+>
+  <div class="container" style="padding: 1rem 0 4rem 0;">
+    <FinancialGoldenCalendar />
+
+    <!-- Explanatory Guide Section -->
+    <div style="max-width: 900px; margin: 3rem auto 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        세무 & 정부지원금 일정 관리 3대 원칙
+      </h3>
+      <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+        세법과 정부 정책 자금은 **단 하루의 신청 기한 차이로도 수백만 원의 세액공제나 지원금이 전액 박탈**될 수 있습니다.
+      </p>
+      <ul style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; padding-left: 1.25rem; margin-bottom: 1.5rem;">
+        <li><strong>해외주식 250만 원 비과세</strong>: 주문 체결일이 아닌 결제일(D+2일) 기준이므로 12월 28일 이전에 반드시 매도를 마쳐야 당해연도 공제가 적용됩니다.</li>
+        <li><strong>종합소득세 & 장려금</strong>: 5월 기한 후 신고 시 가산세(무신고 20%)가 부과되며, 장려금은 10% 감액 지급됩니다.</li>
+        <li><strong>부부 공동명의 종부세 특례</strong>: 9월 정기 신청 기간을 놓치면 14억 기본공제 혜택을 당해 연도에 받을 수 없습니다.</li>
+      </ul>
+      <div style="background: var(--primary-light); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <span style="font-size: 0.875rem; font-weight: 700; color: var(--primary);">복리 투자 시뮬레이션으로 10년 후 자산을 비교해 보세요</span>
+        <a href="/battle" style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-decoration: underline;">6대 자산 복리 배틀 시뮬레이터 바로가기 ➔</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

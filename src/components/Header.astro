@@ -40,6 +40,9 @@ if (isEn) {
   if (currentPath === '/en' || currentPath === '/en/') targetLangUrl = '/';
   else if (currentPath.startsWith('/en/category/')) targetLangUrl = currentPath.replace('/en/category/', '/category/');
   else if (currentPath.startsWith('/en/tools')) targetLangUrl = '/tools';
+  else if (currentPath.startsWith('/en/ladder')) targetLangUrl = '/ladder';
+  else if (currentPath.startsWith('/en/battle')) targetLangUrl = '/battle';
+  else if (currentPath.startsWith('/en/calendar')) targetLangUrl = '/calendar';
   else if (currentPath.startsWith('/en/qna')) targetLangUrl = '/qna';
   else if (currentPath.startsWith('/en/about')) targetLangUrl = '/about';
   else if (currentPath.startsWith('/en/privacy')) targetLangUrl = '/privacy';
@@ -50,6 +53,9 @@ if (isEn) {
   if (currentPath === '/' || currentPath === '') targetLangUrl = '/en';
   else if (currentPath.startsWith('/category/')) targetLangUrl = currentPath.replace('/category/', '/en/category/');
   else if (currentPath.startsWith('/tools')) targetLangUrl = '/en/tools';
+  else if (currentPath.startsWith('/ladder')) targetLangUrl = '/en/ladder';
+  else if (currentPath.startsWith('/battle')) targetLangUrl = '/en/battle';
+  else if (currentPath.startsWith('/calendar')) targetLangUrl = '/en/calendar';
   else if (currentPath.startsWith('/qna')) targetLangUrl = '/en/qna';
   else if (currentPath.startsWith('/about')) targetLangUrl = '/en/about';
   else if (currentPath.startsWith('/privacy')) targetLangUrl = '/en/privacy';

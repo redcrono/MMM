@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AssetBattleSimulator from '../components/AssetBattleSimulator.astro';
+---
+
+<BaseLayout
+  title="1억원 10년 굴리기: 6대 자산 실시간 복리 배틀 시뮬레이터 | 메가머니모멘텀 (MMM)"
+  description="미국 S&P500, 나스닥100, SCHD(월배당금), 개인투자용 국채20년물, KRX 금 현물, 은행 파킹통장의 10년·20년 세후 복리 수익률과 은퇴 월배당금을 실시간 비교해 보세요."
+>
+  <div class="container" style="padding: 1rem 0 4rem 0;">
+    <AssetBattleSimulator />
+
+    <!-- Explanatory Guide Section -->
+    <div style="max-width: 900px; margin: 3rem auto 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        6대 자산 복리 백테스팅 산출 기준 및 투자 안내
+      </h3>
+      <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+        본 시뮬레이터는 지난 20~30년간의 실제 지수 연평균 복리 성장률(CAGR) 및 배당 성장률(Dividend Growth)을 바탕으로 월복리 재투자를 모델링하였습니다.
+      </p>
+      <ul style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; padding-left: 1.25rem; margin-bottom: 1.5rem;">
+        <li><strong>나스닥100(QQQM) & S&P500(SPLG)</strong>: 역사적 연평균 수익률(각각 14.2%, 10.5%)과 배당 재투자 복리를 적용하였습니다.</li>
+        <li><strong>SCHD 배당성장</strong>: 초기 시가배당률 3.6%에 연평균 10%의 배당금 증액을 결합하여, 10년 후 매달 수령하는 실질 월 배당금을 산출합니다.</li>
+        <li><strong>절세계좌(ISA/IRP) 활용 시</strong>: 일반 계좌의 15.4% 배당소득세 및 22% 양도소득세를 0원으로 줄여 시뮬레이션 수익률보다 수천만 원을 더 수령할 수 있습니다.</li>
+      </ul>
+      <div style="background: var(--primary-light); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <span style="font-size: 0.875rem; font-weight: 700; color: var(--primary);">내 자산의 백분위 순위와 절세 상태가 궁금하신가요?</span>
+        <a href="/ladder" style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-decoration: underline;">부의 사다리 & 절세 건강검진 바로가기 ➔</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
