@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import WealthLadderDiagnosis from '../components/WealthLadderDiagnosis.astro';
 import TaxSavingsCalculator from '../components/TaxSavingsCalculator.astro';
 
 const toolCards = [
@@ -36,11 +37,11 @@ const toolCards = [
 
 <BaseLayout
   title="금융 계산기 & 절세 시뮬레이터 허브 | 메가머니모멘텀 (MMM)"
-  description="연말정산 절세 계산기, 수도권 스트레스 DSR 대출 한도 시뮬레이터, 파킹통장 일복리 이자 계산기, 중도상환수수료 BEP 계산기 등 실전 금융 도구 모음."
+  description="연말정산 절세 계산기, 대한민국 부의 사다리 진단기, 수도권 스트레스 DSR 대출 한도 시뮬레이터, 파킹통장 일복리 이자 계산기 등 실전 금융 도구 모음."
 >
   <div class="container" style="padding: 2rem 0 4rem 0;">
     <!-- Hero Header -->
-    <header style="text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
+    <header style="text-align: center; margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color);">
       <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-light); color: var(--primary); padding: 0.4rem 1rem; border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="4" y="2" width="16" height="20" rx="2"></rect>
@@ -64,7 +65,12 @@ const toolCards = [
       </p>
     </header>
 
-    <!-- Main Interactive Calculator -->
+    <!-- Top Featured Tool: Wealth Ladder Diagnosis (Killer Kick 1) -->
+    <div style="margin-bottom: 4rem;">
+      <WealthLadderDiagnosis />
+    </div>
+
+    <!-- Secondary Interactive Calculator -->
     <div style="max-width: 900px; margin: 0 auto 3.5rem auto;">
       <TaxSavingsCalculator />
     </div>

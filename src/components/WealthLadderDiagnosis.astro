@@ -1,0 +1,775 @@
+---
+interface Props {
+  isEn?: boolean;
+}
+
+const { isEn = false } = Astro.props;
+---
+
+<div class="wealth-ladder-widget" id="wealth-ladder-container">
+  <!-- Widget Header -->
+  <div class="widget-header">
+    <div class="header-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v20 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      <span>{isEn ? '2026 Korea Wealth & Tax Diagnosis Engine' : '2026 대한민국 부의 사다리 & 절세 건강검진'}</span>
+    </div>
+    <h2 class="widget-title">
+      {isEn ? 'Where Do You Rank in Korea? Check Your Net Worth & Hidden Tax Leaks' : '내 순자산은 대한민국 상위 몇 %? 숨은 절세액 진단'}
+    </h2>
+    <p class="widget-subtitle">
+      {isEn 
+        ? 'Based on Bank of Korea & Statistics Korea microdata. Discover your percentile tier and calculate missed tax refunds in real-time.' 
+        : '통계청 가계금융복지조사 최신 마이크로데이터 기반. 내 나이대 객관적 자산 위치와 매년 새어 나가는 세금을 10초 만에 진단해 보세요.'}
+    </p>
+  </div>
+
+  <!-- Input Form Grid -->
+  <div class="diagnosis-grid">
+    <!-- Left Input Panel -->
+    <div class="input-panel">
+      <!-- 1. Age Group -->
+      <div class="form-group">
+        <label class="form-label">{isEn ? '1. Age Bracket' : '1. 연령대 선택'}</label>
+        <div class="pill-group" id="age-selector">
+          <button type="button" class="pill-btn active" data-age="30">{isEn ? '30s' : '30대'}</button>
+          <button type="button" class="pill-btn" data-age="20">{isEn ? '20s & Below' : '20대 이하'}</button>
+          <button type="button" class="pill-btn" data-age="40">{isEn ? '40s' : '40대'}</button>
+          <button type="button" class="pill-btn" data-age="50">{isEn ? '50s' : '50대'}</button>
+          <button type="button" class="pill-btn" data-age="60">{isEn ? '60s+' : '60대 이상'}</button>
+        </div>
+      </div>
+
+      <!-- 2. Annual Salary -->
+      <div class="form-group">
+        <div class="label-with-value">
+          <label class="form-label">{isEn ? '2. Gross Annual Salary' : '2. 세전 연봉 (소득)'}</label>
+          <span class="value-highlight" id="salary-val-display">5,500만원</span>
+        </div>
+        <input type="range" id="salary-slider" min="2000" max="20000" step="200" value="5500" class="custom-range" />
+        <div class="range-marks">
+          <span>{isEn ? '20M' : '2,000만'}</span>
+          <span>{isEn ? '60M' : '6,000만'}</span>
+          <span>{isEn ? '100M' : '1억'}</span>
+          <span>{isEn ? '200M+' : '2억 이상'}</span>
+        </div>
+      </div>
+
+      <!-- 3. Total Net Worth -->
+      <div class="form-group">
+        <div class="label-with-value">
+          <label class="form-label">{isEn ? '3. Total Net Worth (Assets - Debt)' : '3. 보유 순자산 (부동산+금융 - 부채)'}</label>
+          <span class="value-highlight" id="networth-val-display">2억 4,000만원</span>
+        </div>
+        <input type="range" id="networth-slider" min="-3000" max="250000" step="500" value="24000" class="custom-range" />
+        <div class="range-marks">
+          <span>{isEn ? '0' : '0원'}</span>
+          <span>{isEn ? '100M' : '1억'}</span>
+          <span>{isEn ? '500M' : '5억'}</span>
+          <span>{isEn ? '1B' : '10억'}</span>
+          <span>{isEn ? '2.5B+' : '25억+'}</span>
+        </div>
+      </div>
+
+      <!-- 4. Financial Status Checklist -->
+      <div class="form-group">
+        <label class="form-label">{isEn ? '4. Current Financial Checklist (Check all that apply)' : '4. 현재 금융 계좌 활용 상태'}</label>
+        <div class="checkbox-list">
+          <label class="checkbox-item">
+            <input type="checkbox" id="check-isa" />
+            <span class="check-text">{isEn ? 'I actively invest in an ISA Tax-Free Account' : '중개형/생산적금융 ISA 계좌를 개설하여 운용 중이다'}</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="check-irp" />
+            <span class="check-text">{isEn ? 'I maximize annual IRP / Pension Savings tax credits' : '연금저축/IRP에 연 900만 원 세액공제 납입을 채우고 있다'}</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="check-minus" checked />
+            <span class="check-text">{isEn ? 'I hold an active Overdraft Credit Line (마이너스통장)' : '마이너스통장(한도대출)을 개설해 두고 있다'}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Result & Prescription Panel -->
+    <div class="result-panel">
+      <!-- Tier Card -->
+      <div class="tier-card" id="tier-box">
+        <div class="tier-top">
+          <span class="tier-badge" id="tier-badge-text">🥇 골드 티어 (상위 10%)</span>
+          <span class="tier-age-tag" id="tier-age-text">30대 기준</span>
+        </div>
+
+        <div class="gauge-container">
+          <div class="gauge-info">
+            <div class="gauge-metric">
+              <span class="metric-label">{isEn ? 'Net Worth Percentile' : '순자산 위치'}</span>
+              <span class="metric-num" id="nw-percentile-text">상위 14.2%</span>
+            </div>
+            <div class="gauge-metric text-right">
+              <span class="metric-label">{isEn ? 'Income Percentile' : '소득 위치'}</span>
+              <span class="metric-num" id="salary-percentile-text">상위 18.5%</span>
+            </div>
+          </div>
+          <div class="gauge-bar-bg">
+            <div class="gauge-bar-fill" id="gauge-bar" style="width: 85.8%;"></div>
+          </div>
+          <p class="gauge-comment" id="gauge-comment-text">
+            {isEn ? 'You are in the top tier for your age group in South Korea!' : '동년배 상위권에 위치해 계시며 자산 증식의 골든 타임입니다!'}
+          </p>
+        </div>
+      </div>
+
+      <!-- Missed Money Prescription (Loss Aversion Report) -->
+      <div class="prescription-card">
+        <div class="prescription-header">
+          <div class="rx-icon">📋</div>
+          <div>
+            <h3 class="rx-title">{isEn ? 'Missed Money & Tax Leak Prescription' : '연간 새어 나가는 세금 & 금융 진단서'}</h3>
+            <p class="rx-sub">{isEn ? 'Statutory savings you can claim immediately:' : '지금 조치 시 즉시 돌려받는 연간 환급액:'}</p>
+          </div>
+        </div>
+
+        <div class="leak-total-box">
+          <span>{isEn ? 'Estimated Annual Lost Savings:' : '연간 놓치고 있는 숨은 돈:'}</span>
+          <strong class="leak-total-amount" id="leak-total-text">+2,025,000원 / 년</strong>
+        </div>
+
+        <div class="leak-items-list" id="leak-items-container">
+          <!-- Dynamic Items Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Action & Share Buttons -->
+      <div class="action-buttons-wrap">
+        <button type="button" class="btn btn-primary share-btn" id="btn-copy-receipt">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>{isEn ? 'Copy Diagnosis Summary Card' : '내 진단 결과 요약 복사하기'}</span>
+        </button>
+        <span class="copy-success-toast" id="copy-toast" style="display: none;">
+          ✅ {isEn ? 'Copied to clipboard!' : '클립보드에 복사되었습니다! 카톡이나 SNS에 공유해 보세요.'}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Statistics Korea & Bank of Korea Microdata Matrix (Age-stratified Net Worth & Income percentiles)
+  // [Threshold for Top 1%, Top 5%, Top 10%, Top 20%, Top 30%, Top 50%] in 10,000 KRW
+  const STAT_DATA: Record<string, { nw: number[]; salary: number[] }> = {
+    '20': {
+      nw: [35000, 18000, 10000, 5500, 3200, 1500],
+      salary: [7500, 5800, 4800, 3900, 3400, 2800]
+    },
+    '30': {
+      nw: [120000, 65000, 42000, 26000, 17000, 9500],
+      salary: [12000, 8800, 7200, 5600, 4600, 3800]
+    },
+    '40': {
+      nw: [220000, 125000, 85000, 52000, 36000, 21000],
+      salary: [16000, 11500, 9200, 7200, 5800, 4600]
+    },
+    '50': {
+      nw: [280000, 150000, 105000, 68000, 48000, 28000],
+      salary: [18000, 12500, 9800, 7500, 6000, 4800]
+    },
+    '60': {
+      nw: [240000, 130000, 90000, 58000, 40000, 23000],
+      salary: [11000, 7500, 5800, 4400, 3500, 2700]
+    }
+  };
+
+  let currentAge = '30';
+
+  function formatMoneyKo(val: number): string {
+    if (val <= 0) return '0원';
+    if (val >= 10000) {
+      const eok = Math.floor(val / 10000);
+      const man = val % 10000;
+      return man > 0 ? `${eok}억 ${man.toLocaleString()}만원` : `${eok}억원`;
+    }
+    return `${val.toLocaleString()}만원`;
+  }
+
+  function calculatePercentile(val: number, brackets: number[]): number {
+    // brackets: [1%, 5%, 10%, 20%, 30%, 50%]
+    const pSteps = [1.0, 5.0, 10.0, 20.0, 30.0, 50.0];
+    if (val >= brackets[0]) {
+      const ratio = Math.min(1.0, (val - brackets[0]) / brackets[0]);
+      return Math.max(0.1, Number((1.0 - ratio * 0.9).toFixed(1)));
+    }
+    for (let i = 0; i < brackets.length - 1; i++) {
+      if (val <= brackets[i] && val >= brackets[i + 1]) {
+        const ratio = (brackets[i] - val) / (brackets[i] - brackets[i + 1]);
+        const p = pSteps[i] + ratio * (pSteps[i + 1] - pSteps[i]);
+        return Number(p.toFixed(1));
+      }
+    }
+    const lowest = brackets[brackets.length - 1];
+    if (val < lowest) {
+      const ratio = Math.max(0, val / lowest);
+      const p = 50.0 + (1.0 - ratio) * 45.0;
+      return Number(p.toFixed(1));
+    }
+    return 50.0;
+  }
+
+  function updateDiagnosis() {
+    const salaryInput = document.getElementById('salary-slider') as HTMLInputElement;
+    const networthInput = document.getElementById('networth-slider') as HTMLInputElement;
+    const checkIsa = document.getElementById('check-isa') as HTMLInputElement;
+    const checkIrp = document.getElementById('check-irp') as HTMLInputElement;
+    const checkMinus = document.getElementById('check-minus') as HTMLInputElement;
+
+    if (!salaryInput || !networthInput) return;
+
+    const salary = Number(salaryInput.value);
+    const networth = Number(networthInput.value);
+
+    // Update value displays
+    const salDisplay = document.getElementById('salary-val-display');
+    const nwDisplay = document.getElementById('networth-val-display');
+    if (salDisplay) salDisplay.textContent = formatMoneyKo(salary);
+    if (nwDisplay) nwDisplay.textContent = formatMoneyKo(networth);
+
+    // Calculate Percentiles
+    const stat = STAT_DATA[currentAge] || STAT_DATA['30'];
+    const nwP = calculatePercentile(networth, stat.nw);
+    const salP = calculatePercentile(salary, stat.salary);
+
+    // Determine Tier
+    let tierTitle = '🌱 스타터 티어';
+    let tierBadgeClass = 'tier-starter';
+    let tierComment = '종잣돈 1억 모으기 테크트리를 시작할 절호의 기회입니다!';
+
+    if (nwP <= 1.0) {
+      tierTitle = '👑 다이아몬드 (상위 1%)';
+      tierComment = '대한민국 최상위 1% 자산가 그룹입니다. 자산 방어와 증여·상속 절세가 핵심입니다.';
+    } else if (nwP <= 5.0) {
+      tierTitle = '🏆 플래티넘 (상위 5%)';
+      tierComment = '자산 증식 가속 단계입니다. 고배당 분리과세와 종부세 14억 공제를 적극 활용하세요.';
+    } else if (nwP <= 15.0) {
+      tierTitle = '🥇 골드 (상위 15%)';
+      tierComment = '동년배 최상위권입니다! ISA 만기 풍차돌리기와 IRP 148만 환급으로 복리를 극대화하세요.';
+    } else if (nwP <= 35.0) {
+      tierTitle = '🥈 실버 (상위 35%)';
+      tierComment = '탄탄한 중산층입니다. 연말정산 절세계좌와 비과세 계좌를 채우면 상위 10% 진입이 가시권입니다.';
+    } else if (nwP <= 55.0) {
+      tierTitle = '🥉 브론즈 (상위 55%)';
+      tierComment = '절세 혜택과 정부지원금(청년도약계좌 등)을 총동원하여 시드머니를 불릴 최적기입니다.';
+    }
+
+    const tierBadge = document.getElementById('tier-badge-text');
+    const tierAge = document.getElementById('tier-age-text');
+    const nwPText = document.getElementById('nw-percentile-text');
+    const salPText = document.getElementById('salary-percentile-text');
+    const gaugeBar = document.getElementById('gauge-bar');
+    const gaugeComment = document.getElementById('gauge-comment-text');
+
+    if (tierBadge) tierBadge.textContent = tierTitle;
+    if (tierAge) tierAge.textContent = `${currentAge}대 기준`;
+    if (nwPText) nwPText.textContent = `상위 ${nwP}%`;
+    if (salPText) salPText.textContent = `상위 ${salP}%`;
+    if (gaugeBar) gaugeBar.style.width = `${Math.max(5, 100 - nwP)}%`;
+    if (gaugeComment) gaugeComment.textContent = tierComment;
+
+    // Calculate Missed Money & Prescriptions
+    let totalLeak = 0;
+    const leakItems: Array<{ icon: string; title: string; amount: string; desc: string; link: string }> = [];
+
+    if (!checkIsa?.checked) {
+      const isaSavings = 540000;
+      totalLeak += isaSavings;
+      leakItems.push({
+        icon: '⚠️',
+        title: '중개형/생산적금융 ISA 계좌 미활용',
+        amount: '+54만 원 / 년',
+        desc: '국내 주식·배당 ETF 투자 시 15.4% 배당소득세(최대 1,000만원 비과세) 불필요 납부 중',
+        link: '/blog/2026-isa-account-benefits-drawbacks'
+      });
+    }
+
+    if (!checkIrp?.checked) {
+      const irpTaxRate = salary <= 5500 ? 0.165 : 0.132;
+      const irpRefund = Math.round(9000000 * irpTaxRate);
+      totalLeak += irpRefund;
+      leakItems.push({
+        icon: '⚠️',
+        title: '연금저축/IRP 연 900만 세액공제 미수령',
+        amount: `+${(irpRefund / 10000).toFixed(1)}만 원 환급`,
+        desc: `총급여 기준 연말정산에서 매년 돌려받을 수 있는 13월의 월급 환급금 미청구 상태`,
+        link: '/blog/irp-vs-pension-savings-comparison'
+      });
+    }
+
+    if (checkMinus?.checked) {
+      leakItems.push({
+        icon: '🚨',
+        title: '마이너스통장 보유로 DSR 대출 한도 잠식',
+        amount: '주담대 약 1.4억 잠식',
+        desc: '잔액이 0원이어도 개설 한도 전액이 5년 원리금으로 잡혀 주택담보대출 한도가 대폭 깎임',
+        link: '/blog/minus-bankbook-dsr-limit-guide'
+      });
+    }
+
+    // High income & assets tax optimization advice
+    if (salary >= 8000) {
+      leakItems.push({
+        icon: '💡',
+        title: '2026 고배당기업 25% 분리과세 대상',
+        amount: '최고 49.5% 누진세 방어',
+        desc: '금융소득 2,000만 원 초과 시 종합과세를 피하고 25% 단일세율을 적용받는 세법개정안 활용',
+        link: '/blog/2026-tax-reform-dividend-isa'
+      });
+    }
+
+    const leakTotalEl = document.getElementById('leak-total-text');
+    if (leakTotalEl) {
+      leakTotalEl.textContent = totalLeak > 0 ? `+${totalLeak.toLocaleString()}원 / 년` : '✨ 완벽한 절세 관리 중!';
+    }
+
+    const leakContainer = document.getElementById('leak-items-container');
+    if (leakContainer) {
+      if (leakItems.length === 0) {
+        leakContainer.innerHTML = `
+          <div style="padding: 1rem; text-align: center; color: var(--secondary); font-weight: 700; font-size: 0.95rem;">
+            🎉 축하합니다! 주요 절세계좌를 모두 활용하여 연간 수백만 원의 세금을 완벽히 방어하고 계십니다.
+          </div>
+        `;
+      } else {
+        leakContainer.innerHTML = leakItems.map(item => `
+          <div class="rx-item">
+            <div class="rx-item-top">
+              <span class="rx-item-title">${item.icon} ${item.title}</span>
+              <span class="rx-item-badge">${item.amount}</span>
+            </div>
+            <p class="rx-item-desc">${item.desc}</p>
+            <a href="${item.link}" class="rx-item-link">
+              <span>솔루션 가이드 확인하기</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  // Event Listeners
+  document.querySelectorAll('#age-selector .pill-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('#age-selector .pill-btn').forEach(b => b.classList.remove('active'));
+      const target = e.currentTarget as HTMLButtonElement;
+      target.classList.add('active');
+      currentAge = target.getAttribute('data-age') || '30';
+      updateDiagnosis();
+    });
+  });
+
+  document.getElementById('salary-slider')?.addEventListener('input', updateDiagnosis);
+  document.getElementById('networth-slider')?.addEventListener('input', updateDiagnosis);
+  document.getElementById('check-isa')?.addEventListener('change', updateDiagnosis);
+  document.getElementById('check-irp')?.addEventListener('change', updateDiagnosis);
+  document.getElementById('check-minus')?.addEventListener('change', updateDiagnosis);
+
+  // Copy Summary Functionality (Kick 4 Viral Card)
+  document.getElementById('btn-copy-receipt')?.addEventListener('click', () => {
+    const tierBadge = document.getElementById('tier-badge-text')?.textContent || '';
+    const nwP = document.getElementById('nw-percentile-text')?.textContent || '';
+    const salP = document.getElementById('salary-percentile-text')?.textContent || '';
+    const leakTotal = document.getElementById('leak-total-text')?.textContent || '';
+
+    const summaryText = `[📊 2026 대한민국 부의 사다리 & 금융 건강검진 결과]\n\n` +
+      `🏷️ 나의 자산 티어: ${tierBadge} (${currentAge}대)\n` +
+      `📈 순자산 백분위: ${nwP}\n` +
+      `💵 소득 백분위: ${salP}\n` +
+      `💡 연간 즉시 챙길 수 있는 숨은 돈: ${leakTotal}\n\n` +
+      `👉 나의 순자산 순위 & 절세 환급액 무료 진단하기: https://megamoneymomentum.com/ladder`;
+
+    navigator.clipboard.writeText(summaryText).then(() => {
+      const toast = document.getElementById('copy-toast');
+      if (toast) {
+        toast.style.display = 'block';
+        setTimeout(() => {
+          toast.style.display = 'none';
+        }, 3500);
+      }
+    });
+  });
+
+  // Initial Run
+  updateDiagnosis();
+</script>
+
+<style>
+  .wealth-ladder-widget {
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2.25rem;
+    box-shadow: var(--shadow-lg);
+    margin: 2rem auto;
+    max-width: 1100px;
+  }
+
+  .widget-header {
+    text-align: center;
+    margin-bottom: 2.25rem;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 800;
+    margin-bottom: 0.85rem;
+  }
+  .widget-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .widget-subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .diagnosis-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .diagnosis-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Left Panel */
+  .input-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .form-label {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+  .label-with-value {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .value-highlight {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .pill-btn {
+    flex: 1;
+    min-width: 60px;
+    padding: 0.55rem 0.65rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    transition: all 0.15s ease;
+  }
+  .pill-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .pill-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+  }
+
+  .custom-range {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--border-color);
+    outline: none;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+  .range-marks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 600;
+  }
+
+  .checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .checkbox-item:hover {
+    border-color: var(--primary);
+  }
+  .checkbox-item input {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+  .check-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  /* Right Result Panel */
+  .result-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .tier-card {
+    background: linear-gradient(135deg, var(--bg-card), var(--bg-main));
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+  }
+  .tier-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+  .tier-badge {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-full);
+  }
+  .tier-age-tag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-light);
+  }
+
+  .gauge-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .gauge-info {
+    display: flex;
+    justify-content: space-between;
+  }
+  .metric-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .metric-num {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+  .text-right {
+    text-align: right;
+  }
+
+  .gauge-bar-bg {
+    width: 100%;
+    height: 14px;
+    background: var(--border-color);
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  .gauge-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #1d4ed8, #7c3aed);
+    border-radius: 7px;
+    transition: width 0.4s ease;
+  }
+  .gauge-comment {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  /* Prescription Card */
+  .prescription-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+  }
+  .prescription-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .rx-icon {
+    font-size: 1.75rem;
+  }
+  .rx-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0;
+  }
+  .rx-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .leak-total-box {
+    background: var(--accent-amber-light);
+    border: 1px dashed var(--accent-amber);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  .leak-total-amount {
+    font-size: 1.25rem;
+    color: #b45309;
+  }
+
+  .leak-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  :global(.rx-item) {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  :global(.rx-item-top) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  :global(.rx-item-title) {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+  :global(.rx-item-badge) {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #dc2626;
+    background: #fee2e2;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-sm);
+  }
+  :global(.rx-item-desc) {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+  :global(.rx-item-link) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+    margin-top: 0.25rem;
+  }
+
+  /* Share Card CTA */
+  .action-buttons-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .share-btn {
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-md);
+  }
+  .copy-success-toast {
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--secondary);
+    background: var(--secondary-light);
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--secondary);
+  }
+</style>

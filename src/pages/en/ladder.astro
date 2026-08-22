@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WealthLadderDiagnosis from '../../components/WealthLadderDiagnosis.astro';
+---
+
+<BaseLayout
+  title="2026 Korea Wealth Ladder & Expat Tax Health Check | MegaMoneyMomentum (MMM)"
+  description="Based on official Bank of Korea & Statistics Korea microdata. Benchmark your net worth & salary percentile in South Korea and calculate uncollected tax refunds in 10 seconds."
+>
+  <div class="container" style="padding: 1rem 0 4rem 0;">
+    <WealthLadderDiagnosis isEn={true} />
+
+    <!-- Explanatory Guide Section -->
+    <div style="max-width: 900px; margin: 3rem auto 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        Data Sources & Statistical Methodology
+      </h3>
+      <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+        This percentile benchmark models the latest **Survey of Household Finances and Living Conditions microdata published jointly by the Bank of Korea (BOK), Statistics Korea, and Financial Supervisory Service (FSS)**.
+      </p>
+      <ul style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; padding-left: 1.25rem; margin-bottom: 1.5rem;">
+        <li><strong>Net Worth Calculation</strong>: Sum of all residential real estate, liquid deposits, domestic/overseas equities, and private pensions minus all mortgage and credit liabilities.</li>
+        <li><strong>Tax Diagnosis</strong>: Statutory assessment under the Restriction of Special Taxation Act for Brokerage ISA tax-free caps, IRP tax refunds (up to 1.485M KRW), and DSR borrowing limits.</li>
+      </ul>
+      <div style="background: var(--primary-light); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <span style="font-size: 0.875rem; font-weight: 700; color: var(--primary);">Explore all interactive financial modeling tools</span>
+        <a href="/en/tools" style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-decoration: underline;">Visit Financial Calculators Hub ➔</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
