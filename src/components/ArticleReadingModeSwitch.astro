@@ -9,11 +9,11 @@ const { isEn = false } = Astro.props;
 <div class="reading-mode-container" id="reading-mode-switcher">
   <div class="mode-switch-bar">
     <div class="mode-label">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
         <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
       </svg>
-      <span>{isEn ? 'Reading Mode' : '읽기 모드 선택'}</span>
+      <span>{isEn ? 'Reading Mode' : '읽기 모드 전환'}</span>
     </div>
     
     <div class="mode-tabs">
@@ -24,30 +24,32 @@ const { isEn = false } = Astro.props;
         aria-label={isEn ? "Switch to Pro Analysis Mode" : "전문가 정밀 분석 모드로 전환"}
       >
         <span class="tab-icon">📊</span>
-        <span class="tab-text">{isEn ? 'Pro Deep-Dive' : '전문가 정밀 분석'}</span>
+        <span class="tab-text">{isEn ? 'Pro Analysis' : '전문가 정밀 분석'}</span>
       </button>
 
       <button
         type="button"
         class="mode-tab-btn"
         data-mode="smart"
-        aria-label={isEn ? "Switch to Smart Brief 3-Min Mode" : "3분 스마트 브리프 모드로 전환"}
+        aria-label={isEn ? "Switch to Smart Brief 3-Min Mode" : "3분 스마트 요약 모드로 전환"}
       >
         <span class="tab-icon">💡</span>
         <span class="tab-text">{isEn ? '3-Min Smart Brief' : '3분 스마트 요약'}</span>
-        <span class="mode-pill-badge">{isEn ? 'POPULAR' : '추천'}</span>
+        <span class="mode-pill-badge">{isEn ? 'FAST' : '추천'}</span>
       </button>
     </div>
   </div>
 
-  <!-- Dynamic Smart Brief Banner (Rendered when Smart Mode is Active) -->
-  <div class="dynamic-smart-banner" id="dynamic-smart-banner" style="display: none;">
-    <div class="dsb-header">
-      <div class="dsb-badge">💡 {isEn ? '3-Minute Smart Brief Active' : '3분 스마트 요약 모드 활성화'}</div>
-      <span class="dsb-tip">{isEn ? 'Core takeaways & actionable rules highlighted' : '핵심 결론과 실전 행동 요령 위주로 요약되었습니다'}</span>
-    </div>
-    <div class="dsb-content" id="dsb-content-target">
-      <!-- Auto-populated or highlights native smart brief -->
+  <!-- Smart Brief Container (Displayed in Smart Mode) -->
+  <div class="smart-brief-wrapper" id="smart-brief-wrapper" style="display: none;">
+    <div class="smart-brief-box-inline">
+      <div class="sb-inline-header">
+        <span class="sb-inline-badge">💡 {isEn ? '3-Minute Smart Brief' : '3분 스마트 요약 모드'}</span>
+        <span class="sb-inline-sub">{isEn ? 'Executive digest tailored for fast reading' : '바쁜 직장인·투자자를 위한 30초 핵심 브리핑'}</span>
+      </div>
+      <div class="sb-inline-body" id="sb-inline-body">
+        <!-- Dynamically generated if manual smart brief box is absent -->
+      </div>
     </div>
   </div>
 </div>
@@ -69,7 +71,7 @@ const { isEn = false } = Astro.props;
   }
 
   function applyReadingMode(mode: string) {
-    // 1. Update Buttons State
+    // 1. Update Buttons
     const buttons = document.querySelectorAll('.mode-tab-btn');
     buttons.forEach((btn) => {
       if (btn.getAttribute('data-mode') === mode) {
@@ -79,49 +81,72 @@ const { isEn = false } = Astro.props;
       }
     });
 
-    // 2. Update Root Attribute
+    // 2. Set root attribute for CSS styling
     document.documentElement.setAttribute('data-reading-mode', mode);
 
-    // 3. Dynamic Smart Brief Synchronization
-    const dynamicBanner = document.getElementById('dynamic-smart-banner');
-    const existingSmartBox = document.querySelector('.smart-brief-box') as HTMLElement;
+    // 3. Handle Smart Brief Transformation
+    const smartWrapper = document.getElementById('smart-brief-wrapper');
+    const sbBody = document.getElementById('sb-inline-body');
+    const existingSmartBox = document.querySelector('.article-content .smart-brief-box') as HTMLElement;
     const articleBody = document.querySelector('.article-content') as HTMLElement;
+    const isEn = document.documentElement.lang === 'en' || window.location.pathname.startsWith('/en');
 
     if (mode === 'smart') {
       if (existingSmartBox) {
+        // If article already has dedicated smart brief, highlight and scroll to it
         existingSmartBox.style.display = 'block';
         existingSmartBox.classList.add('pulse-highlight');
         existingSmartBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        if (dynamicBanner) dynamicBanner.style.display = 'none';
-      } else {
-        // Fallback: Generate smart brief summary from article intro and key takeaways
-        if (dynamicBanner && articleBody) {
-          const introPara = articleBody.querySelector('p')?.textContent || '';
-          const firstHeading = articleBody.querySelector('h2')?.textContent || '';
-          const isEnDoc = document.documentElement.lang === 'en' || window.location.pathname.startsWith('/en');
+        if (smartWrapper) smartWrapper.style.display = 'none';
+      } else if (articleBody && smartWrapper && sbBody) {
+        // Dynamically extract core summary, headings, and infographics
+        const paragraphs = Array.from(articleBody.querySelectorAll('p')).filter(p => !p.closest('.infographic-container') && !p.closest('.step-flow-wrapper'));
+        const leadText = paragraphs.slice(0, 2).map(p => p.textContent).join(' ');
+        
+        const headings = Array.from(articleBody.querySelectorAll('h2, h3'))
+          .slice(0, 4)
+          .map(h => h.textContent?.replace(/^[0-9.\s]+/, '').trim())
+          .filter(Boolean);
 
-          const dsbTarget = document.getElementById('dsb-content-target');
-          if (dsbTarget) {
-            dsbTarget.innerHTML = `
-              <p class="dsb-summary-text"><strong>${isEnDoc ? 'Executive Summary:' : '핵심 30초 요약:'}</strong> ${introPara}</p>
-              <div class="dsb-action-pill">
-                👉 ${isEnDoc ? 'Check key takeaways under' : '주요 실천 행동요령:'} <strong>${firstHeading}</strong>
-              </div>
-            `;
-          }
-          dynamicBanner.style.display = 'block';
-          dynamicBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        let headingsHtml = '';
+        if (headings.length > 0) {
+          headingsHtml = `
+            <div class="sb-key-points">
+              <div class="sb-kp-title">${isEn ? '📌 Key Focus Areas in this Article:' : '📌 이 글의 핵심 핵심 체크포인트:'}</div>
+              <ul class="sb-kp-list">
+                ${headings.map(h => `<li><strong>${h}</strong></li>`).join('')}
+              </ul>
+            </div>
+          `;
         }
+
+        sbBody.innerHTML = `
+          <div class="sb-lead-summary">
+            <strong>${isEn ? 'Executive Summary:' : '핵심 30초 요약:'}</strong>
+            <p>${leadText}</p>
+          </div>
+          ${headingsHtml}
+          <div class="sb-action-box">
+            💡 <strong>${isEn ? 'Smart Takeaway:' : '실전 행동 요령:'}</strong> 
+            ${isEn 
+              ? 'Review the detailed visual infographics and statutory checklists below for exact eligibility and numbers.' 
+              : '아래 본문의 인포그래픽 비교 표와 신청 단계별 체크리스트를 통해 정확한 지원 금액과 자격 요건을 확인하세요.'}
+          </div>
+        `;
+
+        smartWrapper.style.display = 'block';
+        smartWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     } else {
-      if (dynamicBanner) dynamicBanner.style.display = 'none';
+      // Pro Mode
+      if (smartWrapper) smartWrapper.style.display = 'none';
       if (existingSmartBox) {
         existingSmartBox.classList.remove('pulse-highlight');
       }
     }
   }
 
-  // Run on load and astro transitions
+  // Run on page load and Astro view transitions
   initReadingMode();
   document.addEventListener('astro:after-swap', initReadingMode);
 </script>
@@ -147,7 +172,7 @@ const { isEn = false } = Astro.props;
   .mode-label {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.45rem;
     font-size: 0.85rem;
     font-weight: 800;
     color: var(--text-muted);
@@ -167,7 +192,7 @@ const { isEn = false } = Astro.props;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.4rem 0.85rem;
+    padding: 0.45rem 0.95rem;
     font-size: 0.85rem;
     font-weight: 700;
     border-radius: var(--radius-full);
@@ -204,55 +229,96 @@ const { isEn = false } = Astro.props;
     color: #ffffff;
   }
 
-  /* Dynamic Smart Banner */
-  .dynamic-smart-banner {
-    margin-top: 1rem;
-    padding: 1rem 1.25rem;
-    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.08));
+  /* Inline Smart Brief Wrapper */
+  .smart-brief-wrapper {
+    margin-top: 1.25rem;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .smart-brief-box-inline {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.07), rgba(124, 58, 237, 0.07));
     border: 2px solid var(--primary);
     border-radius: var(--radius-md);
-    animation: fadeIn 0.3s ease;
+    padding: 1.25rem 1.5rem;
   }
-  .dsb-header {
+
+  [data-theme="dark"] .smart-brief-box-inline {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(124, 58, 237, 0.12));
+    border-color: #3b82f6;
+  }
+
+  .sb-inline-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 0.65rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px dashed var(--border-color);
   }
-  .dsb-badge {
+
+  .sb-inline-badge {
     font-size: 0.8rem;
     font-weight: 800;
     color: #ffffff;
     background: var(--primary);
-    padding: 0.2rem 0.6rem;
+    padding: 0.25rem 0.65rem;
     border-radius: var(--radius-full);
   }
-  .dsb-tip {
-    font-size: 0.775rem;
+
+  .sb-inline-sub {
+    font-size: 0.8rem;
     color: var(--text-muted);
     font-weight: 600;
   }
-  :global(.dsb-summary-text) {
-    font-size: 0.9rem;
+
+  :global(.sb-lead-summary) {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+  }
+
+  :global(.sb-lead-summary p) {
+    margin: 0.35rem 0 0 0;
+  }
+
+  :global(.sb-key-points) {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  :global(.sb-kp-title) {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 0.4rem;
+  }
+
+  :global(.sb-kp-list) {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.875rem;
     line-height: 1.6;
     color: var(--text-main);
-    margin: 0 0 0.5rem 0;
   }
-  :global(.dsb-action-pill) {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--primary);
+
+  :global(.sb-action-box) {
     background: var(--bg-card);
-    padding: 0.4rem 0.75rem;
+    border-left: 4px solid var(--secondary);
     border-radius: var(--radius-sm);
-    display: inline-block;
-    border: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--text-main);
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
+    from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
@@ -261,7 +327,7 @@ const { isEn = false } = Astro.props;
   }
   @keyframes pulseBorder {
     0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
-    70% { box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+    70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
     100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
   }
 
