@@ -8,6 +8,7 @@ tags: ["KoreaPropertyTax", "ComprehensiveRealEstateTaxKorea", "KoreaHoldingTax20
 author: "MegaMoneyMomentum Global Editorial Team"
 featured: true
 readingTime: "8 min"
+heroImage: "/images/real_estate_tax_hero.jpg"
 officialSources:
   - name: "Ministry of Economy and Finance (Property Tax Division 2026 Framework)"
     url: "https://www.moef.go.kr/eng"
@@ -19,6 +20,7 @@ officialSources:
 
 import InfographicCard from '../../components/InfographicCard.astro';
 import StepFlow from '../../components/StepFlow.astro';
+import ComprehensiveRealEstateTaxCalculator from '../../components/ComprehensiveRealEstateTaxCalculator.astro';
 
 For residential property owners and foreign investors in South Korea, the **Comprehensive Real Estate Holding Tax (종합부동산세 or 'Jongbuse')** represents the most consequential annual property holding levy.
 
@@ -65,14 +67,16 @@ This master guide details the 2026 statutory framework, property value holding t
 
 ---
 
-## 2. Statutory Assessment Formula
+## 2. Statutory Assessment Formula & Live Tax Simulator
 
+Under statutory regulations, the property tax assessment multiplies net assessed equity by the **60% statutory fair market value ratio**:
 
 > 📌 **[Statutory Holding Tax Assessment Formula]**  
-> Tax Base = (Total National Assessed Price - Base Exemption) × Fair Market Value Ratio (60%)  
-> * Base Exemption: 1.4 Billion KRW (1-Homeowner) / 900 Million KRW (Standard / Multi-Home)  
-> * Tax Assessed = Tax Base × Statutory Tax Rate (0.5% – 2.7%) - Duplicate Local Property Tax Credit - Elderly/Long-term Deductions (Up to 80%)  
+> **Tax Base** = (Total National Assessed Price - Base Exemption) × **Fair Market Value Ratio (60%)**  
+> - **Base Exemption**: 1-Homeowner **1.4 Billion KRW** / Joint Couple **1.8 Billion KRW** / Multi-Home **900 Million KRW**  
+> - **Tax Assessed** = Tax Base × Statutory Tax Rate (0.5% – 2.7%) - Duplicate Local Property Tax Credit - Elderly/Long-term Deductions (Up to 80%)
 
+<ComprehensiveRealEstateTaxCalculator isEn={true} />
 
 ---
 

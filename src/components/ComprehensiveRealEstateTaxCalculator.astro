@@ -1,0 +1,512 @@
+---
+interface Props {
+  isEn?: boolean;
+}
+
+const { isEn = false } = Astro.props;
+---
+
+<div class="tax-calc-card" id="tax-simulator-card">
+  <div class="calc-header">
+    <div class="calc-badge">
+      <span class="badge-icon">🧮</span>
+      <span>{isEn ? 'Interactive Holding Tax Simulator' : '2026 종부세 실시간 모의계산기'}</span>
+    </div>
+    <h3 class="calc-title">
+      {isEn ? 'Calculate Your 2026 Comprehensive Real Estate Tax Savings' : '내 아파트 시가 입력하고 2026년 종부세 절세액 확인하기'}
+    </h3>
+    <p class="calc-subtitle">
+      {isEn 
+        ? 'Based on 2026 Ministry of Economy & Finance reform (1.4B KRW deduction & 60% valuation ratio)' 
+        : '2026년 기획재정부 세법 개정안(1주택자 14억 공제 · 공정시장가액비율 60% 기준)'}
+    </p>
+  </div>
+
+  <div class="calc-body">
+    <!-- Input Section -->
+    <div class="calc-inputs-grid">
+      <!-- 1. Market Price Slider -->
+      <div class="input-group">
+        <label class="input-label" for="apt-market-price">
+          <span>{isEn ? 'Apartment Market Price (Est.)' : '아파트 예상 시가'}</span>
+          <span class="price-display-pill" id="price-display-text">{isEn ? '2.0 Billion KRW' : '시가 20억 원'}</span>
+        </label>
+        <input
+          type="range"
+          id="apt-price-slider"
+          min="10"
+          max="40"
+          step="1"
+          value="20"
+          class="range-slider"
+          aria-label={isEn ? "Select apartment price" : "아파트 시가 선택"}
+        />
+        <div class="slider-marks">
+          <span>10억</span>
+          <span>15억</span>
+          <span>20억</span>
+          <span>25억</span>
+          <span>30억</span>
+          <span>40억</span>
+        </div>
+      </div>
+
+      <!-- 2. Ownership Type Selector -->
+      <div class="input-group">
+        <label class="input-label">
+          <span>{isEn ? 'Ownership Structure' : '주택 보유 및 명의 형태'}</span>
+        </label>
+        <div class="ownership-buttons">
+          <button type="button" class="owner-btn active" data-type="single">
+            <span>👤</span>
+            <span>{isEn ? '1-Home Solo (1.4B Deduct)' : '1세대 1주택 단독 (14억 공제)'}</span>
+          </button>
+          <button type="button" class="owner-btn" data-type="joint">
+            <span>👥</span>
+            <span>{isEn ? 'Joint Couple (1.8B Deduct)' : '부부 공동명의 (18억 공제)'}</span>
+          </button>
+          <button type="button" class="owner-btn" data-type="multi">
+            <span>🏘️</span>
+            <span>{isEn ? 'Multi-Home (0.9B Deduct)' : '다주택자 (9억 공제)'}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Calculation Results Matrix -->
+    <div class="calc-results-box">
+      <div class="result-breakdown-row">
+        <div class="res-sub-item">
+          <span class="res-sub-label">{isEn ? 'Est. Official Price (69%)' : '추정 공시가격 (현실화율 69%)'}</span>
+          <span class="res-sub-val" id="res-official-price">약 13억 8,000만 원</span>
+        </div>
+        <div class="res-sub-item">
+          <span class="res-sub-label">{isEn ? 'Taxable Base (과세표준)' : '과세표준 (공정시장가액 60%)'}</span>
+          <span class="res-sub-val" id="res-tax-base">0원 (전액 비과세)</span>
+        </div>
+      </div>
+
+      <div class="result-comparison-grid">
+        <!-- Old Tax -->
+        <div class="comp-box old-box">
+          <div class="comp-label">{isEn ? 'Before Reform (1.2B Deduct)' : '개편 전 기존 종부세'}</div>
+          <div class="comp-price old-price" id="res-old-tax">약 54만 원</div>
+          <div class="comp-tag">{isEn ? 'Former 120M KRW' : '기존 12억 원 공제'}</div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="comp-arrow">➔</div>
+
+        <!-- 2026 New Tax -->
+        <div class="comp-box new-box">
+          <div class="comp-label">{isEn ? '2026 Reform (1.4B Deduct)' : '2026 개정 종부세 납부액'}</div>
+          <div class="comp-price new-price" id="res-new-tax">0원 (면제 🎉)</div>
+          <div class="comp-tag highlight" id="res-tax-status">{isEn ? '100% Tax Exemption' : '종부세 전액 면제!'}</div>
+        </div>
+      </div>
+
+      <!-- Savings Banner -->
+      <div class="savings-banner" id="savings-banner-box">
+        <span class="savings-icon">💰</span>
+        <span class="savings-text" id="savings-text-display">
+          {isEn ? 'Annual Tax Savings: ' : '2026년 연간 절세 혜택: '}
+          <strong>54만 원 (100% 절감)</strong>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initTaxCalculator() {
+    const slider = document.getElementById('apt-price-slider') as HTMLInputElement;
+    const priceDisplayText = document.getElementById('price-display-text');
+    const ownerButtons = document.querySelectorAll('.owner-btn');
+    
+    let activeType = 'single'; // single | joint | multi
+
+    ownerButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        ownerButtons.forEach(b => b.classList.remove('active'));
+        const target = e.currentTarget as HTMLButtonElement;
+        target.classList.add('active');
+        activeType = target.getAttribute('data-type') || 'single';
+        calculateTax();
+      });
+    });
+
+    slider?.addEventListener('input', () => {
+      calculateTax();
+    });
+
+    function calculateTax() {
+      const priceEok = parseFloat(slider.value) || 20;
+      const isEn = document.documentElement.lang === 'en' || window.location.pathname.startsWith('/en');
+
+      // Update Slider Label
+      if (priceDisplayText) {
+        priceDisplayText.textContent = isEn 
+          ? `${priceEok.toFixed(1)} Billion KRW (${priceEok * 100}M KRW)`
+          : `시가 ${priceEok}억 원`;
+      }
+
+      // Official price (69% realization rate)
+      const officialPriceWon = priceEok * 100000000 * 0.69;
+      const officialEok = (officialPriceWon / 100000000).toFixed(2);
+
+      const officialPriceEl = document.getElementById('res-official-price');
+      if (officialPriceEl) {
+        officialPriceEl.textContent = isEn 
+          ? `Approx. ${(officialPriceWon / 100000000).toFixed(1)}B KRW`
+          : `약 ${Math.round(officialPriceWon / 10000000) / 10}억 원 (${(officialPriceWon / 10000).toLocaleString('ko-KR')}만 원)`;
+      }
+
+      // Deductions
+      let oldDeduct = 1200000000;
+      let newDeduct = 1400000000;
+
+      if (activeType === 'joint') {
+        oldDeduct = 1800000000; // 900M + 900M
+        newDeduct = 1800000000;
+      } else if (activeType === 'multi') {
+        oldDeduct = 900000000;
+        newDeduct = 900000000;
+      }
+
+      // Taxable Base (60% fair market ratio)
+      const oldTaxBase = Math.max(0, (officialPriceWon - oldDeduct) * 0.6);
+      const newTaxBase = Math.max(0, (officialPriceWon - newDeduct) * 0.6);
+
+      const taxBaseEl = document.getElementById('res-tax-base');
+      if (taxBaseEl) {
+        if (newTaxBase === 0) {
+          taxBaseEl.textContent = isEn ? '0 KRW (Full Exemption)' : '0원 (전액 비과세 면제)';
+        } else {
+          taxBaseEl.textContent = isEn 
+            ? `${(newTaxBase / 100000000).toFixed(2)}B KRW`
+            : `약 ${Math.round(newTaxBase / 10000000) / 10}억 원`;
+        }
+      }
+
+      // Tax calculation (approx progressive bracket: 0.5% ~ 1.0% effective holding tax)
+      function getEstTax(taxBase: number, isMulti: boolean) {
+        if (taxBase <= 0) return 0;
+        if (isMulti) {
+          // Standard unified tax vs old heavy tax
+          return Math.round(taxBase * 0.0075 * 0.7); // after property tax credit
+        }
+        if (taxBase <= 300000000) return Math.round(taxBase * 0.005 * 0.65);
+        if (taxBase <= 600000000) return Math.round(1500000 * 0.65 + (taxBase - 300000000) * 0.007 * 0.65);
+        return Math.round(3600000 * 0.65 + (taxBase - 600000000) * 0.01 * 0.65);
+      }
+
+      const oldTax = getEstTax(oldTaxBase, activeType === 'multi');
+      const newTax = getEstTax(newTaxBase, false);
+      const savings = Math.max(0, oldTax - newTax);
+
+      // DOM Updates
+      const oldTaxEl = document.getElementById('res-old-tax');
+      const newTaxEl = document.getElementById('res-new-tax');
+      const taxStatusEl = document.getElementById('res-tax-status');
+      const savingsTextEl = document.getElementById('savings-text-display');
+
+      if (oldTaxEl) {
+        oldTaxEl.textContent = oldTax === 0 
+          ? (isEn ? '0 KRW' : '0원') 
+          : (isEn ? `${(oldTax / 10000).toLocaleString()}0k KRW` : `약 ${Math.round(oldTax / 10000).toLocaleString('ko-KR')}만 원`);
+      }
+
+      if (newTaxEl) {
+        if (newTax === 0) {
+          newTaxEl.textContent = isEn ? '0 KRW (Exempt 🎉)' : '0원 (전액 면제 🎉)';
+          if (taxStatusEl) taxStatusEl.textContent = isEn ? '100% Tax Exemption' : '종부세 전액 면제!';
+        } else {
+          newTaxEl.textContent = isEn 
+            ? `${(newTax / 10000).toLocaleString()}0k KRW` 
+            : `약 ${Math.round(newTax / 10000).toLocaleString('ko-KR')}만 원`;
+          if (taxStatusEl) taxStatusEl.textContent = isEn ? 'Reduced Single Rate' : '가액기준 단일세율 적용';
+        }
+      }
+
+      if (savingsTextEl) {
+        if (savings === 0 && oldTax === 0) {
+          savingsTextEl.innerHTML = isEn 
+            ? '<strong>Originally exempt (0 KRW tax) under both brackets</strong>' 
+            : '<strong>개편 전후 모두 0원으로 종부세가 부과되지 않습니다</strong>';
+        } else {
+          const savingsPct = oldTax > 0 ? Math.round((savings / oldTax) * 100) : 0;
+          savingsTextEl.innerHTML = isEn
+            ? `Annual Tax Savings: <strong>${Math.round(savings / 10000).toLocaleString()}0k KRW (${savingsPct}% Saved)</strong>`
+            : `2026년 연간 절세 혜택: <strong>약 ${Math.round(savings / 10000).toLocaleString('ko-KR')}만 원 (${savingsPct}% 절감 혜택 ⭐)</strong>`;
+        }
+      }
+    }
+
+    calculateTax();
+  }
+
+  initTaxCalculator();
+  document.addEventListener('astro:after-swap', initTaxCalculator);
+</script>
+
+<style>
+  .tax-calc-card {
+    background: var(--bg-card);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem 2rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-md);
+  }
+
+  .calc-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .calc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #ffffff;
+    background: var(--primary);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    margin-bottom: 0.5rem;
+  }
+
+  .calc-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 0.35rem 0;
+  }
+
+  .calc-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .calc-inputs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .input-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .price-display-pill {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    border: 1px solid var(--border-focus);
+  }
+
+  .range-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--border-color);
+    outline: none;
+    cursor: pointer;
+    accent-color: var(--primary);
+  }
+
+  .slider-marks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .ownership-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .owner-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.825rem;
+    font-weight: 700;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .owner-btn:hover {
+    border-color: var(--primary);
+    color: var(--text-main);
+  }
+
+  .owner-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Results Box */
+  .calc-results-box {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .result-breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed var(--border-color);
+  }
+
+  .res-sub-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .res-sub-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .res-sub-val {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .result-comparison-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .comp-box {
+    flex: 1;
+    min-width: 140px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .comp-box.new-box {
+    border: 2px solid var(--secondary);
+    background: rgba(16, 185, 129, 0.05);
+  }
+
+  .comp-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .comp-price {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0.35rem 0;
+  }
+
+  .old-price {
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+
+  .new-price {
+    color: var(--secondary);
+  }
+
+  .comp-tag {
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .comp-tag.highlight {
+    color: var(--secondary);
+    font-weight: 800;
+  }
+
+  .comp-arrow {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-weight: 800;
+  }
+
+  .savings-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.1));
+    border: 1px solid var(--secondary);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1.15rem;
+  }
+
+  .savings-icon {
+    font-size: 1.25rem;
+  }
+
+  .savings-text {
+    font-size: 0.95rem;
+    color: var(--text-main);
+  }
+
+  .savings-text strong {
+    color: var(--secondary);
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 640px) {
+    .tax-calc-card {
+      padding: 1.25rem;
+    }
+    .comp-arrow {
+      display: none;
+    }
+    .result-comparison-grid {
+      flex-direction: column;
+    }
+    .comp-box {
+      width: 100%;
+    }
+  }
+</style>
