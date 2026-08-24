@@ -21,11 +21,9 @@ const { steps } = Astro.props;
           </span>
           {step.icon && <span style="font-size: 1.35rem;">{step.icon}</span>}
         </div>
-        <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;">
-          {step.title}
+        <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;" set:html={step.title.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}>
         </h4>
-        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-          {step.desc}
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0;" set:html={step.desc.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}>
         </p>
       </div>
     ))
