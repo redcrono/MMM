@@ -213,24 +213,7 @@ if (isEn) {
     localStorage.setItem('mmm-reading-mode', nextMode);
     updateReadingModeHeader(nextMode);
 
-    // Sync any in-article switcher on page
-    const inArticleButtons = document.querySelectorAll('.mode-tab-btn');
-    inArticleButtons.forEach((btn) => {
-      if (btn.getAttribute('data-mode') === nextMode) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-
-    const smartSections = document.querySelectorAll('.smart-brief-view');
-    const proSections = document.querySelectorAll('.pro-analysis-view');
-    if (nextMode === 'smart') {
-      smartSections.forEach((el) => ((el as HTMLElement).style.display = 'block'));
-      proSections.forEach((el) => ((el as HTMLElement).style.display = 'none'));
-    } else {
-      smartSections.forEach((el) => ((el as HTMLElement).style.display = 'none'));
-      proSections.forEach((el) => ((el as HTMLElement).style.display = 'block'));
-    }
+    // Dispatch global event for in-article switchers
+    window.dispatchEvent(new CustomEvent('mmm:reading-mode-change', { detail: { mode: nextMode } }));
   });
 </script>

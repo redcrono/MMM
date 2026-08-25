@@ -6,7 +6,7 @@ interface Props {
 const { isEn = false } = Astro.props;
 ---
 
-<div class="reading-mode-container" id="reading-mode-switcher">
+<div class="reading-mode-container" id="reading-mode-switcher" data-is-en={isEn ? "true" : "false"}>
   <div class="mode-switch-bar">
     <div class="mode-label">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -21,17 +21,17 @@ const { isEn = false } = Astro.props;
         type="button"
         class="mode-tab-btn active"
         data-mode="pro"
-        aria-label={isEn ? "Switch to Pro Analysis Mode" : "전문가 정밀 분석 모드로 전환"}
+        aria-label={isEn ? "Switch to Pro Deep-Dive Analysis" : "전문가 정밀 분석 모드로 전환"}
       >
         <span class="tab-icon">📊</span>
-        <span class="tab-text">{isEn ? 'Pro Analysis' : '전문가 정밀 분석'}</span>
+        <span class="tab-text">{isEn ? 'Pro Deep-Dive' : '전문가 정밀 분석'}</span>
       </button>
 
       <button
         type="button"
         class="mode-tab-btn"
         data-mode="smart"
-        aria-label={isEn ? "Switch to Smart Brief 3-Min Mode" : "3분 스마트 요약 모드로 전환"}
+        aria-label={isEn ? "Switch to 3-Min Smart Brief Mode" : "3분 스마트 요약 모드로 전환"}
       >
         <span class="tab-icon">💡</span>
         <span class="tab-text">{isEn ? '3-Min Smart Brief' : '3분 스마트 요약'}</span>
@@ -45,10 +45,10 @@ const { isEn = false } = Astro.props;
     <div class="smart-brief-box-inline">
       <div class="sb-inline-header">
         <span class="sb-inline-badge">💡 {isEn ? '3-Minute Smart Brief' : '3분 스마트 요약 모드'}</span>
-        <span class="sb-inline-sub">{isEn ? 'Executive digest tailored for fast reading' : '바쁜 직장인·투자자를 위한 30초 핵심 브리핑'}</span>
+        <span class="sb-inline-sub">{isEn ? 'Executive digest tailored for rapid decision-making' : '바쁜 직장인·투자자를 위한 30초 핵심 브리핑'}</span>
       </div>
       <div class="sb-inline-body" id="sb-inline-body">
-        <!-- Dynamically generated if manual smart brief box is absent -->
+        <!-- Dynamically generated for 100% of all articles -->
       </div>
     </div>
   </div>
@@ -68,10 +68,17 @@ const { isEn = false } = Astro.props;
         localStorage.setItem('mmm-reading-mode', mode);
       });
     });
+
+    // Listen to global changes from header toggle
+    window.addEventListener('mmm:reading-mode-change', (e: any) => {
+      if (e.detail && e.detail.mode) {
+        applyReadingMode(e.detail.mode);
+      }
+    });
   }
 
   function applyReadingMode(mode: string) {
-    // 1. Update Buttons
+    // 1. Update In-Article Buttons
     const buttons = document.querySelectorAll('.mode-tab-btn');
     buttons.forEach((btn) => {
       if (btn.getAttribute('data-mode') === mode) {
@@ -84,12 +91,21 @@ const { isEn = false } = Astro.props;
     // 2. Set root attribute for CSS styling
     document.documentElement.setAttribute('data-reading-mode', mode);
 
-    // 3. Handle Smart Brief Transformation
+    // 3. Detect English Locale accurately
+    const switcherEl = document.getElementById('reading-mode-switcher');
+    const isEn = 
+      switcherEl?.getAttribute('data-is-en') === 'true' ||
+      document.documentElement.lang === 'en' ||
+      window.location.pathname.startsWith('/en') ||
+      window.location.pathname.includes('/en-') ||
+      window.location.pathname.includes('-expats') ||
+      window.location.pathname.includes('-foreigners');
+
+    // 4. Handle Smart Brief Transformation
     const smartWrapper = document.getElementById('smart-brief-wrapper');
     const sbBody = document.getElementById('sb-inline-body');
     const existingSmartBox = document.querySelector('.article-content .smart-brief-box') as HTMLElement;
     const articleBody = document.querySelector('.article-content') as HTMLElement;
-    const isEn = document.documentElement.lang === 'en' || window.location.pathname.startsWith('/en');
 
     if (mode === 'smart') {
       if (existingSmartBox) {
@@ -99,9 +115,10 @@ const { isEn = false } = Astro.props;
         existingSmartBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
         if (smartWrapper) smartWrapper.style.display = 'none';
       } else if (articleBody && smartWrapper && sbBody) {
-        // Dynamically extract core summary, headings, and infographics
-        const paragraphs = Array.from(articleBody.querySelectorAll('p')).filter(p => !p.closest('.infographic-container') && !p.closest('.step-flow-wrapper'));
-        const leadText = paragraphs.slice(0, 2).map(p => p.textContent).join(' ');
+        // Dynamically extract core summary, headings, and takeaways
+        const paragraphs = Array.from(articleBody.querySelectorAll('p'))
+          .filter(p => !p.closest('.infographic-container') && !p.closest('.step-flow-wrapper') && !p.closest('.tax-calc-card'));
+        const leadText = paragraphs.slice(0, 2).map(p => p.textContent?.trim()).filter(Boolean).join(' ');
         
         const headings = Array.from(articleBody.querySelectorAll('h2, h3'))
           .slice(0, 4)
@@ -112,7 +129,7 @@ const { isEn = false } = Astro.props;
         if (headings.length > 0) {
           headingsHtml = `
             <div class="sb-key-points">
-              <div class="sb-kp-title">${isEn ? '📌 Key Focus Areas in this Article:' : '📌 이 글의 핵심 핵심 체크포인트:'}</div>
+              <div class="sb-kp-title">${isEn ? '🎯 Key Decision Checkpoints in this Guide:' : '📌 이 글의 핵심 핵심 체크포인트:'}</div>
               <ul class="sb-kp-list">
                 ${headings.map(h => `<li><strong>${h}</strong></li>`).join('')}
               </ul>
@@ -122,14 +139,14 @@ const { isEn = false } = Astro.props;
 
         sbBody.innerHTML = `
           <div class="sb-lead-summary">
-            <strong>${isEn ? 'Executive Summary:' : '핵심 30초 요약:'}</strong>
+            <strong>${isEn ? '📌 Executive 30-Second Summary:' : '핵심 30초 요약:'}</strong>
             <p>${leadText}</p>
           </div>
           ${headingsHtml}
           <div class="sb-action-box">
-            💡 <strong>${isEn ? 'Smart Takeaway:' : '실전 행동 요령:'}</strong> 
+            💡 <strong>${isEn ? 'Strategic Takeaway & Action Guide:' : '실전 행동 요령:'}</strong> 
             ${isEn 
-              ? 'Review the detailed visual infographics and statutory checklists below for exact eligibility and numbers.' 
+              ? 'Review the detailed visual infographics, comparison matrices, and statutory tables below for full eligibility criteria and maximum financial benefits.' 
               : '아래 본문의 인포그래픽 비교 표와 신청 단계별 체크리스트를 통해 정확한 지원 금액과 자격 요건을 확인하세요.'}
           </div>
         `;
