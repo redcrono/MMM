@@ -108,20 +108,19 @@ const { isEn = false } = Astro.props;
     const articleBody = document.querySelector('.article-content') as HTMLElement;
 
     if (mode === 'smart') {
+      // 1. If article already has dedicated smart brief, highlight it
       if (existingSmartBox) {
-        // If article already has dedicated smart brief, highlight and scroll to it
         existingSmartBox.style.display = 'block';
         existingSmartBox.classList.add('pulse-highlight');
-        existingSmartBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
         if (smartWrapper) smartWrapper.style.display = 'none';
       } else if (articleBody && smartWrapper && sbBody) {
         // Dynamically extract core summary, headings, and takeaways
         const paragraphs = Array.from(articleBody.querySelectorAll('p'))
-          .filter(p => !p.closest('.infographic-container') && !p.closest('.step-flow-wrapper') && !p.closest('.tax-calc-card'));
+          .filter(p => !p.closest('.infographic-container') && !p.closest('.step-flow-wrapper') && !p.closest('.tax-calc-card') && !p.closest('.calculator-widget'));
         const leadText = paragraphs.slice(0, 2).map(p => p.textContent?.trim()).filter(Boolean).join(' ');
         
         const headings = Array.from(articleBody.querySelectorAll('h2, h3'))
-          .slice(0, 4)
+          .slice(0, 5)
           .map(h => h.textContent?.replace(/^[0-9.\s]+/, '').trim())
           .filter(Boolean);
 
@@ -129,7 +128,7 @@ const { isEn = false } = Astro.props;
         if (headings.length > 0) {
           headingsHtml = `
             <div class="sb-key-points">
-              <div class="sb-kp-title">${isEn ? '🎯 Key Decision Checkpoints in this Guide:' : '📌 이 글의 핵심 핵심 체크포인트:'}</div>
+              <div class="sb-kp-title">${isEn ? '🎯 Key Decision Checkpoints in this Guide:' : '📌 이 글의 핵심 체크포인트:'}</div>
               <ul class="sb-kp-list">
                 ${headings.map(h => `<li><strong>${h}</strong></li>`).join('')}
               </ul>
@@ -146,19 +145,26 @@ const { isEn = false } = Astro.props;
           <div class="sb-action-box">
             💡 <strong>${isEn ? 'Strategic Takeaway & Action Guide:' : '실전 행동 요령:'}</strong> 
             ${isEn 
-              ? 'Review the detailed visual infographics, comparison matrices, and statutory tables below for full eligibility criteria and maximum financial benefits.' 
-              : '아래 본문의 인포그래픽 비교 표와 신청 단계별 체크리스트를 통해 정확한 지원 금액과 자격 요건을 확인하세요.'}
+              ? 'Review the core visual infographics, comparison matrices, and calculators below for fast decision-making.' 
+              : '아래 핵심 인포그래픽 비교 표, 실시간 모의계산기, 실전 행동 수칙을 통해 3분 내에 핵심 결론을 확인하세요.'}
           </div>
         `;
 
         smartWrapper.style.display = 'block';
-        smartWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      // 2. Transform article body: hide background prose, keep all visual cards & tables
+      if (articleBody) {
+        articleBody.classList.add('smart-mode-active');
       }
     } else {
-      // Pro Mode
+      // Pro Mode - Expand everything in full depth
       if (smartWrapper) smartWrapper.style.display = 'none';
       if (existingSmartBox) {
         existingSmartBox.classList.remove('pulse-highlight');
+      }
+      if (articleBody) {
+        articleBody.classList.remove('smart-mode-active');
       }
     }
   }
@@ -244,6 +250,35 @@ const { isEn = false } = Astro.props;
   .mode-tab-btn.active .mode-pill-badge {
     background: rgba(255, 255, 255, 0.25);
     color: #ffffff;
+  }
+
+  /* Global Smart Mode Styles for Article Content */
+  :global(.article-content.smart-mode-active) {
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.02) 0%, transparent 100%);
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  :global(.article-content.smart-mode-active > p:not(.smart-brief-box p):not(.infographic-container p):not(.step-flow-wrapper p):not(.tax-calc-card p):not(.calculator-widget p)) {
+    display: none;
+  }
+
+  :global(.article-content.smart-mode-active > ul:not(.smart-brief-box ul):not(.infographic-container ul):not(.step-flow-wrapper ul)) {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1.25rem 0.85rem 2rem;
+    margin: 1rem 0;
+  }
+
+  :global(.article-content.smart-mode-active > blockquote) {
+    border-left: 4px solid var(--primary);
+    background: var(--primary-light);
+    padding: 0.85rem 1.25rem;
+    border-radius: var(--radius-sm);
+    margin: 1.25rem 0;
+    display: block;
   }
 
   /* Inline Smart Brief Wrapper */
