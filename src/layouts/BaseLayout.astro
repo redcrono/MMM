@@ -2,7 +2,6 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import AdSenseScript from '../components/AdSenseScript.astro';
 import '../styles/global.css';
 
 export interface Props {
@@ -29,7 +28,6 @@ const { title, description, image, articleDate, articleAuthor, category, lang = 
       articleAuthor={articleAuthor}
       category={category}
     />
-    <AdSenseScript />
   </head>
   <body>
     <Header />

@@ -8,10 +8,10 @@ export interface Props {
 const { slotId, adFormat = 'auto', label = '스폰서 링크 / 추천 정보' } = Astro.props;
 ---
 
-<div class="ad-slot-container" aria-label="광고 영역">
-  <span class="ad-label">{label}</span>
-  {
-    slotId ? (
+{
+  slotId && (
+    <div class="ad-slot-container" aria-label="스폰서 영역">
+      <span class="ad-label">{label}</span>
       <ins
         class="adsbygoogle"
         style="display:block; text-align:center;"
@@ -23,11 +23,6 @@ const { slotId, adFormat = 'auto', label = '스폰서 링크 / 추천 정보' } 
       <script is:inline>
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
-    ) : (
-      <div style="font-size: 0.85rem; color: var(--text-light); padding: 1rem 0;">
-        📊 <strong>메가머니모멘텀 맞춤 추천 영역</strong>
-        <p style="font-size: 0.75rem; margin-top: 0.25rem;">애드센스 승인 후 고단가 맞춤형 금융/정책 배너가 자동으로 게재됩니다.</p>
-      </div>
-    )
-  }
-</div>
+    </div>
+  )
+}
