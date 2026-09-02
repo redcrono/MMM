@@ -5,6 +5,22 @@ import TaxSavingsCalculator from '../../components/TaxSavingsCalculator.astro';
 
 const toolCards = [
   {
+    title: 'ETF Portfolio & Dividend Compound Simulator',
+    desc: 'Simulate asset allocation across S&P 500, Nasdaq 100, SCHD, JEPI, and K-ValueUp ETFs with compound DRIP returns and tax savings.',
+    category: 'Stocks & ETFs',
+    badge: 'badge-stocks',
+    icon: '📈',
+    link: '/en/etf'
+  },
+  {
+    title: '10-Year ₩100M 6-Asset Compound Growth Battle',
+    desc: 'Compare 10-year and 20-year after-tax returns across US index ETFs, high-yield dividend funds, gold, bonds, and cash.',
+    category: 'Wealth & Savings',
+    badge: 'badge-wealth',
+    icon: '⚔️',
+    link: '/en/battle'
+  },
+  {
     title: 'Year-End Tax Settlement Calculator (IRP/Pension)',
     desc: 'Simulates exact tax refund windfalls (13.2% vs. 16.5% tax credit tiers) based on gross annual salary and contributions.',
     category: 'Tax & Filing',
@@ -24,13 +40,6 @@ const toolCards = [
     category: 'Wealth & Savings',
     badge: 'badge-wealth',
     icon: '💰'
-  },
-  {
-    title: 'Loan Prepayment Penalty & Refinancing BEP Calculator',
-    desc: 'Evaluates pro-rata statutory daily prepayment penalties and multi-month break-even points for mortgage switches.',
-    category: 'Banking & Credit',
-    badge: 'badge-credit',
-    icon: '⚖️'
   }
 ];
 ---
@@ -94,6 +103,15 @@ const toolCards = [
               <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin: 0 0 1rem 0; flex: 1;">
                 {tool.desc}
               </p>
+              {tool.link && (
+                <a href={tool.link} style="display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: var(--radius-sm); background: var(--primary-light); color: var(--primary); font-size: 0.85rem; font-weight: 800; text-decoration: none; margin-top: auto;">
+                  <span>Launch Simulator</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+              )}
             </div>
           ))
         }

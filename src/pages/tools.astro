@@ -5,6 +5,22 @@ import TaxSavingsCalculator from '../components/TaxSavingsCalculator.astro';
 
 const toolCards = [
   {
+    title: '글로벌 ETF 포트폴리오 & 배당 복리 시뮬레이터',
+    desc: 'S&P500, 나스닥100, SCHD 배당성장, JEPI, K-밸류업 ETF를 조합해 10년 후 총 자산과 은퇴 월 배당금, 절세액을 실시간 시뮬레이션합니다.',
+    category: '주식·ETF',
+    badge: 'badge-stocks',
+    icon: '📈',
+    link: '/etf'
+  },
+  {
+    title: '1억원 10년 굴리기: 6대 자산 복리 배틀',
+    desc: '미국 지수, 월배당주, 금, 국채, 파킹통장의 10년·20년 세후 수익률과 은퇴 월배당금을 1초 만에 맞비교합니다.',
+    category: '자산관리',
+    badge: 'badge-wealth',
+    icon: '⚔️',
+    link: '/battle'
+  },
+  {
     title: '연말정산 절세 계산기 (IRP/연금저축)',
     desc: '총급여와 납입 금액을 입력하면 13월의 월급 환급액(13.2% vs 16.5%)을 즉시 실시간 계산합니다.',
     category: '세무·절세',
@@ -24,13 +40,6 @@ const toolCards = [
     category: '자산관리',
     badge: 'badge-wealth',
     icon: '💰'
-  },
-  {
-    title: '대출 중도상환수수료 & 대환 BEP 계산기',
-    desc: '대출 실행일로부터 경과 일수를 일할 계산하여 현재 중도상환수수료와 타행 대환 시 손익분기점(회수 개월 수)을 계산합니다.',
-    category: '대출·신용',
-    badge: 'badge-credit',
-    icon: '⚖️'
   }
 ];
 ---
@@ -94,6 +103,15 @@ const toolCards = [
               <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin: 0 0 1rem 0; flex: 1;">
                 {tool.desc}
               </p>
+              {tool.link && (
+                <a href={tool.link} style="display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: var(--radius-sm); background: var(--primary-light); color: var(--primary); font-size: 0.85rem; font-weight: 800; text-decoration: none; margin-top: auto;">
+                  <span>시뮬레이터 바로가기</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+              )}
             </div>
           ))
         }

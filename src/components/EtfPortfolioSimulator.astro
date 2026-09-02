@@ -1,0 +1,1096 @@
+---
+interface Props {
+  isEn?: boolean;
+}
+
+const { isEn = false } = Astro.props;
+---
+
+<div class="etf-sim-container" id="etf-simulator-app" data-is-en={isEn ? "true" : "false"}>
+  <!-- Simulator Header -->
+  <div class="sim-header">
+    <div class="sim-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+      </svg>
+      <span>{isEn ? 'FinTech Quantitative Engine' : '글로벌 퀀트 시뮬레이터'}</span>
+    </div>
+    <h2 class="sim-title">
+      {isEn ? 'ETF Multi-Asset Portfolio & Dividend Compound Simulator' : '글로벌 ETF 포트폴리오 & 배당 재투자 복리 시뮬레이터'}
+    </h2>
+    <p class="sim-subtitle">
+      {isEn
+        ? 'Simulate your personalized ETF portfolio growth, compound dividend reinvestment (DRIP), and tax-exempt alpha across ISA/Pension accounts in real time.'
+        : 'S&P500, 나스닥100, SCHD 배당성장, JEPI 고배당, K-밸류업 ETF를 내 마음대로 조합하여 10년·20년 후 자산 평가액과 월 배당금, 절세 효과를 실시간 시뮬레이션하세요.'}
+    </p>
+  </div>
+
+  <!-- Preset Strategy Selector -->
+  <div class="preset-section">
+    <div class="preset-label">{isEn ? '⚡ Select Strategy Preset:' : '⚡ 인기 대표 전략 프리셋 선택:'}</div>
+    <div class="preset-buttons">
+      <button type="button" class="preset-btn active" data-preset="growth">
+        <span class="p-icon">🚀</span>
+        <span class="p-text">{isEn ? 'US Growth Engine' : '미국 지수 성장형'}</span>
+        <span class="p-sub">{isEn ? 'S&P500 50% + QQQ 50%' : 'S&P500 50% + 나스닥 50%'}</span>
+      </button>
+      <button type="button" class="preset-btn" data-preset="fire">
+        <span class="p-icon">🏖️</span>
+        <span class="p-text">{isEn ? 'Monthly Dividend FIRE' : '월배당 파이어족'}</span>
+        <span class="p-sub">{isEn ? 'SCHD 60% + JEPI 40%' : 'SCHD 60% + JEPI 40%'}</span>
+      </button>
+      <button type="button" class="preset-btn" data-preset="allweather">
+        <span class="p-icon">🛡️</span>
+        <span class="p-text">{isEn ? 'All-Weather Balanced' : '올웨더 자산배분'}</span>
+        <span class="p-sub">{isEn ? 'Stock 60% + Div 20% + Gold/Bond 20%' : '주식 60% + 배당 20% + 금/채권 20%'}</span>
+      </button>
+      <button type="button" class="preset-btn" data-preset="productive">
+        <span class="p-icon">🇰🇷</span>
+        <span class="p-text">{isEn ? '2026 Productive ISA' : '2026 생산적 ISA형'}</span>
+        <span class="p-sub">{isEn ? 'K-ValueUp 50% + US Growth 50%' : 'K-밸류업 50% + 미국성장 50%'}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="sim-main-grid">
+    <!-- Left: Investment Inputs & Allocation Sliders -->
+    <div class="sim-card-panel">
+      <h3 class="panel-heading">
+        <span>⚙️</span> {isEn ? 'Investment Capital & Conditions' : '1. 투자 원금 및 기본 조건 설정'}
+      </h3>
+
+      <!-- Initial Capital -->
+      <div class="form-group">
+        <div class="form-label-row">
+          <label for="initial-amount">{isEn ? 'Initial Lump Sum:' : '초기 투자 원금:'}</label>
+          <span class="highlight-val" id="initial-val-display">1,000만 원</span>
+        </div>
+        <div class="input-range-wrap">
+          <input type="range" id="initial-amount-range" min="0" max="10000" step="100" value="1000" class="sim-range" />
+        </div>
+      </div>
+
+      <!-- Monthly Contribution -->
+      <div class="form-group">
+        <div class="form-label-row">
+          <label for="monthly-amount">{isEn ? 'Monthly Contribution (DCA):' : '매월 정기 적립액:'}</label>
+          <span class="highlight-val" id="monthly-val-display">50만 원 / 월</span>
+        </div>
+        <div class="input-range-wrap">
+          <input type="range" id="monthly-amount-range" min="0" max="300" step="10" value="50" class="sim-range" />
+        </div>
+      </div>
+
+      <!-- Horizon Years -->
+      <div class="form-group">
+        <div class="form-label-row">
+          <label for="years-range">{isEn ? 'Investment Horizon:' : '투자 기간:'}</label>
+          <span class="highlight-val" id="years-val-display">10년</span>
+        </div>
+        <div class="input-range-wrap">
+          <input type="range" id="years-range" min="1" max="30" step="1" value="10" class="sim-range" />
+        </div>
+      </div>
+
+      <!-- Dividend & Account Options -->
+      <div class="option-grid">
+        <div class="option-item">
+          <label class="option-title">{isEn ? 'Dividend Policy:' : '배당금 운용 방식'}</label>
+          <div class="toggle-pill-wrap">
+            <button type="button" class="toggle-pill-btn active" id="drip-on-btn" data-drip="true">
+              🔄 {isEn ? 'DRIP Reinvest' : '배당 전액 재투자'}
+            </button>
+            <button type="button" class="toggle-pill-btn" id="drip-off-btn" data-drip="false">
+              💵 {isEn ? 'Cash Payout' : '매월 현금 수령'}
+            </button>
+          </div>
+        </div>
+
+        <div class="option-item">
+          <label class="option-title">{isEn ? 'Account Tax Type:' : '투자 계좌 유형'}</label>
+          <select id="account-type-select" class="sim-select">
+            <option value="general">{isEn ? 'Standard Account (15.4% Tax Drag)' : '일반 과세 계좌 (배당세 15.4% 부과)'}</option>
+            <option value="isa" selected>{isEn ? 'Brokerage / Productive ISA (Tax-Exempt)' : '중개형·생산적 ISA 계좌 (비과세 & 9.9%)'}</option>
+            <option value="pension">{isEn ? 'Pension Savings / IRP (Tax-Deferred)' : '연금저축·IRP 계좌 (과세이연 3.3~5.5%)'}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Asset Allocation Sliders -->
+      <div class="allocation-section">
+        <div class="alloc-header">
+          <span class="alloc-title">📊 {isEn ? '2. ETF Asset Allocation' : '2. ETF 자산 비중 배분'}</span>
+          <span class="alloc-total-badge" id="alloc-total-badge">합계: 100%</span>
+        </div>
+
+        <!-- ETF Sliders List -->
+        <div class="etf-slider-list">
+          <!-- S&P 500 -->
+          <div class="etf-slider-item" data-cagr="10.5" data-div="1.5" data-divgrowth="6.0">
+            <div class="etf-meta">
+              <span class="etf-name">🇺🇸 S&P 500 (VOO / SPLG)</span>
+              <span class="etf-cagr">CAGR 10.5% | 배당 1.5%</span>
+              <span class="etf-pct" id="pct-sp500">50%</span>
+            </div>
+            <input type="range" class="etf-range" id="range-sp500" min="0" max="100" step="5" value="50" />
+          </div>
+
+          <!-- Nasdaq 100 -->
+          <div class="etf-slider-item" data-cagr="14.8" data-div="0.6" data-divgrowth="8.0">
+            <div class="etf-meta">
+              <span class="etf-name">🇺🇸 Nasdaq 100 (QQQ / QQQM)</span>
+              <span class="etf-cagr">CAGR 14.8% | 배당 0.6%</span>
+              <span class="etf-pct" id="pct-nasdaq">50%</span>
+            </div>
+            <input type="range" class="etf-range" id="range-nasdaq" min="0" max="100" step="5" value="50" />
+          </div>
+
+          <!-- SCHD -->
+          <div class="etf-slider-item" data-cagr="11.2" data-div="3.6" data-divgrowth="10.0">
+            <div class="etf-meta">
+              <span class="etf-name">🇺🇸 SCHD (US Dividend Equity)</span>
+              <span class="etf-cagr">CAGR 11.2% | 배당 3.6% (성장 10%)</span>
+              <span class="etf-pct" id="pct-schd">0%</span>
+            </div>
+            <input type="range" class="etf-range" id="range-schd" min="0" max="100" step="5" value="0" />
+          </div>
+
+          <!-- JEPI -->
+          <div class="etf-slider-item" data-cagr="7.5" data-div="8.5" data-divgrowth="2.0">
+            <div class="etf-meta">
+              <span class="etf-name">🇺🇸 JEPI (High Income Covered Call)</span>
+              <span class="etf-cagr">CAGR 7.5% | 월배당 8.5%</span>
+              <span class="etf-pct" id="pct-jepi">0%</span>
+            </div>
+            <input type="range" class="etf-range" id="range-jepi" min="0" max="100" step="5" value="0" />
+          </div>
+
+          <!-- K-ValueUp -->
+          <div class="etf-slider-item" data-cagr="8.5" data-div="4.2" data-divgrowth="7.0">
+            <div class="etf-meta">
+              <span class="etf-name">🇰🇷 K-ValueUp & 국내 고배당</span>
+              <span class="etf-cagr">CAGR 8.5% | 배당 4.2%</span>
+              <span class="etf-pct" id="pct-kvalue">0%</span>
+            </div>
+            <input type="range" class="etf-range" id="range-kvalue" min="0" max="100" step="5" value="0" />
+          </div>
+
+          <!-- Gold -->
+          <div class="etf-slider-item" data-cagr="8.2" data-div="0.0" data-divgrowth="0.0">
+            <div class="etf-meta">
+              <span class="etf-name">🥇 Gold (KRX 금현물 / GLD)</span>
+              <span class="etf-cagr">CAGR 8.2% | 무배당</span>
+              <span class="etf-pct" id="pct-gold">0%</span>
+            </div>
+            <input type="range" class="etf-range" id="range-gold" min="0" max="100" step="5" value="0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Real-time Simulation Results Dashboard -->
+    <div class="sim-result-panel">
+      <h3 class="panel-heading">
+        <span>📈</span> {isEn ? 'Simulation Output & Projection' : '시뮬레이션 결과 대시보드'}
+      </h3>
+
+      <!-- Big Metric: Final Portfolio Value -->
+      <div class="metric-hero-card">
+        <div class="m-hero-label">{isEn ? 'Projected Total Asset Value:' : '최종 예상 총 자산 평가액'}</div>
+        <div class="m-hero-value" id="res-total-asset">0원</div>
+        <div class="m-hero-sub" id="res-principal-profit">
+          총 납입 원금: 0원 | 순수익: +0원 (+0%)
+        </div>
+      </div>
+
+      <!-- Secondary Metric Grid -->
+      <div class="metric-sub-grid">
+        <!-- Monthly Passive Dividend Income -->
+        <div class="sub-metric-card">
+          <div class="sm-icon">💵</div>
+          <div class="sm-info">
+            <span class="sm-label">{isEn ? 'Monthly Passive Dividend:' : '만기 시점 예상 월 배당금'}</span>
+            <span class="sm-val" id="res-monthly-dividend">0원 / 월</span>
+            <span class="sm-note" id="res-annual-dividend">연간 배당금: 0원</span>
+          </div>
+        </div>
+
+        <!-- Tax Savings Alpha -->
+        <div class="sub-metric-card highlight-card">
+          <div class="sm-icon">🛡️</div>
+          <div class="sm-info">
+            <span class="sm-label">{isEn ? 'Taxes Saved via ISA/Pension:' : '절세계좌 활용 세금 절감액'}</span>
+            <span class="sm-val" id="res-tax-saved">+0원</span>
+            <span class="sm-note">{isEn ? 'vs 15.4% General Account' : '일반 계좌 대비 세후 추가 수익'}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Growth Chart Visualizer -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <span class="chart-title">📊 {isEn ? 'Asset Growth Trajectory' : '연도별 자산 증식 궤적 (원금 vs 수익)'}</span>
+          <span class="chart-legend">
+            <span class="dot dot-principal"></span> {isEn ? 'Principal' : '납입 원금'}
+            <span class="dot dot-profit"></span> {isEn ? 'Compound Profit' : '복리 순수익'}
+          </span>
+        </div>
+        <div class="chart-bars-wrap" id="chart-bars-wrap">
+          <!-- Dynamically populated bars -->
+        </div>
+      </div>
+
+      <!-- Year-by-Year Milestone Table -->
+      <div class="table-container">
+        <h4 class="table-title">📑 {isEn ? 'Milestone Breakdown Table' : '주요 연도별 자산 마일스톤'}</h4>
+        <div class="table-scroll">
+          <table class="milestone-table">
+            <thead>
+              <tr>
+                <th>{isEn ? 'Year' : '경과 기간'}</th>
+                <th>{isEn ? 'Principal' : '누적 원금'}</th>
+                <th>{isEn ? 'Total Asset' : '총 자산'}</th>
+                <th>{isEn ? 'Monthly Dividend' : '예상 월 배당금'}</th>
+              </tr>
+            </thead>
+            <tbody id="milestone-table-body">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initEtfSimulator() {
+    const container = document.getElementById('etf-simulator-app');
+    if (!container) return;
+
+    const isEn = container.getAttribute('data-is-en') === 'true';
+
+    // Elements
+    const initialRange = document.getElementById('initial-amount-range') as HTMLInputElement;
+    const initialDisplay = document.getElementById('initial-val-display');
+    const monthlyRange = document.getElementById('monthly-amount-range') as HTMLInputElement;
+    const monthlyDisplay = document.getElementById('monthly-val-display');
+    const yearsRange = document.getElementById('years-range') as HTMLInputElement;
+    const yearsDisplay = document.getElementById('years-val-display');
+    const accountSelect = document.getElementById('account-type-select') as HTMLSelectElement;
+
+    const dripOnBtn = document.getElementById('drip-on-btn');
+    const dripOffBtn = document.getElementById('drip-off-btn');
+    let isDrip = true;
+
+    // Sliders
+    const rangeSp500 = document.getElementById('range-sp500') as HTMLInputElement;
+    const rangeNasdaq = document.getElementById('range-nasdaq') as HTMLInputElement;
+    const rangeSchd = document.getElementById('range-schd') as HTMLInputElement;
+    const rangeJepi = document.getElementById('range-jepi') as HTMLInputElement;
+    const rangeKvalue = document.getElementById('range-kvalue') as HTMLInputElement;
+    const rangeGold = document.getElementById('range-gold') as HTMLInputElement;
+
+    const pctSp500 = document.getElementById('pct-sp500');
+    const pctNasdaq = document.getElementById('pct-nasdaq');
+    const pctSchd = document.getElementById('pct-schd');
+    const pctJepi = document.getElementById('pct-jepi');
+    const pctKvalue = document.getElementById('pct-kvalue');
+    const pctGold = document.getElementById('pct-gold');
+    const allocTotalBadge = document.getElementById('alloc-total-badge');
+
+    // Preset Strategies
+    const presetButtons = document.querySelectorAll('.preset-btn');
+    presetButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        presetButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const preset = btn.getAttribute('data-preset');
+        applyPreset(preset);
+      });
+    });
+
+    function applyPreset(preset: string | null) {
+      if (preset === 'growth') {
+        setSliders(50, 50, 0, 0, 0, 0);
+      } else if (preset === 'fire') {
+        setSliders(0, 0, 60, 40, 0, 0);
+      } else if (preset === 'allweather') {
+        setSliders(40, 20, 20, 0, 0, 20);
+      } else if (preset === 'productive') {
+        setSliders(25, 25, 0, 0, 50, 0);
+      }
+      calculateSimulation();
+    }
+
+    function setSliders(sp: number, nq: number, sc: number, jp: number, kv: number, gd: number) {
+      if (rangeSp500) rangeSp500.value = sp.toString();
+      if (rangeNasdaq) rangeNasdaq.value = nq.toString();
+      if (rangeSchd) rangeSchd.value = sc.toString();
+      if (rangeJepi) rangeJepi.value = jp.toString();
+      if (rangeKvalue) rangeKvalue.value = kv.toString();
+      if (rangeGold) rangeGold.value = gd.toString();
+    }
+
+    // Toggle DRIP
+    dripOnBtn?.addEventListener('click', () => {
+      isDrip = true;
+      dripOnBtn.classList.add('active');
+      dripOffBtn?.classList.remove('active');
+      calculateSimulation();
+    });
+
+    dripOffBtn?.addEventListener('click', () => {
+      isDrip = false;
+      dripOffBtn.classList.add('active');
+      dripOnBtn?.classList.remove('active');
+      calculateSimulation();
+    });
+
+    // Inputs listeners
+    [initialRange, monthlyRange, yearsRange, accountSelect].forEach(el => {
+      el?.addEventListener('input', calculateSimulation);
+    });
+
+    [rangeSp500, rangeNasdaq, rangeSchd, rangeJepi, rangeKvalue, rangeGold].forEach(el => {
+      el?.addEventListener('input', () => {
+        normalizeAllocation(el as HTMLInputElement);
+        calculateSimulation();
+      });
+    });
+
+    function normalizeAllocation(changedEl: HTMLInputElement) {
+      // Re-read current values
+      const vals = [
+        parseInt(rangeSp500?.value || '0', 10),
+        parseInt(rangeNasdaq?.value || '0', 10),
+        parseInt(rangeSchd?.value || '0', 10),
+        parseInt(rangeJepi?.value || '0', 10),
+        parseInt(rangeKvalue?.value || '0', 10),
+        parseInt(rangeGold?.value || '0', 10),
+      ];
+      const sum = vals.reduce((a, b) => a + b, 0);
+      if (allocTotalBadge) {
+        allocTotalBadge.textContent = isEn ? `Total: ${sum}%` : `합계: ${sum}%`;
+        allocTotalBadge.style.color = sum === 100 ? 'var(--secondary)' : 'var(--danger)';
+      }
+    }
+
+    function calculateSimulation() {
+      const initialWon = parseInt(initialRange?.value || '1000', 10) * 10000;
+      const monthlyWon = parseInt(monthlyRange?.value || '50', 10) * 10000;
+      const years = parseInt(yearsRange?.value || '10', 10);
+      const account = accountSelect?.value || 'isa';
+
+      // Update Labels
+      if (initialDisplay) initialDisplay.textContent = formatMoney(initialWon, isEn);
+      if (monthlyDisplay) monthlyDisplay.textContent = `${formatMoney(monthlyWon, isEn)}${isEn ? '/mo' : ' / 월'}`;
+      if (yearsDisplay) yearsDisplay.textContent = isEn ? `${years} Years` : `${years}년`;
+
+      // Get Allocations
+      const wSp = parseInt(rangeSp500?.value || '0', 10);
+      const wNq = parseInt(rangeNasdaq?.value || '0', 10);
+      const wSc = parseInt(rangeSchd?.value || '0', 10);
+      const wJp = parseInt(rangeJepi?.value || '0', 10);
+      const wKv = parseInt(rangeKvalue?.value || '0', 10);
+      const wGd = parseInt(rangeGold?.value || '0', 10);
+
+      if (pctSp500) pctSp500.textContent = `${wSp}%`;
+      if (pctNasdaq) pctNasdaq.textContent = `${wNq}%`;
+      if (pctSchd) pctSchd.textContent = `${wSc}%`;
+      if (pctJepi) pctJepi.textContent = `${wJp}%`;
+      if (pctKvalue) pctKvalue.textContent = `${wKv}%`;
+      if (pctGold) pctGold.textContent = `${wGd}%`;
+
+      const sumWeight = wSp + wNq + wSc + wJp + wKv + wGd || 100;
+      const fSp = wSp / sumWeight;
+      const fNq = wNq / sumWeight;
+      const fSc = wSc / sumWeight;
+      const fJp = wJp / sumWeight;
+      const fKv = wKv / sumWeight;
+      const fGd = wGd / sumWeight;
+
+      // Weighted CAGR & Div Yield
+      // S&P: 10.5% (Price 9.0%, Div 1.5%)
+      // NQ: 14.8% (Price 14.2%, Div 0.6%)
+      // SCHD: 11.2% (Price 7.6%, Div 3.6%)
+      // JEPI: 7.5% (Price -1.0%, Div 8.5%)
+      // K-Value: 8.5% (Price 4.3%, Div 4.2%)
+      // Gold: 8.2% (Price 8.2%, Div 0.0%)
+
+      const weightedPriceReturn = (fSp * 0.09) + (fNq * 0.142) + (fSc * 0.076) + (fJp * -0.01) + (fKv * 0.043) + (fGd * 0.082);
+      const weightedInitialDiv = (fSp * 0.015) + (fNq * 0.006) + (fSc * 0.036) + (fJp * 0.085) + (fKv * 0.042) + (fGd * 0.0);
+
+      // Tax Drag
+      const divTaxRate = account === 'general' ? 0.154 : (account === 'isa' ? 0.0 : 0.033);
+
+      // Month-by-month simulation
+      let totalAsset = initialWon;
+      let totalPrincipal = initialWon;
+      let totalDivPaid = 0;
+      let totalGeneralTax = 0;
+
+      const milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number }> = [];
+      const chartPoints: Array<{ year: number; principal: number; profit: number; total: number }> = [];
+
+      const totalMonths = years * 12;
+
+      for (let m = 1; m <= totalMonths; m++) {
+        // Add monthly contribution
+        totalAsset += monthlyWon;
+        totalPrincipal += monthlyWon;
+
+        // Current Year for Dividend Growth (SCHD factor ~6% avg div growth)
+        const currentYear = Math.floor(m / 12);
+        const divGrowthFactor = Math.pow(1 + (fSc * 0.07 + fKv * 0.03), currentYear);
+        const effectiveAnnualDivRate = weightedInitialDiv * divGrowthFactor;
+
+        // Monthly Price Growth
+        const monthlyPriceRate = Math.pow(1 + weightedPriceReturn, 1 / 12) - 1;
+        totalAsset += totalAsset * monthlyPriceRate;
+
+        // Monthly Dividend
+        const grossMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12);
+        const netMonthlyDiv = grossMonthlyDiv * (1 - divTaxRate);
+        const generalTaxDrag = grossMonthlyDiv * 0.154;
+        totalGeneralTax += generalTaxDrag;
+
+        if (isDrip) {
+          totalAsset += netMonthlyDiv;
+        } else {
+          totalDivPaid += netMonthlyDiv;
+        }
+
+        // Record yearly milestones
+        if (m % 12 === 0 || m === totalMonths) {
+          const yr = Math.ceil(m / 12);
+          const currentMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12) * (1 - divTaxRate);
+          milestones.push({
+            year: yr,
+            principal: totalPrincipal,
+            asset: Math.round(totalAsset),
+            monthlyDiv: Math.round(currentMonthlyDiv),
+          });
+          chartPoints.push({
+            year: yr,
+            principal: Math.round(totalPrincipal),
+            profit: Math.max(0, Math.round(totalAsset - totalPrincipal)),
+            total: Math.round(totalAsset),
+          });
+        }
+      }
+
+      // Output Results
+      const finalProfit = Math.round(totalAsset - totalPrincipal);
+      const totalReturnPct = ((finalProfit / (totalPrincipal || 1)) * 100).toFixed(1);
+
+      const lastMilestone = milestones[milestones.length - 1];
+      const finalMonthlyDiv = lastMilestone ? lastMilestone.monthlyDiv : 0;
+      const finalAnnualDiv = finalMonthlyDiv * 12;
+
+      const taxSavings = account !== 'general' ? Math.round(totalGeneralTax * 0.85) : 0;
+
+      // Update UI Elements
+      const resTotalAsset = document.getElementById('res-total-asset');
+      const resPrincipalProfit = document.getElementById('res-principal-profit');
+      const resMonthlyDiv = document.getElementById('res-monthly-dividend');
+      const resAnnualDiv = document.getElementById('res-annual-dividend');
+      const resTaxSaved = document.getElementById('res-tax-saved');
+
+      if (resTotalAsset) resTotalAsset.textContent = formatMoney(Math.round(totalAsset), isEn);
+      if (resPrincipalProfit) {
+        resPrincipalProfit.innerHTML = isEn
+          ? `Principal: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | Net Profit: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(finalProfit, isEn)} (+${totalReturnPct}%)</span>`
+          : `총 납입 원금: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | 순수익: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(finalProfit, isEn)} (+${totalReturnPct}%)</span>`;
+      }
+      if (resMonthlyDiv) resMonthlyDiv.textContent = `${formatMoney(finalMonthlyDiv, isEn)}${isEn ? ' / mo' : ' / 월'}`;
+      if (resAnnualDiv) resAnnualDiv.textContent = isEn ? `Annual Dividend: ${formatMoney(finalAnnualDiv, isEn)}/yr` : `연간 총 배당금: ${formatMoney(finalAnnualDiv, isEn)}`;
+      if (resTaxSaved) resTaxSaved.textContent = `+${formatMoney(taxSavings, isEn)}`;
+
+      // Render Chart
+      renderGrowthChart(chartPoints, isEn);
+
+      // Render Milestone Table
+      renderMilestoneTable(milestones, isEn);
+    }
+
+    function renderGrowthChart(points: Array<{ year: number; principal: number; profit: number; total: number }>, isEn: boolean) {
+      const chartWrap = document.getElementById('chart-bars-wrap');
+      if (!chartWrap) return;
+
+      const maxVal = Math.max(...points.map(p => p.total), 1);
+
+      chartWrap.innerHTML = points.map(p => {
+        const principalPct = ((p.principal / maxVal) * 100).toFixed(1);
+        const profitPct = ((p.profit / maxVal) * 100).toFixed(1);
+
+        return `
+          <div class="chart-col">
+            <div class="bar-stack" title="${isEn ? 'Year' : ''} ${p.year}${isEn ? '' : '년차'}: ${formatMoney(p.total, isEn)}">
+              <div class="bar-seg bar-profit" style="height: ${profitPct}%;"></div>
+              <div class="bar-seg bar-principal" style="height: ${principalPct}%;"></div>
+            </div>
+            <span class="bar-label">${p.year}${isEn ? 'Y' : '년'}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMilestoneTable(milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number }>, isEn: boolean) {
+      const tbody = document.getElementById('milestone-table-body');
+      if (!tbody) return;
+
+      // Filter key intervals: 1, 3, 5, 10, 15, 20, 25, 30
+      const keyYears = [1, 3, 5, 10, 15, 20, 25, 30];
+      const filtered = milestones.filter(m => keyYears.includes(m.year) || m === milestones[milestones.length - 1]);
+
+      tbody.innerHTML = filtered.map(m => `
+        <tr>
+          <td><strong>${m.year}${isEn ? ' Years' : '년차'}</strong></td>
+          <td>${formatMoney(m.principal, isEn)}</td>
+          <td style="color: var(--primary); font-weight: 800;">${formatMoney(m.asset, isEn)}</td>
+          <td style="color: var(--secondary); font-weight: 700;">${formatMoney(m.monthlyDiv, isEn)}${isEn ? '/mo' : ' / 월'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function formatMoney(num: number, isEn: boolean): string {
+      if (isEn) {
+        if (num >= 100000000) return `₩${(num / 100000000).toFixed(2)}B`;
+        if (num >= 10000) return `₩${Math.round(num / 10000).toLocaleString()}0k`;
+        return `₩${num.toLocaleString('en-US')}`;
+      }
+
+      if (num >= 100000000) {
+        const eok = Math.floor(num / 100000000);
+        const man = Math.round((num % 100000000) / 10000);
+        return man > 0 ? `${eok}억 ${man.toLocaleString('ko-KR')}만 원` : `${eok}억 원`;
+      }
+      if (num >= 10000) {
+        return `${Math.round(num / 10000).toLocaleString('ko-KR')}만 원`;
+      }
+      return `${num.toLocaleString('ko-KR')}원`;
+    }
+
+    // Initial calculation
+    calculateSimulation();
+  }
+
+  // Load on initial & view swap
+  initEtfSimulator();
+  document.addEventListener('astro:after-swap', initEtfSimulator);
+</script>
+
+<style>
+  .etf-sim-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow-md);
+    margin: 1.5rem 0 3.5rem 0;
+  }
+
+  .sim-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .sim-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-full);
+    margin-bottom: 0.75rem;
+  }
+
+  .sim-title {
+    font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.6rem;
+    line-height: 1.3;
+  }
+
+  .sim-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Preset Strategy Section */
+  .preset-section {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .preset-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+  }
+
+  .preset-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .preset-btn {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .preset-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .preset-btn.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+
+  .p-icon {
+    font-size: 1.2rem;
+  }
+
+  .p-text {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .p-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* Main Two-Column Layout */
+  .sim-main-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 2rem;
+  }
+
+  .sim-card-panel {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+  }
+
+  .sim-result-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .panel-heading {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* Form Groups */
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .highlight-val {
+    color: var(--primary);
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  .sim-range, .etf-range {
+    width: 100%;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--border-color);
+    outline: none;
+    cursor: pointer;
+    accent-color: var(--primary);
+  }
+
+  .option-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border-color);
+  }
+
+  .option-title {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .toggle-pill-wrap {
+    display: flex;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    padding: 0.2rem;
+  }
+
+  .toggle-pill-btn {
+    flex: 1;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .toggle-pill-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+  }
+
+  .sim-select {
+    width: 100%;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-main);
+  }
+
+  /* Allocation Sliders */
+  .allocation-section {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .alloc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .alloc-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .alloc-total-badge {
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+  }
+
+  .etf-slider-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .etf-slider-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0.9rem;
+  }
+
+  .etf-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .etf-name {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .etf-cagr {
+    font-size: 0.725rem;
+    color: var(--text-muted);
+  }
+
+  .etf-pct {
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  /* Result Panel */
+  .metric-hero-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.08));
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  [data-theme="dark"] .metric-hero-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(124, 58, 237, 0.14));
+    border-color: #3b82f6;
+  }
+
+  .m-hero-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .m-hero-value {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .m-hero-sub {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    line-height: 1.5;
+  }
+
+  .metric-sub-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .sub-metric-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.15rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .sub-metric-card.highlight-card {
+    background: var(--secondary-light);
+    border-color: var(--secondary);
+  }
+
+  .sm-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .sm-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .sm-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .sm-val {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .highlight-card .sm-val {
+    color: var(--secondary);
+  }
+
+  .sm-note {
+    font-size: 0.725rem;
+    color: var(--text-muted);
+  }
+
+  /* Growth Chart */
+  .chart-container {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .chart-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .chart-legend {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+  }
+
+  .dot-principal { background: var(--text-light); }
+  .dot-profit { background: var(--primary); }
+
+  .chart-bars-wrap {
+    height: 140px;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    padding-top: 10px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .chart-col {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .bar-stack {
+    width: 100%;
+    max-width: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+  }
+
+  .bar-seg {
+    width: 100%;
+    transition: height 0.3s ease;
+  }
+
+  .bar-principal { background: var(--text-light); }
+  .bar-profit { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
+
+  .bar-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+  }
+
+  /* Milestone Table */
+  .table-container {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+
+  .table-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .milestone-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+
+  .milestone-table th, .milestone-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: right;
+  }
+
+  .milestone-table th:first-child, .milestone-table td:first-child {
+    text-align: left;
+  }
+
+  .milestone-table th {
+    background: var(--bg-card);
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 900px) {
+    .sim-main-grid {
+      grid-template-columns: 1fr;
+    }
+    .option-grid {
+      grid-template-columns: 1fr;
+    }
+    .metric-sub-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

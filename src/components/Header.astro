@@ -40,6 +40,7 @@ if (isEn) {
   if (currentPath === '/en' || currentPath === '/en/') targetLangUrl = '/';
   else if (currentPath.startsWith('/en/category/')) targetLangUrl = currentPath.replace('/en/category/', '/category/');
   else if (currentPath.startsWith('/en/tools')) targetLangUrl = '/tools';
+  else if (currentPath.startsWith('/en/etf')) targetLangUrl = '/etf';
   else if (currentPath.startsWith('/en/ladder')) targetLangUrl = '/ladder';
   else if (currentPath.startsWith('/en/battle')) targetLangUrl = '/battle';
   else if (currentPath.startsWith('/en/calendar')) targetLangUrl = '/calendar';
@@ -53,6 +54,7 @@ if (isEn) {
   if (currentPath === '/' || currentPath === '') targetLangUrl = '/en';
   else if (currentPath.startsWith('/category/')) targetLangUrl = currentPath.replace('/category/', '/en/category/');
   else if (currentPath.startsWith('/tools')) targetLangUrl = '/en/tools';
+  else if (currentPath.startsWith('/etf')) targetLangUrl = '/en/etf';
   else if (currentPath.startsWith('/ladder')) targetLangUrl = '/en/ladder';
   else if (currentPath.startsWith('/battle')) targetLangUrl = '/en/battle';
   else if (currentPath.startsWith('/calendar')) targetLangUrl = '/en/calendar';

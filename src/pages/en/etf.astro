@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EtfPortfolioSimulator from '../../components/EtfPortfolioSimulator.astro';
+---
+
+<BaseLayout
+  title="ETF Multi-Asset Portfolio & Dividend Compound Simulator | MegaMoneyMomentum (MMM)"
+  description="Interactive quantitative simulator for S&P 500 (VOO), Nasdaq 100 (QQQ), SCHD Dividend Growth, JEPI High Income, and K-ValueUp ETFs. Model asset allocation, DRIP compounding, and tax-deferred alpha."
+>
+  <div class="container" style="padding: 1rem 0 4rem 0;">
+    <!-- Interactive FinTech Tool -->
+    <EtfPortfolioSimulator isEn={true} />
+
+    <!-- Explanatory Guide Section -->
+    <div style="max-width: 900px; margin: 3rem auto 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        Quantitative Backtesting Methodology & Guide
+      </h3>
+      <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+        This simulator models historical 20-to-30 year Compound Annual Growth Rates (CAGR), initial dividend yields, and dividend growth metrics with monthly dividend reinvestment (DRIP) and tax-efficient account structures.
+      </p>
+      <ul style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; padding-left: 1.25rem; margin-bottom: 1.5rem;">
+        <li><strong>Core Broad-Market Indices (S&P 500 & Nasdaq 100)</strong>: Drives long-term capital appreciation (10.5% to 14.8% CAGR) by capturing global enterprise earnings expansion.</li>
+        <li><strong>Dividend Growth Compounding (SCHD)</strong>: Combines a 3.6% baseline yield with 7–10% annual dividend growth to compound Yield on Cost past 15%+ over 10–20 years.</li>
+        <li><strong>Tax Alpha (ISA / Pension Accounts)</strong>: Eliminates the standard 15.4% dividend tax drag, boosting final portfolio values by millions in statutory savings.</li>
+      </ul>
+      <div style="background: var(--primary-light); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <span style="font-size: 0.875rem; font-weight: 700; color: var(--primary);">Explore Korea's new Productive Finance ISA tax-free benefits!</span>
+        <a href="/blog/en-2026-productive-finance-isa-guide-tax-exemption" style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-decoration: underline;">Read Productive ISA Guide ➔</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

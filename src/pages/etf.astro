@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EtfPortfolioSimulator from '../components/EtfPortfolioSimulator.astro';
+---
+
+<BaseLayout
+  title="글로벌 ETF 포트폴리오 & 배당 재투자 복리 시뮬레이터 | 메가머니모멘텀 (MMM)"
+  description="미국 S&P500(VOO), 나스닥100(QQQ), SCHD(배당성장), JEPI(고배당), K-밸류업 ETF의 자산 배분 비중, 배당금 재투자(DRIP) 복리 효과, ISA 및 연금계좌 절세 수익률을 실시간 시뮬레이션하세요."
+>
+  <div class="container" style="padding: 1rem 0 4rem 0;">
+    <!-- Interactive FinTech Tool -->
+    <EtfPortfolioSimulator isEn={false} />
+
+    <!-- Explanatory Guide Section -->
+    <div style="max-width: 900px; margin: 3rem auto 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        ETF 퀀트 시뮬레이터 산출 공식 및 실전 투자 가이드
+      </h3>
+      <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+        본 시뮬레이터는 지난 20~30년간의 실제 지수 연평균 복리 성장률(CAGR), 배당수익률(Dividend Yield), 그리고 연평균 배당 성장률을 가중평균하여 매월 복리 재투자(DRIP) 및 세후 실수령액을 정밀 모델링합니다.
+      </p>
+      <ul style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; padding-left: 1.25rem; margin-bottom: 1.5rem;">
+        <li><strong>미국 시장 대표 지수 (S&P500 & 나스닥100)</strong>: 미국 500대 우량 기업과 나스닥 혁신 기술주의 장기 우상향 복리 성장 엔진(연 10.5%~14.8%)을 반영합니다.</li>
+        <li><strong>SCHD 배당성장 복리</strong>: 초기 시가배당률 3.6%에 연평균 7~10%의 배당금 증액을 결합하여, 10~20년 후 원금 대비 배당수익률(Yield on Cost)이 15%를 초과하는 스노우볼을 시뮬레이션합니다.</li>
+        <li><strong>절세계좌(중개형·생산적 ISA / 연금저축펀드) 필수</strong>: 일반 계좌에서 발생하는 15.4% 배당소득세를 전액 비과세 또는 과세이연하여 최종 자산 평가액을 수천만 원 이상 증액시킵니다.</li>
+      </ul>
+      <div style="background: var(--primary-light); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+        <span style="font-size: 0.875rem; font-weight: 700; color: var(--primary);">2026년 9월 1일 신설된 생산적 금융 ISA 계좌 혜택을 확인해 보세요!</span>
+        <a href="/blog/2026-productive-finance-isa-guide-tax-exemption" style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-decoration: underline;">생산적 금융 ISA 완벽 가이드 읽기 ➔</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
