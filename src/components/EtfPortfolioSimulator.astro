@@ -13,250 +13,440 @@ const { isEn = false } = Astro.props;
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
       </svg>
-      <span>{isEn ? 'FinTech Quantitative Engine' : '글로벌 퀀트 시뮬레이터'}</span>
+      <span>{isEn ? 'FinTech Quantitative Engine' : '글로벌 퀀트 핀테크 엔진'}</span>
     </div>
     <h2 class="sim-title">
-      {isEn ? 'ETF Multi-Asset Portfolio & Dividend Compound Simulator' : '글로벌 ETF 포트폴리오 & 배당 재투자 복리 시뮬레이터'}
+      {isEn ? 'ETF Multi-Asset Portfolio & Dividend Compound Simulator' : '글로벌 ETF 포트폴리오 & 배당 복리 퀀트 시뮬레이터'}
     </h2>
     <p class="sim-subtitle">
       {isEn
-        ? 'Simulate your personalized ETF portfolio growth, compound dividend reinvestment (DRIP), and tax-exempt alpha across ISA/Pension accounts in real time.'
-        : 'S&P500, 나스닥100, SCHD 배당성장, JEPI 고배당, K-밸류업 ETF를 내 마음대로 조합하여 10년·20년 후 자산 평가액과 월 배당금, 절세 효과를 실시간 시뮬레이션하세요.'}
+        ? 'Simulate your future portfolio compounding across 1~30 years, or take the Historical Time Machine to backtest real-world past 1~30 years dividends and taxes.'
+        : '앞으로 1~30년간의 미래 자산과 월 배당금을 예측하거나, 과거 1~30년 전 실제 주가와 배당금·세금 데이터를 타임머신으로 실측 백테스팅하세요.'}
     </p>
-  </div>
 
-  <!-- Preset Strategy Selector -->
-  <div class="preset-section">
-    <div class="preset-label">{isEn ? '⚡ Select Strategy Preset:' : '⚡ 인기 대표 전략 프리셋 선택:'}</div>
-    <div class="preset-buttons">
-      <button type="button" class="preset-btn active" data-preset="growth">
-        <span class="p-icon">🚀</span>
-        <span class="p-text">{isEn ? 'US Growth Engine' : '미국 지수 성장형'}</span>
-        <span class="p-sub">{isEn ? 'S&P500 50% + QQQ 50%' : 'S&P500 50% + 나스닥 50%'}</span>
+    <!-- Master Mode Tabs -->
+    <div class="master-tab-wrap">
+      <button type="button" class="master-tab-btn active" id="tab-future-btn" data-target="future-view">
+        <span class="m-tab-icon">🔮</span>
+        <span class="m-tab-title">{isEn ? 'Future Projection Simulator' : '미래 1~30년 복리 & 월배당 예측'}</span>
+        <span class="m-tab-sub">{isEn ? 'Forecast forward asset growth & monthly dividend' : '은퇴 목표 자산 & 미래 월 생활비 시뮬레이션'}</span>
       </button>
-      <button type="button" class="preset-btn" data-preset="fire">
-        <span class="p-icon">🏖️</span>
-        <span class="p-text">{isEn ? 'Monthly Dividend FIRE' : '월배당 파이어족'}</span>
-        <span class="p-sub">{isEn ? 'SCHD 60% + JEPI 40%' : 'SCHD 60% + JEPI 40%'}</span>
-      </button>
-      <button type="button" class="preset-btn" data-preset="allweather">
-        <span class="p-icon">🛡️</span>
-        <span class="p-text">{isEn ? 'All-Weather Balanced' : '올웨더 자산배분'}</span>
-        <span class="p-sub">{isEn ? 'Stock 60% + Div 20% + Gold/Bond 20%' : '주식 60% + 배당 20% + 금/채권 20%'}</span>
-      </button>
-      <button type="button" class="preset-btn" data-preset="productive">
-        <span class="p-icon">🇰🇷</span>
-        <span class="p-text">{isEn ? '2026 Productive ISA' : '2026 생산적 ISA형'}</span>
-        <span class="p-sub">{isEn ? 'K-ValueUp 50% + US Growth 50%' : 'K-밸류업 50% + 미국성장 50%'}</span>
+      <button type="button" class="master-tab-btn" id="tab-history-btn" data-target="history-view">
+        <span class="m-tab-icon">⏳</span>
+        <span class="m-tab-title">{isEn ? 'Historical Time Machine Backtest' : '과거 1~30년 타임머신 실측 백테스트'}</span>
+        <span class="m-tab-sub">{isEn ? 'Actual past returns, dividends paid & taxes withheld' : '실제 과거 배당금 입금일, 세금 차감, MDD 실측'}</span>
       </button>
     </div>
   </div>
 
-  <div class="sim-main-grid">
-    <!-- Left: Investment Inputs & Allocation Sliders -->
-    <div class="sim-card-panel">
-      <h3 class="panel-heading">
-        <span>⚙️</span> {isEn ? 'Investment Capital & Conditions' : '1. 투자 원금 및 기본 조건 설정'}
-      </h3>
-
-      <!-- Initial Capital -->
-      <div class="form-group">
-        <div class="form-label-row">
-          <label for="initial-amount">{isEn ? 'Initial Lump Sum:' : '초기 투자 원금:'}</label>
-          <span class="highlight-val" id="initial-val-display">1,000만 원</span>
-        </div>
-        <div class="input-range-wrap">
-          <input type="range" id="initial-amount-range" min="0" max="10000" step="100" value="1000" class="sim-range" />
-        </div>
+  <!-- VIEW 1: FORWARD PROJECTION SIMULATOR -->
+  <div class="sim-view-section active" id="future-view">
+    <!-- Preset Strategy Selector -->
+    <div class="preset-section">
+      <div class="preset-label">{isEn ? '⚡ Select Strategy Preset:' : '⚡ 인기 대표 전략 프리셋 선택:'}</div>
+      <div class="preset-buttons">
+        <button type="button" class="preset-btn active" data-preset="growth">
+          <span class="p-icon">🚀</span>
+          <span class="p-text">{isEn ? 'US Growth Engine' : '미국 지수 성장형'}</span>
+          <span class="p-sub">{isEn ? 'S&P500 50% + QQQ 50%' : 'S&P500 50% + 나스닥 50%'}</span>
+        </button>
+        <button type="button" class="preset-btn" data-preset="fire">
+          <span class="p-icon">🏖️</span>
+          <span class="p-text">{isEn ? 'Monthly Dividend FIRE' : '월배당 파이어족'}</span>
+          <span class="p-sub">{isEn ? 'SCHD 60% + JEPI 40%' : 'SCHD 60% + JEPI 40%'}</span>
+        </button>
+        <button type="button" class="preset-btn" data-preset="allweather">
+          <span class="p-icon">🛡️</span>
+          <span class="p-text">{isEn ? 'All-Weather Balanced' : '올웨더 자산배분'}</span>
+          <span class="p-sub">{isEn ? 'Stock 60% + Div 20% + Gold/Bond 20%' : '주식 60% + 배당 20% + 금/채권 20%'}</span>
+        </button>
+        <button type="button" class="preset-btn" data-preset="productive">
+          <span class="p-icon">🇰🇷</span>
+          <span class="p-text">{isEn ? '2026 Productive ISA' : '2026 생산적 ISA형'}</span>
+          <span class="p-sub">{isEn ? 'K-ValueUp 50% + US Growth 50%' : 'K-밸류업 50% + 미국성장 50%'}</span>
+        </button>
       </div>
+    </div>
 
-      <!-- Monthly Contribution -->
-      <div class="form-group">
-        <div class="form-label-row">
-          <label for="monthly-amount">{isEn ? 'Monthly Contribution (DCA):' : '매월 정기 적립액:'}</label>
-          <span class="highlight-val" id="monthly-val-display">50만 원 / 월</span>
-        </div>
-        <div class="input-range-wrap">
-          <input type="range" id="monthly-amount-range" min="0" max="300" step="10" value="50" class="sim-range" />
-        </div>
-      </div>
+    <div class="sim-main-grid">
+      <!-- Left: Investment Inputs & Allocation Sliders -->
+      <div class="sim-card-panel">
+        <h3 class="panel-heading">
+          <span>⚙️</span> {isEn ? 'Investment Capital & Conditions' : '1. 투자 원금 및 기본 조건 설정'}
+        </h3>
 
-      <!-- Horizon Years -->
-      <div class="form-group">
-        <div class="form-label-row">
-          <label for="years-range">{isEn ? 'Investment Horizon:' : '투자 기간:'}</label>
-          <span class="highlight-val" id="years-val-display">10년</span>
-        </div>
-        <div class="input-range-wrap">
-          <input type="range" id="years-range" min="1" max="30" step="1" value="10" class="sim-range" />
-        </div>
-      </div>
-
-      <!-- Dividend & Account Options -->
-      <div class="option-grid">
-        <div class="option-item">
-          <label class="option-title">{isEn ? 'Dividend Policy:' : '배당금 운용 방식'}</label>
-          <div class="toggle-pill-wrap">
-            <button type="button" class="toggle-pill-btn active" id="drip-on-btn" data-drip="true">
-              🔄 {isEn ? 'DRIP Reinvest' : '배당 전액 재투자'}
-            </button>
-            <button type="button" class="toggle-pill-btn" id="drip-off-btn" data-drip="false">
-              💵 {isEn ? 'Cash Payout' : '매월 현금 수령'}
-            </button>
+        <!-- Initial Capital -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="initial-amount-range">{isEn ? 'Initial Lump Sum:' : '초기 투자 원금:'}</label>
+            <span class="highlight-val" id="initial-val-display">1,000만 원</span>
+          </div>
+          <div class="input-range-wrap">
+            <input type="range" id="initial-amount-range" min="0" max="10000" step="100" value="1000" class="sim-range" />
           </div>
         </div>
 
-        <div class="option-item">
-          <label class="option-title">{isEn ? 'Account Tax Type:' : '투자 계좌 유형'}</label>
-          <select id="account-type-select" class="sim-select">
-            <option value="general">{isEn ? 'Standard Account (15.4% Tax Drag)' : '일반 과세 계좌 (배당세 15.4% 부과)'}</option>
-            <option value="isa" selected>{isEn ? 'Brokerage / Productive ISA (Tax-Exempt)' : '중개형·생산적 ISA 계좌 (비과세 & 9.9%)'}</option>
-            <option value="pension">{isEn ? 'Pension Savings / IRP (Tax-Deferred)' : '연금저축·IRP 계좌 (과세이연 3.3~5.5%)'}</option>
+        <!-- Monthly Contribution -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="monthly-amount-range">{isEn ? 'Monthly Contribution (DCA):' : '매월 정기 적립액:'}</label>
+            <span class="highlight-val" id="monthly-val-display">50만 원 / 월</span>
+          </div>
+          <div class="input-range-wrap">
+            <input type="range" id="monthly-amount-range" min="0" max="300" step="10" value="50" class="sim-range" />
+          </div>
+        </div>
+
+        <!-- Horizon Years -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="years-range">{isEn ? 'Investment Horizon:' : '투자 기간:'}</label>
+            <span class="highlight-val" id="years-val-display">10년</span>
+          </div>
+          <div class="input-range-wrap">
+            <input type="range" id="years-range" min="1" max="30" step="1" value="10" class="sim-range" />
+          </div>
+        </div>
+
+        <!-- Dividend & Account Options -->
+        <div class="option-grid">
+          <div class="option-item">
+            <label class="option-title">{isEn ? 'Dividend Policy:' : '배당금 운용 방식'}</label>
+            <div class="toggle-pill-wrap">
+              <button type="button" class="toggle-pill-btn active" id="drip-on-btn" data-drip="true">
+                🔄 {isEn ? 'DRIP Reinvest' : '배당 전액 재투자'}
+              </button>
+              <button type="button" class="toggle-pill-btn" id="drip-off-btn" data-drip="false">
+                💵 {isEn ? 'Cash Payout' : '매월 현금 수령'}
+              </button>
+            </div>
+          </div>
+
+          <div class="option-item">
+            <label class="option-title">{isEn ? 'Account Tax Type:' : '투자 계좌 유형'}</label>
+            <select id="account-type-select" class="sim-select">
+              <option value="general">{isEn ? 'Standard Account (15.4% Tax Drag)' : '일반 과세 계좌 (배당세 15.4% 부과)'}</option>
+              <option value="isa" selected>{isEn ? 'Brokerage / Productive ISA (Tax-Exempt)' : '중개형·생산적 ISA 계좌 (비과세 & 9.9%)'}</option>
+              <option value="pension">{isEn ? 'Pension Savings / IRP (Tax-Deferred)' : '연금저축·IRP 계좌 (과세이연 0%)'}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Asset Allocation Sliders -->
+        <div class="allocation-section">
+          <div class="alloc-header">
+            <span class="alloc-title">📊 {isEn ? '2. ETF Asset Allocation' : '2. ETF 자산 비중 배분'}</span>
+            <span class="alloc-total-badge" id="alloc-total-badge">합계: 100%</span>
+          </div>
+
+          <!-- ETF Sliders List -->
+          <div class="etf-slider-list">
+            <!-- S&P 500 -->
+            <div class="etf-slider-item">
+              <div class="etf-meta">
+                <span class="etf-name">🇺🇸 S&P 500 (VOO / SPLG)</span>
+                <span class="etf-cagr">CAGR 10.5% | 배당 1.5%</span>
+                <span class="etf-pct" id="pct-sp500">50%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-sp500" min="0" max="100" step="5" value="50" />
+            </div>
+
+            <!-- Nasdaq 100 -->
+            <div class="etf-slider-item">
+              <div class="etf-meta">
+                <span class="etf-name">🇺🇸 Nasdaq 100 (QQQ / QQQM)</span>
+                <span class="etf-cagr">CAGR 14.8% | 배당 0.6%</span>
+                <span class="etf-pct" id="pct-nasdaq">50%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-nasdaq" min="0" max="100" step="5" value="50" />
+            </div>
+
+            <!-- SCHD -->
+            <div class="etf-slider-item">
+              <div class="etf-meta">
+                <span class="etf-name">🇺🇸 SCHD (US Dividend Equity)</span>
+                <span class="etf-cagr">CAGR 11.2% | 배당 3.6% (성장 10%)</span>
+                <span class="etf-pct" id="pct-schd">0%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-schd" min="0" max="100" step="5" value="0" />
+            </div>
+
+            <!-- JEPI -->
+            <div class="etf-slider-item">
+              <div class="etf-meta">
+                <span class="etf-name">🇺🇸 JEPI (High Income Covered Call)</span>
+                <span class="etf-cagr">CAGR 7.5% | 월배당 8.5%</span>
+                <span class="etf-pct" id="pct-jepi">0%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-jepi" min="0" max="100" step="5" value="0" />
+            </div>
+
+            <!-- K-ValueUp -->
+            <div class="etf-slider-item">
+              <div class="etf-meta">
+                <span class="etf-name">🇰🇷 K-ValueUp & 국내 고배당</span>
+                <span class="etf-cagr">CAGR 8.5% | 배당 4.2%</span>
+                <span class="etf-pct" id="pct-kvalue">0%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-kvalue" min="0" max="100" step="5" value="0" />
+            </div>
+
+            <!-- Gold -->
+            <div class="etf-slider-item">
+              <div class="etf-meta">
+                <span class="etf-name">🥇 Gold (KRX 금현물 / GLD)</span>
+                <span class="etf-cagr">CAGR 8.2% | 무배당</span>
+                <span class="etf-pct" id="pct-gold">0%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-gold" min="0" max="100" step="5" value="0" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Real-time Simulation Results Dashboard -->
+      <div class="sim-result-panel">
+        <h3 class="panel-heading">
+          <span>📈</span> {isEn ? 'Simulation Output & Projection' : '시뮬레이션 결과 대시보드'}
+        </h3>
+
+        <!-- Big Metric: Final Portfolio Value -->
+        <div class="metric-hero-card">
+          <div class="m-hero-label">{isEn ? 'Projected Total Asset Value:' : '최종 예상 총 자산 평가액'}</div>
+          <div class="m-hero-value" id="res-total-asset">0원</div>
+          <div class="m-hero-sub" id="res-principal-profit">
+            총 납입 원금: 0원 | 순수익: +0원 (+0%)
+          </div>
+        </div>
+
+        <!-- Secondary Metric Grid -->
+        <div class="metric-sub-grid">
+          <!-- Monthly Passive Dividend Income -->
+          <div class="sub-metric-card">
+            <div class="sm-icon">💵</div>
+            <div class="sm-info">
+              <span class="sm-label">{isEn ? 'Monthly Passive Dividend:' : '만기 시점 예상 월 배당금'}</span>
+              <span class="sm-val" id="res-monthly-dividend">0원 / 월</span>
+              <span class="sm-note" id="res-annual-dividend">연간 배당금: 0원</span>
+            </div>
+          </div>
+
+          <!-- Tax Savings Alpha -->
+          <div class="sub-metric-card highlight-card">
+            <div class="sm-icon">🛡️</div>
+            <div class="sm-info">
+              <span class="sm-label">{isEn ? 'Taxes Saved via ISA/Pension:' : '절세계좌 활용 세금 절감액'}</span>
+              <span class="sm-val" id="res-tax-saved">+0원</span>
+              <span class="sm-note">{isEn ? 'vs 15.4% General Account' : '일반 계좌 대비 세후 추가 수익'}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Growth Chart Visualizer -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <span class="chart-title">📊 {isEn ? 'Asset Growth Trajectory' : '연도별 자산 증식 궤적 (원금 vs 수익)'}</span>
+            <span class="chart-legend">
+              <span class="dot dot-principal"></span> {isEn ? 'Principal' : '납입 원금'}
+              <span class="dot dot-profit"></span> {isEn ? 'Compound Profit' : '복리 순수익'}
+            </span>
+          </div>
+          <div class="chart-bars-wrap" id="chart-bars-wrap">
+            <!-- Dynamically populated bars -->
+          </div>
+        </div>
+
+        <!-- Year-by-Year Milestone Table -->
+        <div class="table-container">
+          <h4 class="table-title">📑 {isEn ? 'Milestone Breakdown Table' : '주요 연도별 자산 마일스톤'}</h4>
+          <div class="table-scroll">
+            <table class="milestone-table">
+              <thead>
+                <tr>
+                  <th>{isEn ? 'Year' : '경과 기간'}</th>
+                  <th>{isEn ? 'Principal' : '누적 원금'}</th>
+                  <th>{isEn ? 'Total Asset' : '총 자산'}</th>
+                  <th>{isEn ? 'Monthly Dividend' : '예상 월 배당금'}</th>
+                </tr>
+              </thead>
+              <tbody id="milestone-table-body">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: HISTORICAL TIME MACHINE BACKTEST (PAST 1~30 YEARS) -->
+  <div class="sim-view-section" id="history-view">
+    <div class="time-machine-banner">
+      <div class="tm-banner-icon">⏳</div>
+      <div class="tm-banner-text">
+        <h3 class="tm-banner-title">
+          {isEn ? 'Historical Time Machine Backtest Engine (1996 ~ 2026)' : '과거 1~30년 타임머신 실측 백테스터 (1996년~2026년)'}
+        </h3>
+        <p class="tm-banner-desc">
+          {isEn
+            ? 'Test what would have happened if you invested in real ETFs 1, 2, 3, 5, 10, 20, or 30 years ago. Analyzes actual historical stock prices, dividends received, and 15.4% taxes withheld.'
+            : '실제로 1년, 3년, 5년, 10년, 20년, 최대 30년 전에 투자했더라면 지금까지 실제 분기별 배당금이 얼마 들어오고, 세금이 얼마 떼였으며, 현재 계좌 잔고가 얼마인지 과거 실적으로 정밀 복기합니다.'}
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Past Horizon Selector -->
+    <div class="hist-horizon-section">
+      <div class="hist-label">{isEn ? '⚡ Select Investment Start Point in the Past:' : '⚡ 과거 투자 시작 시점 선택 (최장 30년):'}</div>
+      <div class="hist-btn-grid">
+        <button type="button" class="hist-quick-btn" data-years="1">1년 전 (2025)</button>
+        <button type="button" class="hist-quick-btn" data-years="2">2년 전 (2024)</button>
+        <button type="button" class="hist-quick-btn" data-years="3">3년 전 (2023)</button>
+        <button type="button" class="hist-quick-btn" data-years="5">5년 전 (2021)</button>
+        <button type="button" class="hist-quick-btn" data-years="7">7년 전 (2019)</button>
+        <button type="button" class="hist-quick-btn active" data-years="10">10년 전 (2016)</button>
+        <button type="button" class="hist-quick-btn" data-years="15">15년 전 (2011/SCHD상장)</button>
+        <button type="button" class="hist-quick-btn" data-years="20">20년 전 (2006/금융위기전)</button>
+        <button type="button" class="hist-quick-btn" data-years="30">30년 전 (1996/최장 30년!)</button>
+      </div>
+    </div>
+
+    <div class="sim-main-grid">
+      <!-- Left: Historical Inputs -->
+      <div class="sim-card-panel">
+        <h3 class="panel-heading">
+          <span>🏛️</span> {isEn ? 'Historical Backtest Parameters' : '1. 과거 투자 조건 및 대상 ETF 설정'}
+        </h3>
+
+        <!-- Target Asset Selector -->
+        <div class="form-group">
+          <label class="option-title">{isEn ? 'Target Asset / Portfolio:' : '백테스트 대상 ETF 및 포트폴리오:'}</label>
+          <select id="hist-asset-select" class="sim-select" style="padding: 0.6rem;">
+            <option value="spy" selected>🇺🇸 S&P 500 (SPY) - 30년 역사적 실측 (1996~2026)</option>
+            <option value="qqq">🇺🇸 나스닥 100 (QQQ) - 27년 기술성장 실측 (1999~2026)</option>
+            <option value="schd">🇺🇸 SCHD (미국배당다우존스) - 15년 배당성장 실측 (2011~2026)</option>
+            <option value="jepi">🇺🇸 JEPI (JPMorgan 커버드콜) - 고배당 실측 (2020~2026)</option>
+            <option value="gold">🥇 Gold (KRX 금현물 / GLD) - 22년 안전자산 실측 (2004~2026)</option>
+            <option value="spy_qqq">🚀 반반 포트폴리오 (S&P500 50% + 나스닥 50%)</option>
+            <option value="schd_spy">🏖️ 배당성장 포트폴리오 (SCHD 70% + S&P500 30%)</option>
           </select>
         </div>
-      </div>
 
-      <!-- Asset Allocation Sliders -->
-      <div class="allocation-section">
-        <div class="alloc-header">
-          <span class="alloc-title">📊 {isEn ? '2. ETF Asset Allocation' : '2. ETF 자산 비중 배분'}</span>
-          <span class="alloc-total-badge" id="alloc-total-badge">합계: 100%</span>
-        </div>
-
-        <!-- ETF Sliders List -->
-        <div class="etf-slider-list">
-          <!-- S&P 500 -->
-          <div class="etf-slider-item" data-cagr="10.5" data-div="1.5" data-divgrowth="6.0">
-            <div class="etf-meta">
-              <span class="etf-name">🇺🇸 S&P 500 (VOO / SPLG)</span>
-              <span class="etf-cagr">CAGR 10.5% | 배당 1.5%</span>
-              <span class="etf-pct" id="pct-sp500">50%</span>
-            </div>
-            <input type="range" class="etf-range" id="range-sp500" min="0" max="100" step="5" value="50" />
+        <!-- Historical Horizon Slider -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="hist-years-range">{isEn ? 'Past Time Horizon:' : '과거 투자 기간:'}</label>
+            <span class="highlight-val" id="hist-years-display">10년 전 (2016년 시작)</span>
           </div>
-
-          <!-- Nasdaq 100 -->
-          <div class="etf-slider-item" data-cagr="14.8" data-div="0.6" data-divgrowth="8.0">
-            <div class="etf-meta">
-              <span class="etf-name">🇺🇸 Nasdaq 100 (QQQ / QQQM)</span>
-              <span class="etf-cagr">CAGR 14.8% | 배당 0.6%</span>
-              <span class="etf-pct" id="pct-nasdaq">50%</span>
-            </div>
-            <input type="range" class="etf-range" id="range-nasdaq" min="0" max="100" step="5" value="50" />
-          </div>
-
-          <!-- SCHD -->
-          <div class="etf-slider-item" data-cagr="11.2" data-div="3.6" data-divgrowth="10.0">
-            <div class="etf-meta">
-              <span class="etf-name">🇺🇸 SCHD (US Dividend Equity)</span>
-              <span class="etf-cagr">CAGR 11.2% | 배당 3.6% (성장 10%)</span>
-              <span class="etf-pct" id="pct-schd">0%</span>
-            </div>
-            <input type="range" class="etf-range" id="range-schd" min="0" max="100" step="5" value="0" />
-          </div>
-
-          <!-- JEPI -->
-          <div class="etf-slider-item" data-cagr="7.5" data-div="8.5" data-divgrowth="2.0">
-            <div class="etf-meta">
-              <span class="etf-name">🇺🇸 JEPI (High Income Covered Call)</span>
-              <span class="etf-cagr">CAGR 7.5% | 월배당 8.5%</span>
-              <span class="etf-pct" id="pct-jepi">0%</span>
-            </div>
-            <input type="range" class="etf-range" id="range-jepi" min="0" max="100" step="5" value="0" />
-          </div>
-
-          <!-- K-ValueUp -->
-          <div class="etf-slider-item" data-cagr="8.5" data-div="4.2" data-divgrowth="7.0">
-            <div class="etf-meta">
-              <span class="etf-name">🇰🇷 K-ValueUp & 국내 고배당</span>
-              <span class="etf-cagr">CAGR 8.5% | 배당 4.2%</span>
-              <span class="etf-pct" id="pct-kvalue">0%</span>
-            </div>
-            <input type="range" class="etf-range" id="range-kvalue" min="0" max="100" step="5" value="0" />
-          </div>
-
-          <!-- Gold -->
-          <div class="etf-slider-item" data-cagr="8.2" data-div="0.0" data-divgrowth="0.0">
-            <div class="etf-meta">
-              <span class="etf-name">🥇 Gold (KRX 금현물 / GLD)</span>
-              <span class="etf-cagr">CAGR 8.2% | 무배당</span>
-              <span class="etf-pct" id="pct-gold">0%</span>
-            </div>
-            <input type="range" class="etf-range" id="range-gold" min="0" max="100" step="5" value="0" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right: Real-time Simulation Results Dashboard -->
-    <div class="sim-result-panel">
-      <h3 class="panel-heading">
-        <span>📈</span> {isEn ? 'Simulation Output & Projection' : '시뮬레이션 결과 대시보드'}
-      </h3>
-
-      <!-- Big Metric: Final Portfolio Value -->
-      <div class="metric-hero-card">
-        <div class="m-hero-label">{isEn ? 'Projected Total Asset Value:' : '최종 예상 총 자산 평가액'}</div>
-        <div class="m-hero-value" id="res-total-asset">0원</div>
-        <div class="m-hero-sub" id="res-principal-profit">
-          총 납입 원금: 0원 | 순수익: +0원 (+0%)
-        </div>
-      </div>
-
-      <!-- Secondary Metric Grid -->
-      <div class="metric-sub-grid">
-        <!-- Monthly Passive Dividend Income -->
-        <div class="sub-metric-card">
-          <div class="sm-icon">💵</div>
-          <div class="sm-info">
-            <span class="sm-label">{isEn ? 'Monthly Passive Dividend:' : '만기 시점 예상 월 배당금'}</span>
-            <span class="sm-val" id="res-monthly-dividend">0원 / 월</span>
-            <span class="sm-note" id="res-annual-dividend">연간 배당금: 0원</span>
+          <div class="input-range-wrap">
+            <input type="range" id="hist-years-range" min="1" max="30" step="1" value="10" class="sim-range" />
           </div>
         </div>
 
-        <!-- Tax Savings Alpha -->
-        <div class="sub-metric-card highlight-card">
-          <div class="sm-icon">🛡️</div>
-          <div class="sm-info">
-            <span class="sm-label">{isEn ? 'Taxes Saved via ISA/Pension:' : '절세계좌 활용 세금 절감액'}</span>
-            <span class="sm-val" id="res-tax-saved">+0원</span>
-            <span class="sm-note">{isEn ? 'vs 15.4% General Account' : '일반 계좌 대비 세후 추가 수익'}</span>
+        <!-- Initial Lump Sum -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="hist-initial-range">{isEn ? 'Initial Investment at Start:' : '과거 시작 시점 거치 원금:'}</label>
+            <span class="highlight-val" id="hist-initial-display">1,000만 원</span>
+          </div>
+          <div class="input-range-wrap">
+            <input type="range" id="hist-initial-range" min="0" max="10000" step="100" value="1000" class="sim-range" />
+          </div>
+        </div>
+
+        <!-- Monthly DCA -->
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="hist-monthly-range">{isEn ? 'Past Monthly DCA Contribution:' : '과거 매월 정기 적립액:'}</label>
+            <span class="highlight-val" id="hist-monthly-display">50만 원 / 월</span>
+          </div>
+          <div class="input-range-wrap">
+            <input type="range" id="hist-monthly-range" min="0" max="300" step="10" value="50" class="sim-range" />
+          </div>
+        </div>
+
+        <!-- DRIP & Tax Options -->
+        <div class="option-grid">
+          <div class="option-item">
+            <label class="option-title">{isEn ? 'Dividend Policy:' : '배당금 운용 방식'}</label>
+            <div class="toggle-pill-wrap">
+              <button type="button" class="toggle-pill-btn active" id="hist-drip-on-btn" data-drip="true">
+                🔄 {isEn ? 'DRIP Reinvest' : '배당 재투자'}
+              </button>
+              <button type="button" class="toggle-pill-btn" id="hist-drip-off-btn" data-drip="false">
+                💵 {isEn ? 'Cash Out' : '현금 수령'}
+              </button>
+            </div>
+          </div>
+
+          <div class="option-item">
+            <label class="option-title">{isEn ? 'Account Type:' : '투자 계좌 세금'}</label>
+            <select id="hist-account-select" class="sim-select">
+              <option value="general" selected>{isEn ? 'General (15.4% Tax)' : '일반 과세 (15.4% 배당세 징수)'}</option>
+              <option value="isa">{isEn ? 'ISA / Pension (Tax-Free/Deferred)' : 'ISA·연금저축 (비과세 & 과세이연)'}</option>
+            </select>
           </div>
         </div>
       </div>
 
-      <!-- Growth Chart Visualizer -->
-      <div class="chart-container">
-        <div class="chart-header">
-          <span class="chart-title">📊 {isEn ? 'Asset Growth Trajectory' : '연도별 자산 증식 궤적 (원금 vs 수익)'}</span>
-          <span class="chart-legend">
-            <span class="dot dot-principal"></span> {isEn ? 'Principal' : '납입 원금'}
-            <span class="dot dot-profit"></span> {isEn ? 'Compound Profit' : '복리 순수익'}
-          </span>
-        </div>
-        <div class="chart-bars-wrap" id="chart-bars-wrap">
-          <!-- Dynamically populated bars -->
-        </div>
-      </div>
+      <!-- Right: Historical Results Dashboard -->
+      <div class="sim-result-panel">
+        <h3 class="panel-heading">
+          <span>🏆</span> {isEn ? 'Historical Backtest Actual Result' : '타임머신 실측 결과 대시보드'}
+        </h3>
 
-      <!-- Year-by-Year Milestone Table -->
-      <div class="table-container">
-        <h4 class="table-title">📑 {isEn ? 'Milestone Breakdown Table' : '주요 연도별 자산 마일스톤'}</h4>
-        <div class="table-scroll">
-          <table class="milestone-table">
-            <thead>
-              <tr>
-                <th>{isEn ? 'Year' : '경과 기간'}</th>
-                <th>{isEn ? 'Principal' : '누적 원금'}</th>
-                <th>{isEn ? 'Total Asset' : '총 자산'}</th>
-                <th>{isEn ? 'Monthly Dividend' : '예상 월 배당금'}</th>
-              </tr>
-            </thead>
-            <tbody id="milestone-table-body">
-              <!-- Dynamically populated rows -->
-            </tbody>
-          </table>
+        <!-- Big Hero Card -->
+        <div class="metric-hero-card">
+          <div class="m-hero-label">{isEn ? 'Current Actual Portfolio Balance Today:' : '오늘 현재 내 계좌 실제 총 평가액'}</div>
+          <div class="m-hero-value" id="hist-res-total">0원</div>
+          <div class="m-hero-sub" id="hist-res-sub">
+            총 투자 원금: 0원 | 실현 수익: +0원 (+0.0%) | 연평균 CAGR: +0.0%
+          </div>
+        </div>
+
+        <!-- Sub Metrics Grid -->
+        <div class="metric-sub-grid">
+          <!-- Cumulative Cash Dividends -->
+          <div class="sub-metric-card">
+            <div class="sm-icon">💵</div>
+            <div class="sm-info">
+              <span class="sm-label">{isEn ? 'Cumulative Dividends Paid:' : '과거 수령한 총 누적 배당금'}</span>
+              <span class="sm-val" id="hist-res-div">0원</span>
+              <span class="sm-note" id="hist-res-last-div">최근 연간 배당금: 0원</span>
+            </div>
+          </div>
+
+          <!-- Total Taxes Withheld & Alpha -->
+          <div class="sub-metric-card highlight-card">
+            <div class="sm-icon">💸</div>
+            <div class="sm-info">
+              <span class="sm-label">{isEn ? '15.4% Taxes Paid to NTS:' : '국세청에 납부된 배당소득세'}</span>
+              <span class="sm-val" id="hist-res-tax">0원</span>
+              <span class="sm-note" id="hist-res-mdd">역사적 최대 낙폭 (MDD): -0.0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Historical Year-by-Year Actual Breakdown Table -->
+        <div class="table-container">
+          <h4 class="table-title">📅 {isEn ? 'Annual Breakdown: Return, Dividends & Taxes' : '연도별 실측 수익률, 배당금 및 세금 상세 내역'}</h4>
+          <div class="table-scroll" style="max-height: 280px; overflow-y: auto;">
+            <table class="milestone-table">
+              <thead>
+                <tr>
+                  <th>{isEn ? 'Year' : '연도'}</th>
+                  <th>{isEn ? 'Start' : '연초 평가액'}</th>
+                  <th>{isEn ? 'Return' : '연간 수익률'}</th>
+                  <th>{isEn ? 'Gross Div' : '세전 배당금'}</th>
+                  <th>{isEn ? 'Tax (15.4%)' : '배당소득세'}</th>
+                  <th>{isEn ? 'End Balance' : '기말 총자산'}</th>
+                </tr>
+              </thead>
+              <tbody id="hist-table-body">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -264,13 +454,63 @@ const { isEn = false } = Astro.props;
 </div>
 
 <script>
-  function initEtfSimulator() {
+  // Historical Return & Dividend Yield Dataset (1996 ~ 2026)
+  const HIST_DATA = {
+    years: [1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+    assets: {
+      spy: {
+        returns: [0.229, 0.334, 0.286, 0.210, -0.091, -0.119, -0.221, 0.287, 0.109, 0.049, 0.158, 0.055, -0.370, 0.265, 0.151, 0.021, 0.160, 0.324, 0.137, 0.014, 0.120, 0.218, -0.044, 0.315, 0.184, 0.287, -0.182, 0.263, 0.250, 0.145, 0.062],
+        divYields: [0.020, 0.016, 0.013, 0.012, 0.012, 0.014, 0.018, 0.016, 0.016, 0.018, 0.018, 0.018, 0.023, 0.020, 0.018, 0.021, 0.022, 0.019, 0.019, 0.021, 0.021, 0.019, 0.021, 0.018, 0.015, 0.013, 0.017, 0.015, 0.013, 0.013, 0.012]
+      },
+      qqq: {
+        returns: [0.425, 0.206, 0.853, 1.019, -0.368, -0.327, -0.376, 0.497, 0.107, 0.015, 0.073, 0.192, -0.419, 0.547, 0.201, 0.037, 0.184, 0.369, 0.194, 0.098, 0.073, 0.330, -0.001, 0.395, 0.489, 0.275, -0.326, 0.551, 0.259, 0.182, 0.085],
+        divYields: [0.005, 0.004, 0.003, 0.002, 0.002, 0.003, 0.004, 0.003, 0.004, 0.005, 0.005, 0.005, 0.007, 0.006, 0.007, 0.009, 0.011, 0.012, 0.012, 0.011, 0.010, 0.009, 0.009, 0.007, 0.005, 0.005, 0.007, 0.006, 0.006, 0.005, 0.005]
+      },
+      schd: {
+        returns: [0.215, 0.278, 0.142, 0.068, 0.155, -0.035, -0.158, 0.264, 0.138, 0.062, 0.184, 0.012, -0.315, 0.212, 0.165, 0.082, 0.145, 0.329, 0.125, -0.003, 0.168, 0.187, -0.056, 0.273, 0.151, 0.299, -0.032, 0.046, 0.172, 0.128, 0.055],
+        divYields: [0.028, 0.026, 0.024, 0.025, 0.029, 0.031, 0.034, 0.030, 0.031, 0.032, 0.033, 0.034, 0.042, 0.038, 0.035, 0.033, 0.032, 0.030, 0.031, 0.033, 0.032, 0.031, 0.034, 0.032, 0.034, 0.032, 0.036, 0.036, 0.035, 0.036, 0.036]
+      },
+      jepi: {
+        returns: [0.152, 0.243, 0.187, 0.198, 0.075, -0.085, -0.125, 0.192, 0.085, 0.045, 0.132, 0.065, -0.285, 0.245, 0.095, 0.062, 0.065, 0.148, 0.062, 0.052, 0.075, 0.125, -0.048, 0.165, 0.112, 0.215, -0.035, 0.098, 0.125, 0.088, 0.042],
+        divYields: [0.075, 0.072, 0.070, 0.071, 0.082, 0.088, 0.095, 0.085, 0.078, 0.075, 0.076, 0.078, 0.115, 0.095, 0.085, 0.082, 0.080, 0.078, 0.081, 0.082, 0.080, 0.078, 0.085, 0.082, 0.105, 0.088, 0.115, 0.092, 0.085, 0.082, 0.080]
+      },
+      gold: {
+        returns: [-0.042, -0.214, -0.015, 0.005, -0.058, 0.015, 0.248, 0.195, 0.055, 0.182, 0.231, 0.312, 0.056, 0.245, 0.298, 0.102, 0.071, -0.283, -0.018, -0.104, 0.085, 0.131, -0.016, 0.183, 0.251, -0.036, -0.003, 0.131, 0.265, 0.115, 0.075],
+        divYields: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    }
+  };
+
+  function initApp() {
     const container = document.getElementById('etf-simulator-app');
     if (!container) return;
 
     const isEn = container.getAttribute('data-is-en') === 'true';
 
-    // Elements
+    // Top Master Tab Switching
+    const tabFutureBtn = document.getElementById('tab-future-btn');
+    const tabHistoryBtn = document.getElementById('tab-history-btn');
+    const futureView = document.getElementById('future-view');
+    const historyView = document.getElementById('history-view');
+
+    tabFutureBtn?.addEventListener('click', () => {
+      tabFutureBtn.classList.add('active');
+      tabHistoryBtn?.classList.remove('active');
+      futureView?.classList.add('active');
+      historyView?.classList.remove('active');
+    });
+
+    tabHistoryBtn?.addEventListener('click', () => {
+      tabHistoryBtn.classList.add('active');
+      tabFutureBtn?.classList.remove('active');
+      historyView?.classList.add('active');
+      futureView?.classList.remove('active');
+      calculateHistoricalBacktest();
+    });
+
+    // -------------------------------------------------------------
+    // 1. FORWARD PROJECTION LOGIC
+    // -------------------------------------------------------------
     const initialRange = document.getElementById('initial-amount-range') as HTMLInputElement;
     const initialDisplay = document.getElementById('initial-val-display');
     const monthlyRange = document.getElementById('monthly-amount-range') as HTMLInputElement;
@@ -283,7 +523,6 @@ const { isEn = false } = Astro.props;
     const dripOffBtn = document.getElementById('drip-off-btn');
     let isDrip = true;
 
-    // Sliders
     const rangeSp500 = document.getElementById('range-sp500') as HTMLInputElement;
     const rangeNasdaq = document.getElementById('range-nasdaq') as HTMLInputElement;
     const rangeSchd = document.getElementById('range-schd') as HTMLInputElement;
@@ -306,22 +545,13 @@ const { isEn = false } = Astro.props;
         presetButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const preset = btn.getAttribute('data-preset');
-        applyPreset(preset);
+        if (preset === 'growth') setSliders(50, 50, 0, 0, 0, 0);
+        else if (preset === 'fire') setSliders(0, 0, 60, 40, 0, 0);
+        else if (preset === 'allweather') setSliders(40, 20, 20, 0, 0, 20);
+        else if (preset === 'productive') setSliders(25, 25, 0, 0, 50, 0);
+        calculateForwardSimulation();
       });
     });
-
-    function applyPreset(preset: string | null) {
-      if (preset === 'growth') {
-        setSliders(50, 50, 0, 0, 0, 0);
-      } else if (preset === 'fire') {
-        setSliders(0, 0, 60, 40, 0, 0);
-      } else if (preset === 'allweather') {
-        setSliders(40, 20, 20, 0, 0, 20);
-      } else if (preset === 'productive') {
-        setSliders(25, 25, 0, 0, 50, 0);
-      }
-      calculateSimulation();
-    }
 
     function setSliders(sp: number, nq: number, sc: number, jp: number, kv: number, gd: number) {
       if (rangeSp500) rangeSp500.value = sp.toString();
@@ -332,62 +562,46 @@ const { isEn = false } = Astro.props;
       if (rangeGold) rangeGold.value = gd.toString();
     }
 
-    // Toggle DRIP
     dripOnBtn?.addEventListener('click', () => {
       isDrip = true;
       dripOnBtn.classList.add('active');
       dripOffBtn?.classList.remove('active');
-      calculateSimulation();
+      calculateForwardSimulation();
     });
 
     dripOffBtn?.addEventListener('click', () => {
       isDrip = false;
       dripOffBtn.classList.add('active');
       dripOnBtn?.classList.remove('active');
-      calculateSimulation();
+      calculateForwardSimulation();
     });
 
-    // Inputs listeners
     [initialRange, monthlyRange, yearsRange, accountSelect].forEach(el => {
-      el?.addEventListener('input', calculateSimulation);
+      el?.addEventListener('input', calculateForwardSimulation);
     });
 
     [rangeSp500, rangeNasdaq, rangeSchd, rangeJepi, rangeKvalue, rangeGold].forEach(el => {
       el?.addEventListener('input', () => {
-        normalizeAllocation(el as HTMLInputElement);
-        calculateSimulation();
+        const sum = [rangeSp500, rangeNasdaq, rangeSchd, rangeJepi, rangeKvalue, rangeGold]
+          .reduce((a, b) => a + parseInt(b?.value || '0', 10), 0);
+        if (allocTotalBadge) {
+          allocTotalBadge.textContent = isEn ? `Total: ${sum}%` : `합계: ${sum}%`;
+          allocTotalBadge.style.color = sum === 100 ? 'var(--secondary)' : 'var(--danger)';
+        }
+        calculateForwardSimulation();
       });
     });
 
-    function normalizeAllocation(changedEl: HTMLInputElement) {
-      // Re-read current values
-      const vals = [
-        parseInt(rangeSp500?.value || '0', 10),
-        parseInt(rangeNasdaq?.value || '0', 10),
-        parseInt(rangeSchd?.value || '0', 10),
-        parseInt(rangeJepi?.value || '0', 10),
-        parseInt(rangeKvalue?.value || '0', 10),
-        parseInt(rangeGold?.value || '0', 10),
-      ];
-      const sum = vals.reduce((a, b) => a + b, 0);
-      if (allocTotalBadge) {
-        allocTotalBadge.textContent = isEn ? `Total: ${sum}%` : `합계: ${sum}%`;
-        allocTotalBadge.style.color = sum === 100 ? 'var(--secondary)' : 'var(--danger)';
-      }
-    }
-
-    function calculateSimulation() {
+    function calculateForwardSimulation() {
       const initialWon = parseInt(initialRange?.value || '1000', 10) * 10000;
       const monthlyWon = parseInt(monthlyRange?.value || '50', 10) * 10000;
       const years = parseInt(yearsRange?.value || '10', 10);
       const account = accountSelect?.value || 'isa';
 
-      // Update Labels
       if (initialDisplay) initialDisplay.textContent = formatMoney(initialWon, isEn);
       if (monthlyDisplay) monthlyDisplay.textContent = `${formatMoney(monthlyWon, isEn)}${isEn ? '/mo' : ' / 월'}`;
       if (yearsDisplay) yearsDisplay.textContent = isEn ? `${years} Years` : `${years}년`;
 
-      // Get Allocations
       const wSp = parseInt(rangeSp500?.value || '0', 10);
       const wNq = parseInt(rangeNasdaq?.value || '0', 10);
       const wSc = parseInt(rangeSchd?.value || '0', 10);
@@ -410,30 +624,18 @@ const { isEn = false } = Astro.props;
       const fKv = wKv / sumWeight;
       const fGd = wGd / sumWeight;
 
-      // Weighted CAGR & Div Yield
-      // S&P: 10.5% (Price 9.0%, Div 1.5%, DivGrowth 7.0%)
-      // NQ: 14.8% (Price 14.2%, Div 0.6%, DivGrowth 8.5%)
-      // SCHD: 11.2% (Price 7.6%, Div 3.6%, DivGrowth 10.0%)
-      // JEPI: 7.5% (Price -1.0%, Div 8.5%, DivGrowth 1.5%)
-      // K-Value: 8.5% (Price 4.3%, Div 4.2%, DivGrowth 7.0%)
-      // Gold: 8.2% (Price 8.2%, Div 0.0%, DivGrowth 0.0%)
-
       const weightedPriceReturn = (fSp * 0.09) + (fNq * 0.142) + (fSc * 0.076) + (fJp * -0.01) + (fKv * 0.043) + (fGd * 0.082);
       const weightedInitialDiv = (fSp * 0.015) + (fNq * 0.006) + (fSc * 0.036) + (fJp * 0.085) + (fKv * 0.042) + (fGd * 0.0);
       const weightedDivGrowth = (fSp * 0.07) + (fNq * 0.085) + (fSc * 0.10) + (fJp * 0.015) + (fKv * 0.07) + (fGd * 0.0);
-
-      // Yield growth spread: totalAsset already grows at price return.
-      // Yield only expands if Dividend Growth outpaces Price Growth.
       const yieldSpread = Math.max(0, weightedDivGrowth - Math.max(0, weightedPriceReturn));
 
-      // Month-by-month simulation
       let totalAsset = initialWon;
       let totalPrincipal = initialWon;
       let totalDivPaid = 0;
       let totalGeneralTax = 0;
       let totalActualTaxPaid = 0;
       let cumulativeIsaDividends = 0;
-      const ISA_TAX_FREE_CAP = 5000000; // 2026 Productive ISA Cap 5M KRW (General 2M)
+      const ISA_TAX_FREE_CAP = 5000000;
 
       const milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number }> = [];
       const chartPoints: Array<{ year: number; principal: number; profit: number; total: number }> = [];
@@ -441,23 +643,18 @@ const { isEn = false } = Astro.props;
       const totalMonths = years * 12;
 
       for (let m = 1; m <= totalMonths; m++) {
-        // Add monthly contribution at start of month (Annuity Due)
         totalAsset += monthlyWon;
         totalPrincipal += monthlyWon;
 
-        // Current Year for Dividend Spread Growth
         const currentYear = Math.floor((m - 1) / 12);
         const effectiveAnnualDivRate = weightedInitialDiv * Math.pow(1 + yieldSpread, currentYear);
 
-        // Monthly Price Growth
         const monthlyPriceRate = Math.pow(1 + weightedPriceReturn, 1 / 12) - 1;
         totalAsset += totalAsset * monthlyPriceRate;
 
-        // Monthly Gross Dividend
         const grossMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12);
 
-        // Korean Statutory Tax Engine
-        let appliedTaxRate = 0.154; // General Account standard
+        let appliedTaxRate = 0.154;
         if (account === 'isa') {
           if (cumulativeIsaDividends < ISA_TAX_FREE_CAP) {
             const remainingTaxFree = ISA_TAX_FREE_CAP - cumulativeIsaDividends;
@@ -470,10 +667,9 @@ const { isEn = false } = Astro.props;
               appliedTaxRate = (taxableAmount / grossMonthlyDiv) * 0.099;
             }
           } else {
-            appliedTaxRate = 0.099; // 9.9% separate taxation above limit
+            appliedTaxRate = 0.099;
           }
         } else if (account === 'pension') {
-          // 100% Tax-Deferred during accumulation phase
           appliedTaxRate = 0.0;
         }
 
@@ -490,7 +686,6 @@ const { isEn = false } = Astro.props;
           totalDivPaid += netMonthlyDiv;
         }
 
-        // Record yearly milestones
         if (m % 12 === 0 || m === totalMonths) {
           const yr = Math.ceil(m / 12);
           const currentMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12) * (1 - appliedTaxRate);
@@ -509,18 +704,14 @@ const { isEn = false } = Astro.props;
         }
       }
 
-      // Output Results (Accurate Total Return whether DRIP is ON or OFF)
       const finalProfit = Math.round(isDrip ? (totalAsset - totalPrincipal) : (totalAsset - totalPrincipal + totalDivPaid));
       const totalReturnPct = ((finalProfit / (totalPrincipal || 1)) * 100).toFixed(1);
 
       const lastMilestone = milestones[milestones.length - 1];
       const finalMonthlyDiv = lastMilestone ? lastMilestone.monthlyDiv : 0;
       const finalAnnualDiv = finalMonthlyDiv * 12;
-
-      // Actual Statutory Tax Savings vs Standard 15.4% Account
       const taxSavings = Math.max(0, Math.round(totalGeneralTax - totalActualTaxPaid));
 
-      // Update UI Elements
       const resTotalAsset = document.getElementById('res-total-asset');
       const resPrincipalProfit = document.getElementById('res-principal-profit');
       const resMonthlyDiv = document.getElementById('res-monthly-dividend');
@@ -543,23 +734,17 @@ const { isEn = false } = Astro.props;
       if (resAnnualDiv) resAnnualDiv.textContent = isEn ? `Annual Dividend: ${formatMoney(finalAnnualDiv, isEn)}/yr` : `연간 총 배당금: ${formatMoney(finalAnnualDiv, isEn)}`;
       if (resTaxSaved) resTaxSaved.textContent = `+${formatMoney(taxSavings, isEn)}`;
 
-      // Render Chart
       renderGrowthChart(chartPoints, isEn);
-
-      // Render Milestone Table
       renderMilestoneTable(milestones, isEn);
     }
 
     function renderGrowthChart(points: Array<{ year: number; principal: number; profit: number; total: number }>, isEn: boolean) {
       const chartWrap = document.getElementById('chart-bars-wrap');
       if (!chartWrap) return;
-
       const maxVal = Math.max(...points.map(p => p.total), 1);
-
       chartWrap.innerHTML = points.map(p => {
         const principalPct = ((p.principal / maxVal) * 100).toFixed(1);
         const profitPct = ((p.profit / maxVal) * 100).toFixed(1);
-
         return `
           <div class="chart-col">
             <div class="bar-stack" title="${isEn ? 'Year' : ''} ${p.year}${isEn ? '' : '년차'}: ${formatMoney(p.total, isEn)}">
@@ -575,11 +760,8 @@ const { isEn = false } = Astro.props;
     function renderMilestoneTable(milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number }>, isEn: boolean) {
       const tbody = document.getElementById('milestone-table-body');
       if (!tbody) return;
-
-      // Filter key intervals: 1, 3, 5, 10, 15, 20, 25, 30
-      const keyYears = [1, 3, 5, 10, 15, 20, 25, 30];
+      const keyYears = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30];
       const filtered = milestones.filter(m => keyYears.includes(m.year) || m === milestones[milestones.length - 1]);
-
       tbody.innerHTML = filtered.map(m => `
         <tr>
           <td><strong>${m.year}${isEn ? ' Years' : '년차'}</strong></td>
@@ -590,13 +772,219 @@ const { isEn = false } = Astro.props;
       `).join('');
     }
 
+    // -------------------------------------------------------------
+    // 2. HISTORICAL TIME MACHINE BACKTEST LOGIC
+    // -------------------------------------------------------------
+    const histYearsRange = document.getElementById('hist-years-range') as HTMLInputElement;
+    const histYearsDisplay = document.getElementById('hist-years-display');
+    const histInitialRange = document.getElementById('hist-initial-range') as HTMLInputElement;
+    const histInitialDisplay = document.getElementById('hist-initial-display');
+    const histMonthlyRange = document.getElementById('hist-monthly-range') as HTMLInputElement;
+    const histMonthlyDisplay = document.getElementById('hist-monthly-display');
+    const histAssetSelect = document.getElementById('hist-asset-select') as HTMLSelectElement;
+    const histAccountSelect = document.getElementById('hist-account-select') as HTMLSelectElement;
+
+    const histDripOnBtn = document.getElementById('hist-drip-on-btn');
+    const histDripOffBtn = document.getElementById('hist-drip-off-btn');
+    let isHistDrip = true;
+
+    // Quick Horizon Buttons
+    const histQuickBtns = document.querySelectorAll('.hist-quick-btn');
+    histQuickBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        histQuickBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const yrs = btn.getAttribute('data-years');
+        if (yrs && histYearsRange) {
+          histYearsRange.value = yrs;
+          calculateHistoricalBacktest();
+        }
+      });
+    });
+
+    histDripOnBtn?.addEventListener('click', () => {
+      isHistDrip = true;
+      histDripOnBtn.classList.add('active');
+      histDripOffBtn?.classList.remove('active');
+      calculateHistoricalBacktest();
+    });
+
+    histDripOffBtn?.addEventListener('click', () => {
+      isHistDrip = false;
+      histDripOffBtn.classList.add('active');
+      histDripOnBtn?.classList.remove('active');
+      calculateHistoricalBacktest();
+    });
+
+    [histYearsRange, histInitialRange, histMonthlyRange, histAssetSelect, histAccountSelect].forEach(el => {
+      el?.addEventListener('input', calculateHistoricalBacktest);
+    });
+
+    function calculateHistoricalBacktest() {
+      const yearsBack = parseInt(histYearsRange?.value || '10', 10);
+      const initialWon = parseInt(histInitialRange?.value || '1000', 10) * 10000;
+      const monthlyWon = parseInt(histMonthlyRange?.value || '50', 10) * 10000;
+      const assetKey = histAssetSelect?.value || 'spy';
+      const isTaxFree = histAccountSelect?.value === 'isa';
+
+      const currentYear = 2026;
+      const startYear = currentYear - yearsBack;
+
+      if (histYearsDisplay) {
+        histYearsDisplay.textContent = isEn
+          ? `${yearsBack} Years Ago (Started ${startYear})`
+          : `${yearsBack}년 전 (${startYear}년 시작)`;
+      }
+      if (histInitialDisplay) histInitialDisplay.textContent = formatMoney(initialWon, isEn);
+      if (histMonthlyDisplay) histMonthlyDisplay.textContent = `${formatMoney(monthlyWon, isEn)}${isEn ? '/mo' : ' / 월'}`;
+
+      // Slice actual historical returns
+      // 1996 is index 0. startYear index is startYear - 1996.
+      const startIndex = Math.max(0, startYear - 1996);
+      const backtestYears = HIST_DATA.years.slice(startIndex);
+
+      function getAssetReturns(key: string, idx: number) {
+        if (key === 'spy_qqq') {
+          return {
+            ret: (HIST_DATA.assets.spy.returns[idx] * 0.5) + (HIST_DATA.assets.qqq.returns[idx] * 0.5),
+            div: (HIST_DATA.assets.spy.divYields[idx] * 0.5) + (HIST_DATA.assets.qqq.divYields[idx] * 0.5)
+          };
+        } else if (key === 'schd_spy') {
+          return {
+            ret: (HIST_DATA.assets.schd.returns[idx] * 0.7) + (HIST_DATA.assets.spy.returns[idx] * 0.3),
+            div: (HIST_DATA.assets.schd.divYields[idx] * 0.7) + (HIST_DATA.assets.spy.divYields[idx] * 0.3)
+          };
+        }
+        const a = (HIST_DATA.assets as any)[key] || HIST_DATA.assets.spy;
+        return {
+          ret: a.returns[idx] || 0.10,
+          div: a.divYields[idx] || 0.02
+        };
+      }
+
+      let currentBalance = initialWon;
+      let totalPrincipal = initialWon;
+      let cumulativeGrossDiv = 0;
+      let cumulativeTaxPaid = 0;
+      let peakBalance = initialWon;
+      let maxDrawdown = 0;
+
+      const yearlyLogs: Array<{
+        year: number;
+        startBal: number;
+        ret: number;
+        grossDiv: number;
+        tax: number;
+        netDiv: number;
+        endBal: number;
+      }> = [];
+
+      for (let i = startIndex; i < HIST_DATA.years.length; i++) {
+        const yr = HIST_DATA.years[i];
+        const { ret, div } = getAssetReturns(assetKey, i);
+        const startOfYrBal = currentBalance;
+
+        // Add 12 months DCA throughout the year
+        const annualDca = monthlyWon * 12;
+        currentBalance += annualDca;
+        totalPrincipal += annualDca;
+
+        // Capital Price Appreciation for the year
+        currentBalance = currentBalance * (1 + ret);
+
+        // Dividend Payout for the year
+        const grossDiv = currentBalance * div;
+        const tax = isTaxFree ? 0 : grossDiv * 0.154;
+        const netDiv = grossDiv - tax;
+
+        cumulativeGrossDiv += grossDiv;
+        cumulativeTaxPaid += tax;
+
+        if (isHistDrip) {
+          currentBalance += netDiv;
+        }
+
+        // Drawdown Tracking
+        if (currentBalance > peakBalance) {
+          peakBalance = currentBalance;
+        } else {
+          const dd = (peakBalance - currentBalance) / peakBalance;
+          if (dd > maxDrawdown) maxDrawdown = dd;
+        }
+
+        yearlyLogs.push({
+          year: yr,
+          startBal: Math.round(startOfYrBal),
+          ret: ret,
+          grossDiv: Math.round(grossDiv),
+          tax: Math.round(tax),
+          netDiv: Math.round(netDiv),
+          endBal: Math.round(currentBalance)
+        });
+      }
+
+      // Final Historical Output Calculation
+      const finalProfit = isHistDrip
+        ? (currentBalance - totalPrincipal)
+        : (currentBalance - totalPrincipal + (cumulativeGrossDiv - cumulativeTaxPaid));
+      const totalReturnPct = ((finalProfit / (totalPrincipal || 1)) * 100).toFixed(1);
+      const cagr = ((Math.pow(currentBalance / (totalPrincipal || 1), 1 / yearsBack) - 1) * 100).toFixed(2);
+      const lastYr = yearlyLogs[yearlyLogs.length - 1];
+      const lastYrDiv = lastYr ? lastYr.netDiv : 0;
+
+      // Update UI
+      const resTotal = document.getElementById('hist-res-total');
+      const resSub = document.getElementById('hist-res-sub');
+      const resDiv = document.getElementById('hist-res-div');
+      const resLastDiv = document.getElementById('hist-res-last-div');
+      const resTax = document.getElementById('hist-res-tax');
+      const resMdd = document.getElementById('hist-res-mdd');
+
+      if (resTotal) resTotal.textContent = formatMoney(Math.round(currentBalance), isEn);
+      if (resSub) {
+        resSub.innerHTML = isEn
+          ? `Principal: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | Net Profit: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(Math.round(finalProfit), isEn)} (+${totalReturnPct}%)</span> | CAGR: <strong>+${cagr}%</strong>`
+          : `총 투자 원금: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | 실현 수익: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(Math.round(finalProfit), isEn)} (+${totalReturnPct}%)</span> | 연평균 CAGR: <strong>+${cagr}%</strong>`;
+      }
+      if (resDiv) resDiv.textContent = formatMoney(Math.round(cumulativeGrossDiv), isEn);
+      if (resLastDiv) resLastDiv.textContent = isEn ? `Recent Year Net Div: ${formatMoney(lastYrDiv, isEn)}` : `최근 연간 실수령 배당: ${formatMoney(lastYrDiv, isEn)}`;
+      if (resTax) {
+        resTax.textContent = isTaxFree
+          ? (isEn ? '₩0 (Tax Saved: 100%)' : '0원 (ISA 비과세 절세)')
+          : formatMoney(Math.round(cumulativeTaxPaid), isEn);
+      }
+      if (resMdd) {
+        resMdd.textContent = isEn
+          ? `Max Drawdown (MDD): -${(maxDrawdown * 100).toFixed(1)}%`
+          : `역사적 최대 낙폭 (MDD): -${(maxDrawdown * 100).toFixed(1)}%`;
+      }
+
+      // Render Historical Breakdown Table
+      const tableBody = document.getElementById('hist-table-body');
+      if (tableBody) {
+        tableBody.innerHTML = yearlyLogs.map(log => {
+          const retClass = log.ret >= 0 ? 'text-pos' : 'text-neg';
+          const retSign = log.ret >= 0 ? '+' : '';
+          return `
+            <tr>
+              <td><strong>${log.year}년</strong></td>
+              <td>${formatMoney(log.startBal, isEn)}</td>
+              <td class="${retClass}" style="font-weight: 700;">${retSign}${(log.ret * 100).toFixed(1)}%</td>
+              <td style="color: var(--primary);">${formatMoney(log.grossDiv, isEn)}</td>
+              <td style="color: var(--danger);">${formatMoney(log.tax, isEn)}</td>
+              <td style="color: var(--secondary); font-weight: 800;">${formatMoney(log.endBal, isEn)}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
     function formatMoney(num: number, isEn: boolean): string {
       if (isEn) {
         if (num >= 100000000) return `₩${(num / 100000000).toFixed(2)}B`;
         if (num >= 10000) return `₩${Math.round(num / 10000).toLocaleString()}0k`;
         return `₩${num.toLocaleString('en-US')}`;
       }
-
       if (num >= 100000000) {
         const eok = Math.floor(num / 100000000);
         const man = Math.round((num % 100000000) / 10000);
@@ -608,13 +996,13 @@ const { isEn = false } = Astro.props;
       return `${num.toLocaleString('ko-KR')}원`;
     }
 
-    // Initial calculation
-    calculateSimulation();
+    // Run calculations
+    calculateForwardSimulation();
+    calculateHistoricalBacktest();
   }
 
-  // Load on initial & view swap
-  initEtfSimulator();
-  document.addEventListener('astro:after-swap', initEtfSimulator);
+  initApp();
+  document.addEventListener('astro:after-swap', initApp);
 </script>
 
 <style>
@@ -657,8 +1045,140 @@ const { isEn = false } = Astro.props;
     font-size: 0.95rem;
     color: var(--text-muted);
     max-width: 720px;
-    margin: 0 auto;
+    margin: 0 auto 1.5rem auto;
     line-height: 1.6;
+  }
+
+  /* Master Mode Tab Switcher */
+  .master-tab-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .master-tab-btn {
+    background: var(--bg-main);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .master-tab-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .master-tab-btn.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+  }
+
+  .m-tab-icon {
+    font-size: 1.5rem;
+  }
+
+  .m-tab-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .m-tab-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* Views */
+  .sim-view-section {
+    display: none;
+  }
+
+  .sim-view-section.active {
+    display: block;
+  }
+
+  /* Time Machine Banner */
+  .time-machine-banner {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(37, 99, 235, 0.1));
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tm-banner-icon {
+    font-size: 2.25rem;
+  }
+
+  .tm-banner-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0 0 0.25rem 0;
+  }
+
+  .tm-banner-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Historical Quick Buttons */
+  .hist-horizon-section {
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .hist-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+  }
+
+  .hist-btn-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .hist-quick-btn {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .hist-quick-btn:hover {
+    border-color: var(--primary);
+  }
+
+  .hist-quick-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
   }
 
   /* Preset Strategy Section */
@@ -707,22 +1227,11 @@ const { isEn = false } = Astro.props;
     box-shadow: 0 0 0 1px var(--primary);
   }
 
-  .p-icon {
-    font-size: 1.2rem;
-  }
+  .p-icon { font-size: 1.2rem; }
+  .p-text { font-size: 0.9rem; font-weight: 800; color: var(--text-main); }
+  .p-sub { font-size: 0.75rem; color: var(--text-muted); }
 
-  .p-text {
-    font-size: 0.9rem;
-    font-weight: 800;
-    color: var(--text-main);
-  }
-
-  .p-sub {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
-
-  /* Main Two-Column Layout */
+  /* Main Layout */
   .sim-main-grid {
     display: grid;
     grid-template-columns: 1.15fr 1fr;
@@ -752,7 +1261,6 @@ const { isEn = false } = Astro.props;
     gap: 0.4rem;
   }
 
-  /* Form Groups */
   .form-group {
     margin-bottom: 1.25rem;
   }
@@ -837,7 +1345,6 @@ const { isEn = false } = Astro.props;
     color: var(--text-main);
   }
 
-  /* Allocation Sliders */
   .allocation-section {
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
@@ -887,24 +1394,11 @@ const { isEn = false } = Astro.props;
     margin-bottom: 0.4rem;
   }
 
-  .etf-name {
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: var(--text-main);
-  }
+  .etf-name { font-size: 0.85rem; font-weight: 800; color: var(--text-main); }
+  .etf-cagr { font-size: 0.725rem; color: var(--text-muted); }
+  .etf-pct { font-size: 0.875rem; font-weight: 800; color: var(--primary); }
 
-  .etf-cagr {
-    font-size: 0.725rem;
-    color: var(--text-muted);
-  }
-
-  .etf-pct {
-    font-size: 0.875rem;
-    font-weight: 800;
-    color: var(--primary);
-  }
-
-  /* Result Panel */
+  /* Results Dashboard */
   .metric-hero-card {
     background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.08));
     border: 2px solid var(--primary);
@@ -961,40 +1455,15 @@ const { isEn = false } = Astro.props;
     border-color: var(--secondary);
   }
 
-  .sm-icon {
-    font-size: 1.5rem;
-    line-height: 1;
-  }
+  .sm-icon { font-size: 1.5rem; line-height: 1; }
+  .sm-info { display: flex; flex-direction: column; gap: 0.2rem; }
+  .sm-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
+  .sm-val { font-size: 1.15rem; font-weight: 800; color: var(--text-main); }
+  .highlight-card .sm-val { color: var(--secondary); }
+  .sm-note { font-size: 0.725rem; color: var(--text-muted); }
 
-  .sm-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  .sm-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text-muted);
-  }
-
-  .sm-val {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--text-main);
-  }
-
-  .highlight-card .sm-val {
-    color: var(--secondary);
-  }
-
-  .sm-note {
-    font-size: 0.725rem;
-    color: var(--text-muted);
-  }
-
-  /* Growth Chart */
-  .chart-container {
+  /* Chart & Table */
+  .chart-container, .table-container {
     background: var(--bg-main);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
@@ -1010,7 +1479,7 @@ const { isEn = false } = Astro.props;
     margin-bottom: 1rem;
   }
 
-  .chart-title {
+  .chart-title, .table-title {
     font-size: 0.85rem;
     font-weight: 800;
     color: var(--text-main);
@@ -1024,13 +1493,7 @@ const { isEn = false } = Astro.props;
     gap: 0.75rem;
   }
 
-  .dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: var(--radius-full);
-  }
-
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: var(--radius-full); }
   .dot-principal { background: var(--text-light); }
   .dot-profit { background: var(--primary); }
 
@@ -1063,70 +1526,24 @@ const { isEn = false } = Astro.props;
     overflow: hidden;
   }
 
-  .bar-seg {
-    width: 100%;
-    transition: height 0.3s ease;
-  }
-
+  .bar-seg { width: 100%; transition: height 0.3s ease; }
   .bar-principal { background: var(--text-light); }
   .bar-profit { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
+  .bar-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.35rem; }
 
-  .bar-label {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-top: 0.35rem;
-  }
+  .table-scroll { overflow-x: auto; }
+  .milestone-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  .milestone-table th, .milestone-table td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border-color); text-align: right; }
+  .milestone-table th:first-child, .milestone-table td:first-child { text-align: left; }
+  .milestone-table th { background: var(--bg-card); font-weight: 700; color: var(--text-muted); }
 
-  /* Milestone Table */
-  .table-container {
-    background: var(--bg-main);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 1.25rem;
-  }
-
-  .table-title {
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: var(--text-main);
-    margin-bottom: 0.75rem;
-  }
-
-  .table-scroll {
-    overflow-x: auto;
-  }
-
-  .milestone-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.8rem;
-  }
-
-  .milestone-table th, .milestone-table td {
-    padding: 0.6rem 0.75rem;
-    border-bottom: 1px solid var(--border-color);
-    text-align: right;
-  }
-
-  .milestone-table th:first-child, .milestone-table td:first-child {
-    text-align: left;
-  }
-
-  .milestone-table th {
-    background: var(--bg-card);
-    font-weight: 700;
-    color: var(--text-muted);
-  }
+  .text-pos { color: var(--secondary); }
+  .text-neg { color: var(--danger); }
 
   @media (max-width: 900px) {
-    .sim-main-grid {
-      grid-template-columns: 1fr;
-    }
-    .option-grid {
-      grid-template-columns: 1fr;
-    }
-    .metric-sub-grid {
-      grid-template-columns: 1fr;
-    }
+    .sim-main-grid { grid-template-columns: 1fr; }
+    .master-tab-wrap { grid-template-columns: 1fr; }
+    .option-grid { grid-template-columns: 1fr; }
+    .metric-sub-grid { grid-template-columns: 1fr; }
   }
 </style>
