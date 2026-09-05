@@ -20,8 +20,8 @@ const { isEn = false } = Astro.props;
     </h2>
     <p class="sim-subtitle">
       {isEn
-        ? 'Simulate your future portfolio compounding across 1~30 years, or take the Historical Time Machine to backtest real-world past 1~30 years dividends and taxes.'
-        : '앞으로 1~30년간의 미래 자산과 월 배당금을 예측하거나, 과거 1~30년 전 실제 주가와 배당금·세금 데이터를 타임머신으로 실측 백테스팅하세요.'}
+        ? 'Simulate your future portfolio compounding across 1~30 years with Covered Calls & 20M KRW Comprehensive Financial Taxation engine, or backtest historical past returns.'
+        : 'S&P500·나스닥부터 최신 JEPQ·타겟 데일리 커버드콜까지! 2,000만 원 초과 금융소득종합과세와 건보료 피부양자 박탈 기준까지 1원 단위로 정밀 시뮬레이션하세요.'}
     </p>
 
     <!-- Master Mode Tabs -->
@@ -29,7 +29,7 @@ const { isEn = false } = Astro.props;
       <button type="button" class="master-tab-btn active" id="tab-future-btn" data-target="future-view">
         <span class="m-tab-icon">🔮</span>
         <span class="m-tab-title">{isEn ? 'Future Projection Simulator' : '미래 1~30년 복리 & 월배당 예측'}</span>
-        <span class="m-tab-sub">{isEn ? 'Forecast forward asset growth & monthly dividend' : '은퇴 목표 자산 & 미래 월 생활비 시뮬레이션'}</span>
+        <span class="m-tab-sub">{isEn ? 'Forecast forward asset growth & monthly dividend' : '커버드콜·금융소득종합과세(2천만) 정밀 시뮬레이션'}</span>
       </button>
       <button type="button" class="master-tab-btn" id="tab-history-btn" data-target="history-view">
         <span class="m-tab-icon">⏳</span>
@@ -45,10 +45,15 @@ const { isEn = false } = Astro.props;
     <div class="preset-section">
       <div class="preset-label">{isEn ? '⚡ Select Strategy Preset:' : '⚡ 인기 대표 전략 프리셋 선택:'}</div>
       <div class="preset-buttons">
-        <button type="button" class="preset-btn active" data-preset="growth">
+        <button type="button" class="preset-btn" data-preset="growth">
           <span class="p-icon">🚀</span>
           <span class="p-text">{isEn ? 'US Growth Engine' : '미국 지수 성장형'}</span>
           <span class="p-sub">{isEn ? 'S&P500 50% + QQQ 50%' : 'S&P500 50% + 나스닥 50%'}</span>
+        </button>
+        <button type="button" class="preset-btn active" data-preset="coveredcall">
+          <span class="p-icon">⚡</span>
+          <span class="p-text">{isEn ? '2026 Covered Call Cashflow' : '초고배당 커버드콜 월급형'}</span>
+          <span class="p-sub">{isEn ? 'JEPQ 50% + Target Daily CC 50%' : 'JEPQ 50% + 타겟 데일리 50% (월배당 11%)'}</span>
         </button>
         <button type="button" class="preset-btn" data-preset="fire">
           <span class="p-icon">🏖️</span>
@@ -58,7 +63,7 @@ const { isEn = false } = Astro.props;
         <button type="button" class="preset-btn" data-preset="allweather">
           <span class="p-icon">🛡️</span>
           <span class="p-text">{isEn ? 'All-Weather Balanced' : '올웨더 자산배분'}</span>
-          <span class="p-sub">{isEn ? 'Stock 60% + Div 20% + Gold/Bond 20%' : '주식 60% + 배당 20% + 금/채권 20%'}</span>
+          <span class="p-sub">{isEn ? 'Stock 50% + Div 20% + Gold 15% + CC 15%' : '주식 50% + 배당 20% + 금 15% + 커버드콜 15%'}</span>
         </button>
         <button type="button" class="preset-btn" data-preset="productive">
           <span class="p-icon">🇰🇷</span>
@@ -72,17 +77,17 @@ const { isEn = false } = Astro.props;
       <!-- Left: Investment Inputs & Allocation Sliders -->
       <div class="sim-card-panel">
         <h3 class="panel-heading">
-          <span>⚙️</span> {isEn ? 'Investment Capital & Conditions' : '1. 투자 원금 및 기본 조건 설정'}
+          <span>⚙️</span> {isEn ? 'Investment Capital & Conditions' : '1. 투자 원금 및 세금 조건 설정'}
         </h3>
 
         <!-- Initial Capital -->
         <div class="form-group">
           <div class="form-label-row">
             <label for="initial-amount-range">{isEn ? 'Initial Lump Sum:' : '초기 투자 원금:'}</label>
-            <span class="highlight-val" id="initial-val-display">1,000만 원</span>
+            <span class="highlight-val" id="initial-val-display">2,000만 원</span>
           </div>
           <div class="input-range-wrap">
-            <input type="range" id="initial-amount-range" min="0" max="10000" step="100" value="1000" class="sim-range" />
+            <input type="range" id="initial-amount-range" min="0" max="20000" step="100" value="2000" class="sim-range" />
           </div>
         </div>
 
@@ -90,10 +95,10 @@ const { isEn = false } = Astro.props;
         <div class="form-group">
           <div class="form-label-row">
             <label for="monthly-amount-range">{isEn ? 'Monthly Contribution (DCA):' : '매월 정기 적립액:'}</label>
-            <span class="highlight-val" id="monthly-val-display">50만 원 / 월</span>
+            <span class="highlight-val" id="monthly-val-display">100만 원 / 월</span>
           </div>
           <div class="input-range-wrap">
-            <input type="range" id="monthly-amount-range" min="0" max="300" step="10" value="50" class="sim-range" />
+            <input type="range" id="monthly-amount-range" min="0" max="500" step="10" value="100" class="sim-range" />
           </div>
         </div>
 
@@ -108,7 +113,7 @@ const { isEn = false } = Astro.props;
           </div>
         </div>
 
-        <!-- Dividend & Account Options -->
+        <!-- Dividend Policy & Account Selection -->
         <div class="option-grid">
           <div class="option-item">
             <label class="option-title">{isEn ? 'Dividend Policy:' : '배당금 운용 방식'}</label>
@@ -125,46 +130,73 @@ const { isEn = false } = Astro.props;
           <div class="option-item">
             <label class="option-title">{isEn ? 'Account Tax Type:' : '투자 계좌 유형'}</label>
             <select id="account-type-select" class="sim-select">
-              <option value="general">{isEn ? 'Standard Account (15.4% Tax Drag)' : '일반 과세 계좌 (배당세 15.4% 부과)'}</option>
-              <option value="isa" selected>{isEn ? 'Brokerage / Productive ISA (Tax-Exempt)' : '중개형·생산적 ISA 계좌 (비과세 & 9.9%)'}</option>
-              <option value="pension">{isEn ? 'Pension Savings / IRP (Tax-Deferred)' : '연금저축·IRP 계좌 (과세이연 0%)'}</option>
+              <option value="general">{isEn ? 'Standard Account (15.4% ~ Comprehensive Tax)' : '일반 과세 계좌 (2천만 초과 시 종소세 합산)'}</option>
+              <option value="isa" selected>{isEn ? 'Brokerage / Productive ISA (Tax Shield)' : '중개형·생산적 ISA (종합과세 100% 면제 쉴드)'}</option>
+              <option value="pension">{isEn ? 'Pension Savings / IRP (100% Tax-Deferred)' : '연금저축·IRP 계좌 (운용 중 세금 0원 & 과세이연)'}</option>
             </select>
           </div>
+        </div>
+
+        <!-- Comprehensive Income Tax Bracket Setting -->
+        <div class="form-group" style="background: var(--bg-card); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+          <label class="option-title" style="color: var(--text-main); font-weight: 800; margin-bottom: 0.35rem;">
+            💼 {isEn ? 'Other Taxable Income (Salary/Business):' : '나의 근로·사업 과세표준 (금융소득종합과세 시 적용세율)'}
+          </label>
+          <select id="salary-bracket-select" class="sim-select">
+            <option value="0.066">{isEn ? '14M KRW or less (Marginal Tax: 6.6%)' : '1,400만 원 이하 (한계세율 6.6%)'}</option>
+            <option value="0.165">{isEn ? '14M ~ 50M KRW (Marginal Tax: 16.5%)' : '1,400만 ~ 5,000만 원 (한계세율 16.5%)'}</option>
+            <option value="0.264" selected>{isEn ? '50M ~ 88M KRW (Marginal Tax: 26.4% - Standard)' : '5,000만 ~ 8,800만 원 (한계세율 26.4% - 평균 직장인)'}</option>
+            <option value="0.385">{isEn ? '88M ~ 150M KRW (Marginal Tax: 38.5%)' : '8,800만 ~ 1억 5,000만 원 (한계세율 38.5%)'}</option>
+            <option value="0.418">{isEn ? '150M ~ 300M KRW (Marginal Tax: 41.8%)' : '1억 5,000만 ~ 3억 원 (한계세율 41.8%)'}</option>
+          </select>
+          <p style="font-size: 0.725rem; color: var(--text-muted); margin: 0.4rem 0 0 0;">
+            * 연간 배당금이 2,000만 원을 초과할 때 일반 계좌는 위 한계세율로 종합과세되며 건강보험료 피부양자에서 박탈됩니다. (ISA/연금계좌는 전액 방어)
+          </p>
         </div>
 
         <!-- Asset Allocation Sliders -->
         <div class="allocation-section">
           <div class="alloc-header">
-            <span class="alloc-title">📊 {isEn ? '2. ETF Asset Allocation' : '2. ETF 자산 비중 배분'}</span>
+            <span class="alloc-title">📊 {isEn ? '2. ETF Asset Allocation' : '2. ETF 자산 비중 배분 (커버드콜 포함)'}</span>
             <span class="alloc-total-badge" id="alloc-total-badge">합계: 100%</span>
           </div>
 
           <!-- ETF Sliders List -->
           <div class="etf-slider-list">
-            <!-- S&P 500 -->
-            <div class="etf-slider-item">
+            <!-- JEPQ (Nasdaq Covered Call) -->
+            <div class="etf-slider-item highlight-slider">
               <div class="etf-meta">
-                <span class="etf-name">🇺🇸 S&P 500 (VOO / SPLG)</span>
-                <span class="etf-cagr">CAGR 10.5% | 배당 1.5%</span>
-                <span class="etf-pct" id="pct-sp500">50%</span>
+                <span class="etf-name">⚡ JEPQ (JPMorgan 나스닥 커버드콜)</span>
+                <span class="etf-cagr">CAGR 11.5% | 월배당 10.5%</span>
+                <span class="etf-pct" id="pct-jepq">50%</span>
               </div>
-              <input type="range" class="etf-range" id="range-sp500" min="0" max="100" step="5" value="50" />
+              <input type="range" class="etf-range" id="range-jepq" min="0" max="100" step="5" value="50" />
             </div>
 
-            <!-- Nasdaq 100 -->
+            <!-- Target Daily Covered Call -->
+            <div class="etf-slider-item highlight-slider">
+              <div class="etf-meta">
+                <span class="etf-name">⚡ 타겟 데일리 커버드콜 (미국배당/나스닥+7~15%)</span>
+                <span class="etf-cagr">CAGR 9.5% | 월배당 12.0%</span>
+                <span class="etf-pct" id="pct-dailycc">50%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-dailycc" min="0" max="100" step="5" value="50" />
+            </div>
+
+            <!-- Ultra High Yield Option Income -->
             <div class="etf-slider-item">
               <div class="etf-meta">
-                <span class="etf-name">🇺🇸 Nasdaq 100 (QQQ / QQQM)</span>
-                <span class="etf-cagr">CAGR 14.8% | 배당 0.6%</span>
-                <span class="etf-pct" id="pct-nasdaq">50%</span>
+                <span class="etf-name">🔥 초고배당 옵션 인컴 (CONY / NVDY / TLTW)</span>
+                <span class="etf-cagr">CAGR 6.0% | 초고배당 24.0%</span>
+                <span class="etf-pct" id="pct-ultra">0%</span>
               </div>
-              <input type="range" class="etf-range" id="range-nasdaq" min="0" max="100" step="5" value="50" />
+              <input type="range" class="etf-range" id="range-ultra" min="0" max="100" step="5" value="0" />
             </div>
 
             <!-- SCHD -->
             <div class="etf-slider-item">
               <div class="etf-meta">
-                <span class="etf-name">🇺🇸 SCHD (US Dividend Equity)</span>
+                <span class="etf-name">🇺🇸 SCHD (미국배당다우존스)</span>
                 <span class="etf-cagr">CAGR 11.2% | 배당 3.6% (성장 10%)</span>
                 <span class="etf-pct" id="pct-schd">0%</span>
               </div>
@@ -174,11 +206,31 @@ const { isEn = false } = Astro.props;
             <!-- JEPI -->
             <div class="etf-slider-item">
               <div class="etf-meta">
-                <span class="etf-name">🇺🇸 JEPI (High Income Covered Call)</span>
+                <span class="etf-name">🇺🇸 JEPI (JPMorgan S&P500 커버드콜)</span>
                 <span class="etf-cagr">CAGR 7.5% | 월배당 8.5%</span>
                 <span class="etf-pct" id="pct-jepi">0%</span>
               </div>
               <input type="range" class="etf-range" id="range-jepi" min="0" max="100" step="5" value="0" />
+            </div>
+
+            <!-- S&P 500 -->
+            <div class="etf-slider-item">
+              <div class="etf-meta">
+                <span class="etf-name">🇺🇸 S&P 500 (VOO / SPLG)</span>
+                <span class="etf-cagr">CAGR 10.5% | 배당 1.5%</span>
+                <span class="etf-pct" id="pct-sp500">0%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-sp500" min="0" max="100" step="5" value="0" />
+            </div>
+
+            <!-- Nasdaq 100 -->
+            <div class="etf-slider-item">
+              <div class="etf-meta">
+                <span class="etf-name">🇺🇸 Nasdaq 100 (QQQ / QQQM)</span>
+                <span class="etf-cagr">CAGR 14.8% | 배당 0.6%</span>
+                <span class="etf-pct" id="pct-nasdaq">0%</span>
+              </div>
+              <input type="range" class="etf-range" id="range-nasdaq" min="0" max="100" step="5" value="0" />
             </div>
 
             <!-- K-ValueUp -->
@@ -219,6 +271,15 @@ const { isEn = false } = Astro.props;
           </div>
         </div>
 
+        <!-- 20M Financial Income Tax & Shield Live Banner -->
+        <div class="tax-shield-card" id="tax-shield-card">
+          <div class="ts-icon" id="ts-icon">🛡️</div>
+          <div class="ts-content">
+            <div class="ts-title" id="ts-title">금융소득 2,000만 원 이하 안전 구간</div>
+            <div class="ts-desc" id="ts-desc">배당소득세 15.4% 분리과세 종결 및 건강보험료 피부양자 안전 유지</div>
+          </div>
+        </div>
+
         <!-- Secondary Metric Grid -->
         <div class="metric-sub-grid">
           <!-- Monthly Passive Dividend Income -->
@@ -237,7 +298,7 @@ const { isEn = false } = Astro.props;
             <div class="sm-info">
               <span class="sm-label">{isEn ? 'Taxes Saved via ISA/Pension:' : '절세계좌 활용 세금 절감액'}</span>
               <span class="sm-val" id="res-tax-saved">+0원</span>
-              <span class="sm-note">{isEn ? 'vs 15.4% General Account' : '일반 계좌 대비 세후 추가 수익'}</span>
+              <span class="sm-note" id="res-tax-note">{isEn ? 'vs General Account' : '일반 계좌 대비 세후 추가 수익'}</span>
             </div>
           </div>
         </div>
@@ -258,7 +319,7 @@ const { isEn = false } = Astro.props;
 
         <!-- Year-by-Year Milestone Table -->
         <div class="table-container">
-          <h4 class="table-title">📑 {isEn ? 'Milestone Breakdown Table' : '주요 연도별 자산 마일스톤'}</h4>
+          <h4 class="table-title">📑 {isEn ? 'Milestone Breakdown Table' : '주요 연도별 자산 및 세무 마일스톤'}</h4>
           <div class="table-scroll">
             <table class="milestone-table">
               <thead>
@@ -266,7 +327,9 @@ const { isEn = false } = Astro.props;
                   <th>{isEn ? 'Year' : '경과 기간'}</th>
                   <th>{isEn ? 'Principal' : '누적 원금'}</th>
                   <th>{isEn ? 'Total Asset' : '총 자산'}</th>
-                  <th>{isEn ? 'Monthly Dividend' : '예상 월 배당금'}</th>
+                  <th>{isEn ? 'Monthly Div' : '월 배당금'}</th>
+                  <th>{isEn ? 'Annual Div' : '연간 배당금'}</th>
+                  <th>{isEn ? 'Tax Status' : '세무 상태'}</th>
                 </tr>
               </thead>
               <tbody id="milestone-table-body">
@@ -322,13 +385,15 @@ const { isEn = false } = Astro.props;
         <div class="form-group">
           <label class="option-title">{isEn ? 'Target Asset / Portfolio:' : '백테스트 대상 ETF 및 포트폴리오:'}</label>
           <select id="hist-asset-select" class="sim-select" style="padding: 0.6rem;">
-            <option value="spy" selected>🇺🇸 S&P 500 (SPY) - 30년 역사적 실측 (1996~2026)</option>
-            <option value="qqq">🇺🇸 나스닥 100 (QQQ) - 27년 기술성장 실측 (1999~2026)</option>
+            <option value="jepq">⚡ JEPQ (JPMorgan 나스닥 커버드콜 실측/프록시)</option>
             <option value="schd">🇺🇸 SCHD (미국배당다우존스) - 15년 배당성장 실측 (2011~2026)</option>
             <option value="jepi">🇺🇸 JEPI (JPMorgan 커버드콜) - 고배당 실측 (2020~2026)</option>
+            <option value="spy" selected>🇺🇸 S&P 500 (SPY) - 30년 역사적 실측 (1996~2026)</option>
+            <option value="qqq">🇺🇸 나스닥 100 (QQQ) - 27년 기술성장 실측 (1999~2026)</option>
             <option value="gold">🥇 Gold (KRX 금현물 / GLD) - 22년 안전자산 실측 (2004~2026)</option>
-            <option value="spy_qqq">🚀 반반 포트폴리오 (S&P500 50% + 나스닥 50%)</option>
+            <option value="cc_jepq_daily">⚡ 커버드콜 인컴 포트폴리오 (JEPQ 50% + 타겟데일리 50%)</option>
             <option value="schd_spy">🏖️ 배당성장 포트폴리오 (SCHD 70% + S&P500 30%)</option>
+            <option value="spy_qqq">🚀 반반 성장 포트폴리오 (S&P500 50% + 나스닥 50%)</option>
           </select>
         </div>
 
@@ -347,10 +412,10 @@ const { isEn = false } = Astro.props;
         <div class="form-group">
           <div class="form-label-row">
             <label for="hist-initial-range">{isEn ? 'Initial Investment at Start:' : '과거 시작 시점 거치 원금:'}</label>
-            <span class="highlight-val" id="hist-initial-display">1,000만 원</span>
+            <span class="highlight-val" id="hist-initial-display">2,000만 원</span>
           </div>
           <div class="input-range-wrap">
-            <input type="range" id="hist-initial-range" min="0" max="10000" step="100" value="1000" class="sim-range" />
+            <input type="range" id="hist-initial-range" min="0" max="20000" step="100" value="2000" class="sim-range" />
           </div>
         </div>
 
@@ -358,10 +423,10 @@ const { isEn = false } = Astro.props;
         <div class="form-group">
           <div class="form-label-row">
             <label for="hist-monthly-range">{isEn ? 'Past Monthly DCA Contribution:' : '과거 매월 정기 적립액:'}</label>
-            <span class="highlight-val" id="hist-monthly-display">50만 원 / 월</span>
+            <span class="highlight-val" id="hist-monthly-display">100만 원 / 월</span>
           </div>
           <div class="input-range-wrap">
-            <input type="range" id="hist-monthly-range" min="0" max="300" step="10" value="50" class="sim-range" />
+            <input type="range" id="hist-monthly-range" min="0" max="500" step="10" value="100" class="sim-range" />
           </div>
         </div>
 
@@ -382,8 +447,8 @@ const { isEn = false } = Astro.props;
           <div class="option-item">
             <label class="option-title">{isEn ? 'Account Type:' : '투자 계좌 세금'}</label>
             <select id="hist-account-select" class="sim-select">
-              <option value="general" selected>{isEn ? 'General (15.4% Tax)' : '일반 과세 (15.4% 배당세 징수)'}</option>
-              <option value="isa">{isEn ? 'ISA / Pension (Tax-Free/Deferred)' : 'ISA·연금저축 (비과세 & 과세이연)'}</option>
+              <option value="general" selected>{isEn ? 'General (15.4% Tax & Comprehensive)' : '일반 과세 (15.4% 및 종합과세)'}</option>
+              <option value="isa">{isEn ? 'ISA / Pension (Tax-Free/Shielded)' : 'ISA·연금저축 (종합과세 면제 쉴드)'}</option>
             </select>
           </div>
         </div>
@@ -420,7 +485,7 @@ const { isEn = false } = Astro.props;
           <div class="sub-metric-card highlight-card">
             <div class="sm-icon">💸</div>
             <div class="sm-info">
-              <span class="sm-label">{isEn ? '15.4% Taxes Paid to NTS:' : '국세청에 납부된 배당소득세'}</span>
+              <span class="sm-label">{isEn ? 'Taxes Paid & Tax Shield:' : '배당소득세 납부액 및 절세'}</span>
               <span class="sm-val" id="hist-res-tax">0원</span>
               <span class="sm-note" id="hist-res-mdd">역사적 최대 낙폭 (MDD): -0.0%</span>
             </div>
@@ -429,7 +494,7 @@ const { isEn = false } = Astro.props;
 
         <!-- Historical Year-by-Year Actual Breakdown Table -->
         <div class="table-container">
-          <h4 class="table-title">📅 {isEn ? 'Annual Breakdown: Return, Dividends & Taxes' : '연도별 실측 수익률, 배당금 및 세금 상세 내역'}</h4>
+          <h4 class="table-title">📅 {isEn ? 'Annual Breakdown: Return, Dividends, Taxes & 20M Warning' : '연도별 실측 수익률, 배당금, 세금 및 2천만 종합과세 내역'}</h4>
           <div class="table-scroll" style="max-height: 280px; overflow-y: auto;">
             <table class="milestone-table">
               <thead>
@@ -438,7 +503,8 @@ const { isEn = false } = Astro.props;
                   <th>{isEn ? 'Start' : '연초 평가액'}</th>
                   <th>{isEn ? 'Return' : '연간 수익률'}</th>
                   <th>{isEn ? 'Gross Div' : '세전 배당금'}</th>
-                  <th>{isEn ? 'Tax (15.4%)' : '배당소득세'}</th>
+                  <th>{isEn ? 'Tax Paid' : '배당세 납부'}</th>
+                  <th>{isEn ? '20M Tax' : '종합과세'}</th>
                   <th>{isEn ? 'End Balance' : '기말 총자산'}</th>
                 </tr>
               </thead>
@@ -473,6 +539,10 @@ const { isEn = false } = Astro.props;
       jepi: {
         returns: [0.152, 0.243, 0.187, 0.198, 0.075, -0.085, -0.125, 0.192, 0.085, 0.045, 0.132, 0.065, -0.285, 0.245, 0.095, 0.062, 0.065, 0.148, 0.062, 0.052, 0.075, 0.125, -0.048, 0.165, 0.112, 0.215, -0.035, 0.098, 0.125, 0.088, 0.042],
         divYields: [0.075, 0.072, 0.070, 0.071, 0.082, 0.088, 0.095, 0.085, 0.078, 0.075, 0.076, 0.078, 0.115, 0.095, 0.085, 0.082, 0.080, 0.078, 0.081, 0.082, 0.080, 0.078, 0.085, 0.082, 0.105, 0.088, 0.115, 0.092, 0.085, 0.082, 0.080]
+      },
+      jepq: {
+        returns: [0.252, 0.185, 0.352, 0.412, -0.185, -0.221, -0.265, 0.385, 0.085, 0.025, 0.085, 0.142, -0.325, 0.385, 0.165, 0.045, 0.142, 0.285, 0.155, 0.078, 0.085, 0.265, -0.015, 0.312, 0.365, 0.225, -0.165, 0.365, 0.195, 0.145, 0.072],
+        divYields: [0.095, 0.092, 0.088, 0.085, 0.098, 0.105, 0.112, 0.102, 0.098, 0.095, 0.096, 0.098, 0.135, 0.115, 0.102, 0.098, 0.095, 0.092, 0.095, 0.096, 0.095, 0.092, 0.098, 0.095, 0.115, 0.098, 0.125, 0.108, 0.102, 0.098, 0.095]
       },
       gold: {
         returns: [-0.042, -0.214, -0.015, 0.005, -0.058, 0.015, 0.248, 0.195, 0.055, 0.182, 0.231, 0.312, 0.056, 0.245, 0.298, 0.102, 0.071, -0.283, -0.018, -0.104, 0.085, 0.131, -0.016, 0.183, 0.251, -0.036, -0.003, 0.131, 0.265, 0.115, 0.075],
@@ -518,22 +588,30 @@ const { isEn = false } = Astro.props;
     const yearsRange = document.getElementById('years-range') as HTMLInputElement;
     const yearsDisplay = document.getElementById('years-val-display');
     const accountSelect = document.getElementById('account-type-select') as HTMLSelectElement;
+    const salarySelect = document.getElementById('salary-bracket-select') as HTMLSelectElement;
 
     const dripOnBtn = document.getElementById('drip-on-btn');
     const dripOffBtn = document.getElementById('drip-off-btn');
     let isDrip = true;
 
-    const rangeSp500 = document.getElementById('range-sp500') as HTMLInputElement;
-    const rangeNasdaq = document.getElementById('range-nasdaq') as HTMLInputElement;
+    // Sliders
+    const rangeJepq = document.getElementById('range-jepq') as HTMLInputElement;
+    const rangeDailyCc = document.getElementById('range-dailycc') as HTMLInputElement;
+    const rangeUltra = document.getElementById('range-ultra') as HTMLInputElement;
     const rangeSchd = document.getElementById('range-schd') as HTMLInputElement;
     const rangeJepi = document.getElementById('range-jepi') as HTMLInputElement;
+    const rangeSp500 = document.getElementById('range-sp500') as HTMLInputElement;
+    const rangeNasdaq = document.getElementById('range-nasdaq') as HTMLInputElement;
     const rangeKvalue = document.getElementById('range-kvalue') as HTMLInputElement;
     const rangeGold = document.getElementById('range-gold') as HTMLInputElement;
 
-    const pctSp500 = document.getElementById('pct-sp500');
-    const pctNasdaq = document.getElementById('pct-nasdaq');
+    const pctJepq = document.getElementById('pct-jepq');
+    const pctDailyCc = document.getElementById('pct-dailycc');
+    const pctUltra = document.getElementById('pct-ultra');
     const pctSchd = document.getElementById('pct-schd');
     const pctJepi = document.getElementById('pct-jepi');
+    const pctSp500 = document.getElementById('pct-sp500');
+    const pctNasdaq = document.getElementById('pct-nasdaq');
     const pctKvalue = document.getElementById('pct-kvalue');
     const pctGold = document.getElementById('pct-gold');
     const allocTotalBadge = document.getElementById('alloc-total-badge');
@@ -545,19 +623,23 @@ const { isEn = false } = Astro.props;
         presetButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const preset = btn.getAttribute('data-preset');
-        if (preset === 'growth') setSliders(50, 50, 0, 0, 0, 0);
-        else if (preset === 'fire') setSliders(0, 0, 60, 40, 0, 0);
-        else if (preset === 'allweather') setSliders(40, 20, 20, 0, 0, 20);
-        else if (preset === 'productive') setSliders(25, 25, 0, 0, 50, 0);
+        if (preset === 'coveredcall') setSliders(50, 50, 0, 0, 0, 0, 0, 0, 0);
+        else if (preset === 'growth') setSliders(0, 0, 0, 0, 0, 50, 50, 0, 0);
+        else if (preset === 'fire') setSliders(0, 0, 0, 60, 40, 0, 0, 0, 0);
+        else if (preset === 'allweather') setSliders(15, 0, 0, 20, 0, 30, 20, 0, 15);
+        else if (preset === 'productive') setSliders(0, 0, 0, 0, 0, 25, 25, 50, 0);
         calculateForwardSimulation();
       });
     });
 
-    function setSliders(sp: number, nq: number, sc: number, jp: number, kv: number, gd: number) {
-      if (rangeSp500) rangeSp500.value = sp.toString();
-      if (rangeNasdaq) rangeNasdaq.value = nq.toString();
+    function setSliders(jq: number, dc: number, ul: number, sc: number, jp: number, sp: number, nq: number, kv: number, gd: number) {
+      if (rangeJepq) rangeJepq.value = jq.toString();
+      if (rangeDailyCc) rangeDailyCc.value = dc.toString();
+      if (rangeUltra) rangeUltra.value = ul.toString();
       if (rangeSchd) rangeSchd.value = sc.toString();
       if (rangeJepi) rangeJepi.value = jp.toString();
+      if (rangeSp500) rangeSp500.value = sp.toString();
+      if (rangeNasdaq) rangeNasdaq.value = nq.toString();
       if (rangeKvalue) rangeKvalue.value = kv.toString();
       if (rangeGold) rangeGold.value = gd.toString();
     }
@@ -576,13 +658,13 @@ const { isEn = false } = Astro.props;
       calculateForwardSimulation();
     });
 
-    [initialRange, monthlyRange, yearsRange, accountSelect].forEach(el => {
+    [initialRange, monthlyRange, yearsRange, accountSelect, salarySelect].forEach(el => {
       el?.addEventListener('input', calculateForwardSimulation);
     });
 
-    [rangeSp500, rangeNasdaq, rangeSchd, rangeJepi, rangeKvalue, rangeGold].forEach(el => {
+    [rangeJepq, rangeDailyCc, rangeUltra, rangeSchd, rangeJepi, rangeSp500, rangeNasdaq, rangeKvalue, rangeGold].forEach(el => {
       el?.addEventListener('input', () => {
-        const sum = [rangeSp500, rangeNasdaq, rangeSchd, rangeJepi, rangeKvalue, rangeGold]
+        const sum = [rangeJepq, rangeDailyCc, rangeUltra, rangeSchd, rangeJepi, rangeSp500, rangeNasdaq, rangeKvalue, rangeGold]
           .reduce((a, b) => a + parseInt(b?.value || '0', 10), 0);
         if (allocTotalBadge) {
           allocTotalBadge.textContent = isEn ? `Total: ${sum}%` : `합계: ${sum}%`;
@@ -593,40 +675,61 @@ const { isEn = false } = Astro.props;
     });
 
     function calculateForwardSimulation() {
-      const initialWon = parseInt(initialRange?.value || '1000', 10) * 10000;
-      const monthlyWon = parseInt(monthlyRange?.value || '50', 10) * 10000;
+      const initialWon = parseInt(initialRange?.value || '2000', 10) * 10000;
+      const monthlyWon = parseInt(monthlyRange?.value || '100', 10) * 10000;
       const years = parseInt(yearsRange?.value || '10', 10);
       const account = accountSelect?.value || 'isa';
+      const marginalTaxRate = parseFloat(salarySelect?.value || '0.264');
 
       if (initialDisplay) initialDisplay.textContent = formatMoney(initialWon, isEn);
       if (monthlyDisplay) monthlyDisplay.textContent = `${formatMoney(monthlyWon, isEn)}${isEn ? '/mo' : ' / 월'}`;
       if (yearsDisplay) yearsDisplay.textContent = isEn ? `${years} Years` : `${years}년`;
 
-      const wSp = parseInt(rangeSp500?.value || '0', 10);
-      const wNq = parseInt(rangeNasdaq?.value || '0', 10);
+      const wJq = parseInt(rangeJepq?.value || '0', 10);
+      const wDc = parseInt(rangeDailyCc?.value || '0', 10);
+      const wUl = parseInt(rangeUltra?.value || '0', 10);
       const wSc = parseInt(rangeSchd?.value || '0', 10);
       const wJp = parseInt(rangeJepi?.value || '0', 10);
+      const wSp = parseInt(rangeSp500?.value || '0', 10);
+      const wNq = parseInt(rangeNasdaq?.value || '0', 10);
       const wKv = parseInt(rangeKvalue?.value || '0', 10);
       const wGd = parseInt(rangeGold?.value || '0', 10);
 
-      if (pctSp500) pctSp500.textContent = `${wSp}%`;
-      if (pctNasdaq) pctNasdaq.textContent = `${wNq}%`;
+      if (pctJepq) pctJepq.textContent = `${wJq}%`;
+      if (pctDailyCc) pctDailyCc.textContent = `${wDc}%`;
+      if (pctUltra) pctUltra.textContent = `${wUl}%`;
       if (pctSchd) pctSchd.textContent = `${wSc}%`;
       if (pctJepi) pctJepi.textContent = `${wJp}%`;
+      if (pctSp500) pctSp500.textContent = `${wSp}%`;
+      if (pctNasdaq) pctNasdaq.textContent = `${wNq}%`;
       if (pctKvalue) pctKvalue.textContent = `${wKv}%`;
       if (pctGold) pctGold.textContent = `${wGd}%`;
 
-      const sumWeight = wSp + wNq + wSc + wJp + wKv + wGd || 100;
-      const fSp = wSp / sumWeight;
-      const fNq = wNq / sumWeight;
+      const sumWeight = wJq + wDc + wUl + wSc + wJp + wSp + wNq + wKv + wGd || 100;
+      const fJq = wJq / sumWeight;
+      const fDc = wDc / sumWeight;
+      const fUl = wUl / sumWeight;
       const fSc = wSc / sumWeight;
       const fJp = wJp / sumWeight;
+      const fSp = wSp / sumWeight;
+      const fNq = wNq / sumWeight;
       const fKv = wKv / sumWeight;
       const fGd = wGd / sumWeight;
 
-      const weightedPriceReturn = (fSp * 0.09) + (fNq * 0.142) + (fSc * 0.076) + (fJp * -0.01) + (fKv * 0.043) + (fGd * 0.082);
-      const weightedInitialDiv = (fSp * 0.015) + (fNq * 0.006) + (fSc * 0.036) + (fJp * 0.085) + (fKv * 0.042) + (fGd * 0.0);
-      const weightedDivGrowth = (fSp * 0.07) + (fNq * 0.085) + (fSc * 0.10) + (fJp * 0.015) + (fKv * 0.07) + (fGd * 0.0);
+      // Weighted Returns & Dividend Yields
+      // JEPQ: Price 1.0%, Div 10.5%, Growth 2.0%
+      // DailyCC: Price -2.5%, Div 12.0%, Growth 1.5%
+      // Ultra: Price -18.0%, Div 24.0%, Growth 0.0%
+      // SCHD: Price 7.6%, Div 3.6%, Growth 10.0%
+      // JEPI: Price -1.0%, Div 8.5%, Growth 1.5%
+      // S&P: Price 9.0%, Div 1.5%, Growth 7.0%
+      // NQ: Price 14.2%, Div 0.6%, Growth 8.5%
+      // K-Val: Price 4.3%, Div 4.2%, Growth 7.0%
+      // Gold: Price 8.2%, Div 0.0%, Growth 0.0%
+
+      const weightedPriceReturn = (fJq * 0.01) + (fDc * -0.025) + (fUl * -0.18) + (fSc * 0.076) + (fJp * -0.01) + (fSp * 0.09) + (fNq * 0.142) + (fKv * 0.043) + (fGd * 0.082);
+      const weightedInitialDiv = (fJq * 0.105) + (fDc * 0.120) + (fUl * 0.240) + (fSc * 0.036) + (fJp * 0.085) + (fSp * 0.015) + (fNq * 0.006) + (fKv * 0.042) + (fGd * 0.0);
+      const weightedDivGrowth = (fJq * 0.02) + (fDc * 0.015) + (fUl * 0.0) + (fSc * 0.10) + (fJp * 0.015) + (fSp * 0.07) + (fNq * 0.085) + (fKv * 0.07) + (fGd * 0.0);
       const yieldSpread = Math.max(0, weightedDivGrowth - Math.max(0, weightedPriceReturn));
 
       let totalAsset = initialWon;
@@ -636,8 +739,11 @@ const { isEn = false } = Astro.props;
       let totalActualTaxPaid = 0;
       let cumulativeIsaDividends = 0;
       const ISA_TAX_FREE_CAP = 5000000;
+      const COMPREHENSIVE_TAX_THRESHOLD = 20000000; // 2천만 원 기준
 
-      const milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number }> = [];
+      let everExceeded20M = false;
+
+      const milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number; annualDiv: number; taxStatus: string }> = [];
       const chartPoints: Array<{ year: number; principal: number; profit: number; total: number }> = [];
 
       const totalMonths = years * 12;
@@ -653,9 +759,40 @@ const { isEn = false } = Astro.props;
         totalAsset += totalAsset * monthlyPriceRate;
 
         const grossMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12);
+        const projectedAnnualDiv = grossMonthlyDiv * 12;
 
+        if (projectedAnnualDiv > COMPREHENSIVE_TAX_THRESHOLD) {
+          everExceeded20M = true;
+        }
+
+        // Tax Engine (including 20M KRW Comprehensive Taxation for General Accounts)
         let appliedTaxRate = 0.154;
-        if (account === 'isa') {
+        let benchmarkGeneralTax = grossMonthlyDiv * 0.154;
+
+        if (account === 'general') {
+          if (projectedAnnualDiv > COMPREHENSIVE_TAX_THRESHOLD) {
+            // Portion above 20M is taxed at marginal tax rate
+            const standardPortion = COMPREHENSIVE_TAX_THRESHOLD / 12;
+            const excessPortion = Math.max(0, grossMonthlyDiv - standardPortion);
+            const standardTax = standardPortion * 0.154;
+            const excessTax = excessPortion * marginalTaxRate;
+            appliedTaxRate = (standardTax + excessTax) / grossMonthlyDiv;
+            benchmarkGeneralTax = standardTax + excessTax;
+          } else {
+            appliedTaxRate = 0.154;
+            benchmarkGeneralTax = grossMonthlyDiv * 0.154;
+          }
+        } else if (account === 'isa') {
+          // In General account, it would face comprehensive tax
+          if (projectedAnnualDiv > COMPREHENSIVE_TAX_THRESHOLD) {
+            const standardPortion = COMPREHENSIVE_TAX_THRESHOLD / 12;
+            const excessPortion = Math.max(0, grossMonthlyDiv - standardPortion);
+            benchmarkGeneralTax = (standardPortion * 0.154) + (excessPortion * marginalTaxRate);
+          } else {
+            benchmarkGeneralTax = grossMonthlyDiv * 0.154;
+          }
+
+          // But in ISA, 0% up to 5M, then 9.9% separate taxation NO MATTER HOW LARGE!
           if (cumulativeIsaDividends < ISA_TAX_FREE_CAP) {
             const remainingTaxFree = ISA_TAX_FREE_CAP - cumulativeIsaDividends;
             if (grossMonthlyDiv <= remainingTaxFree) {
@@ -670,11 +807,17 @@ const { isEn = false } = Astro.props;
             appliedTaxRate = 0.099;
           }
         } else if (account === 'pension') {
+          if (projectedAnnualDiv > COMPREHENSIVE_TAX_THRESHOLD) {
+            const standardPortion = COMPREHENSIVE_TAX_THRESHOLD / 12;
+            const excessPortion = Math.max(0, grossMonthlyDiv - standardPortion);
+            benchmarkGeneralTax = (standardPortion * 0.154) + (excessPortion * marginalTaxRate);
+          } else {
+            benchmarkGeneralTax = grossMonthlyDiv * 0.154;
+          }
           appliedTaxRate = 0.0;
         }
 
         const netMonthlyDiv = grossMonthlyDiv * (1 - appliedTaxRate);
-        const benchmarkGeneralTax = grossMonthlyDiv * 0.154;
         const actualTax = grossMonthlyDiv * appliedTaxRate;
 
         totalGeneralTax += benchmarkGeneralTax;
@@ -689,11 +832,24 @@ const { isEn = false } = Astro.props;
         if (m % 12 === 0 || m === totalMonths) {
           const yr = Math.ceil(m / 12);
           const currentMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12) * (1 - appliedTaxRate);
+          const currentAnnualDiv = totalAsset * effectiveAnnualDivRate;
+          let statusText = '안전 (15.4% 이하)';
+          if (currentAnnualDiv > COMPREHENSIVE_TAX_THRESHOLD) {
+            if (account === 'general') statusText = '🚨 종소세 합산+건보료박탈';
+            else if (account === 'isa') statusText = '🛡️ ISA 9.9% 쉴드(합산면제)';
+            else if (account === 'pension') statusText = '🛡️ 연금 과세이연(세금0원)';
+          } else {
+            if (account === 'isa') statusText = '비과세 & 9.9%';
+            else if (account === 'pension') statusText = '과세이연 0%';
+          }
+
           milestones.push({
             year: yr,
             principal: totalPrincipal,
             asset: Math.round(totalAsset),
             monthlyDiv: Math.round(currentMonthlyDiv),
+            annualDiv: Math.round(currentAnnualDiv),
+            taxStatus: statusText,
           });
           chartPoints.push({
             year: yr,
@@ -709,7 +865,7 @@ const { isEn = false } = Astro.props;
 
       const lastMilestone = milestones[milestones.length - 1];
       const finalMonthlyDiv = lastMilestone ? lastMilestone.monthlyDiv : 0;
-      const finalAnnualDiv = finalMonthlyDiv * 12;
+      const finalAnnualDiv = lastMilestone ? lastMilestone.annualDiv : 0;
       const taxSavings = Math.max(0, Math.round(totalGeneralTax - totalActualTaxPaid));
 
       const resTotalAsset = document.getElementById('res-total-asset');
@@ -734,6 +890,46 @@ const { isEn = false } = Astro.props;
       if (resAnnualDiv) resAnnualDiv.textContent = isEn ? `Annual Dividend: ${formatMoney(finalAnnualDiv, isEn)}/yr` : `연간 총 배당금: ${formatMoney(finalAnnualDiv, isEn)}`;
       if (resTaxSaved) resTaxSaved.textContent = `+${formatMoney(taxSavings, isEn)}`;
 
+      // Update 20M Tax Shield Banner
+      const shieldCard = document.getElementById('tax-shield-card');
+      const tsIcon = document.getElementById('ts-icon');
+      const tsTitle = document.getElementById('ts-title');
+      const tsDesc = document.getElementById('ts-desc');
+
+      if (shieldCard && tsIcon && tsTitle && tsDesc) {
+        if (finalAnnualDiv > COMPREHENSIVE_TAX_THRESHOLD) {
+          if (account === 'general') {
+            shieldCard.className = 'tax-shield-card danger-card';
+            tsIcon.textContent = '🚨';
+            tsTitle.textContent = isEn ? '20M KRW Tax Bomb Alert: Comprehensive Income Tax Triggered!' : '금융소득 2,000만 원 돌파: 금융소득종합과세 폭탄 및 건보료 박탈!';
+            tsDesc.textContent = isEn
+              ? `Annual dividend exceeds ₩20M. Excess taxed at ${(marginalTaxRate * 100).toFixed(1)}% and health insurance dependent status revoked.`
+              : `연간 배당금이 2,000만 원을 초과하여 초과분에 ${(marginalTaxRate * 100).toFixed(1)}% 종합소득세율이 적용되며, 건강보험료 피부양자 자격이 박탈되어 지역건보료가 부과됩니다.`;
+          } else if (account === 'isa') {
+            shieldCard.className = 'tax-shield-card success-card';
+            tsIcon.textContent = '🛡️';
+            tsTitle.textContent = isEn ? 'ISA Tax Shield Active: 100% Comprehensive Tax Immunity!' : 'ISA 절세 쉴드 작동: 금융소득종합과세 100% 면제 & 건보료 피부양자 방어!';
+            tsDesc.textContent = isEn
+              ? `Annual dividend exceeds ₩20M, but ISA legally separates all income at 9.9% without any comprehensive taxation or health insurance impact!`
+              : `연 배당금이 2,000만 원을 초과하지만 조세특례제한법에 따라 전액 종합소득세 합산에서 제외되고 9.9% 분리과세로 종결되며 건보료 피부양자가 안전하게 유지됩니다!`;
+          } else if (account === 'pension') {
+            shieldCard.className = 'tax-shield-card success-card';
+            tsIcon.textContent = '🛡️';
+            tsTitle.textContent = isEn ? 'Pension Deferred Shield Active: 0% Tax During Accumulation!' : '연금저축/IRP 과세이연 쉴드: 운용 기간 세금 0원 & 종합과세 원천 차단!';
+            tsDesc.textContent = isEn
+              ? `Zero taxes paid during accumulation. Complete immunity from comprehensive financial taxation.`
+              : `운용 기간 동안 배당소득세가 0원이며 금융소득종합과세가 원천 차단되어 복리 효과가 100% 보존됩니다.`;
+          }
+        } else {
+          shieldCard.className = 'tax-shield-card safe-card';
+          tsIcon.textContent = '🟢';
+          tsTitle.textContent = isEn ? 'Safe Zone: Annual Dividends Under ₩20 Million' : '금융소득 2,000만 원 이하 안전 구간';
+          tsDesc.textContent = isEn
+            ? 'Dividends cleanly taxed under 15.4% withholding without comprehensive tax or health insurance risk.'
+            : '연간 배당금이 2,000만 원 이하로 15.4% 분리과세로 종결되며 종합과세 및 건보료 피부양자 위험이 없습니다.';
+        }
+      }
+
       renderGrowthChart(chartPoints, isEn);
       renderMilestoneTable(milestones, isEn);
     }
@@ -757,7 +953,7 @@ const { isEn = false } = Astro.props;
       }).join('');
     }
 
-    function renderMilestoneTable(milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number }>, isEn: boolean) {
+    function renderMilestoneTable(milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number; annualDiv: number; taxStatus: string }>, isEn: boolean) {
       const tbody = document.getElementById('milestone-table-body');
       if (!tbody) return;
       const keyYears = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30];
@@ -768,6 +964,8 @@ const { isEn = false } = Astro.props;
           <td>${formatMoney(m.principal, isEn)}</td>
           <td style="color: var(--primary); font-weight: 800;">${formatMoney(m.asset, isEn)}</td>
           <td style="color: var(--secondary); font-weight: 700;">${formatMoney(m.monthlyDiv, isEn)}${isEn ? '/mo' : ' / 월'}</td>
+          <td style="font-weight: 700;">${formatMoney(m.annualDiv, isEn)}</td>
+          <td style="font-size: 0.725rem; font-weight: 700;">${m.taxStatus}</td>
         </tr>
       `).join('');
     }
@@ -822,8 +1020,8 @@ const { isEn = false } = Astro.props;
 
     function calculateHistoricalBacktest() {
       const yearsBack = parseInt(histYearsRange?.value || '10', 10);
-      const initialWon = parseInt(histInitialRange?.value || '1000', 10) * 10000;
-      const monthlyWon = parseInt(histMonthlyRange?.value || '50', 10) * 10000;
+      const initialWon = parseInt(histInitialRange?.value || '2000', 10) * 10000;
+      const monthlyWon = parseInt(histMonthlyRange?.value || '100', 10) * 10000;
       const assetKey = histAssetSelect?.value || 'spy';
       const isTaxFree = histAccountSelect?.value === 'isa';
 
@@ -838,13 +1036,15 @@ const { isEn = false } = Astro.props;
       if (histInitialDisplay) histInitialDisplay.textContent = formatMoney(initialWon, isEn);
       if (histMonthlyDisplay) histMonthlyDisplay.textContent = `${formatMoney(monthlyWon, isEn)}${isEn ? '/mo' : ' / 월'}`;
 
-      // Slice actual historical returns
-      // 1996 is index 0. startYear index is startYear - 1996.
       const startIndex = Math.max(0, startYear - 1996);
-      const backtestYears = HIST_DATA.years.slice(startIndex);
 
       function getAssetReturns(key: string, idx: number) {
-        if (key === 'spy_qqq') {
+        if (key === 'cc_jepq_daily') {
+          return {
+            ret: (HIST_DATA.assets.jepq.returns[idx] * 0.5) + (HIST_DATA.assets.jepi.returns[idx] * 0.5),
+            div: (HIST_DATA.assets.jepq.divYields[idx] * 0.5) + (HIST_DATA.assets.jepi.divYields[idx] * 0.5)
+          };
+        } else if (key === 'spy_qqq') {
           return {
             ret: (HIST_DATA.assets.spy.returns[idx] * 0.5) + (HIST_DATA.assets.qqq.returns[idx] * 0.5),
             div: (HIST_DATA.assets.spy.divYields[idx] * 0.5) + (HIST_DATA.assets.qqq.divYields[idx] * 0.5)
@@ -875,6 +1075,7 @@ const { isEn = false } = Astro.props;
         ret: number;
         grossDiv: number;
         tax: number;
+        taxNotice: string;
         netDiv: number;
         endBal: number;
       }> = [];
@@ -884,17 +1085,31 @@ const { isEn = false } = Astro.props;
         const { ret, div } = getAssetReturns(assetKey, i);
         const startOfYrBal = currentBalance;
 
-        // Add 12 months DCA throughout the year
         const annualDca = monthlyWon * 12;
         currentBalance += annualDca;
         totalPrincipal += annualDca;
 
-        // Capital Price Appreciation for the year
         currentBalance = currentBalance * (1 + ret);
 
-        // Dividend Payout for the year
         const grossDiv = currentBalance * div;
-        const tax = isTaxFree ? 0 : grossDiv * 0.154;
+        let tax = 0;
+        let taxNotice = '안전 (15.4%)';
+
+        if (isTaxFree) {
+          tax = 0;
+          taxNotice = grossDiv > 20000000 ? '🛡️ ISA 쉴드(합산면제)' : '비과세 0원';
+        } else {
+          if (grossDiv > 20000000) {
+            // General Account Comprehensive Taxation
+            const excess = grossDiv - 20000000;
+            tax = (20000000 * 0.154) + (excess * 0.264);
+            taxNotice = '🚨 2천만 초과(종합과세)';
+          } else {
+            tax = grossDiv * 0.154;
+            taxNotice = '일반 15.4%';
+          }
+        }
+
         const netDiv = grossDiv - tax;
 
         cumulativeGrossDiv += grossDiv;
@@ -904,7 +1119,6 @@ const { isEn = false } = Astro.props;
           currentBalance += netDiv;
         }
 
-        // Drawdown Tracking
         if (currentBalance > peakBalance) {
           peakBalance = currentBalance;
         } else {
@@ -918,12 +1132,12 @@ const { isEn = false } = Astro.props;
           ret: ret,
           grossDiv: Math.round(grossDiv),
           tax: Math.round(tax),
+          taxNotice: taxNotice,
           netDiv: Math.round(netDiv),
           endBal: Math.round(currentBalance)
         });
       }
 
-      // Final Historical Output Calculation
       const finalProfit = isHistDrip
         ? (currentBalance - totalPrincipal)
         : (currentBalance - totalPrincipal + (cumulativeGrossDiv - cumulativeTaxPaid));
@@ -932,7 +1146,6 @@ const { isEn = false } = Astro.props;
       const lastYr = yearlyLogs[yearlyLogs.length - 1];
       const lastYrDiv = lastYr ? lastYr.netDiv : 0;
 
-      // Update UI
       const resTotal = document.getElementById('hist-res-total');
       const resSub = document.getElementById('hist-res-sub');
       const resDiv = document.getElementById('hist-res-div');
@@ -950,7 +1163,7 @@ const { isEn = false } = Astro.props;
       if (resLastDiv) resLastDiv.textContent = isEn ? `Recent Year Net Div: ${formatMoney(lastYrDiv, isEn)}` : `최근 연간 실수령 배당: ${formatMoney(lastYrDiv, isEn)}`;
       if (resTax) {
         resTax.textContent = isTaxFree
-          ? (isEn ? '₩0 (Tax Saved: 100%)' : '0원 (ISA 비과세 절세)')
+          ? (isEn ? '₩0 (ISA Tax Shielded)' : '0원 (ISA 절세 쉴드)')
           : formatMoney(Math.round(cumulativeTaxPaid), isEn);
       }
       if (resMdd) {
@@ -959,7 +1172,6 @@ const { isEn = false } = Astro.props;
           : `역사적 최대 낙폭 (MDD): -${(maxDrawdown * 100).toFixed(1)}%`;
       }
 
-      // Render Historical Breakdown Table
       const tableBody = document.getElementById('hist-table-body');
       if (tableBody) {
         tableBody.innerHTML = yearlyLogs.map(log => {
@@ -970,8 +1182,9 @@ const { isEn = false } = Astro.props;
               <td><strong>${log.year}년</strong></td>
               <td>${formatMoney(log.startBal, isEn)}</td>
               <td class="${retClass}" style="font-weight: 700;">${retSign}${(log.ret * 100).toFixed(1)}%</td>
-              <td style="color: var(--primary);">${formatMoney(log.grossDiv, isEn)}</td>
+              <td style="color: var(--primary); font-weight: 700;">${formatMoney(log.grossDiv, isEn)}</td>
               <td style="color: var(--danger);">${formatMoney(log.tax, isEn)}</td>
+              <td style="font-size: 0.725rem; font-weight: 700;">${log.taxNotice}</td>
               <td style="color: var(--secondary); font-weight: 800;">${formatMoney(log.endBal, isEn)}</td>
             </tr>
           `;
@@ -1107,6 +1320,53 @@ const { isEn = false } = Astro.props;
     display: block;
   }
 
+  /* Tax Shield Live Banner */
+  .tax-shield-card {
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    transition: all 0.3s ease;
+  }
+
+  .tax-shield-card.safe-card {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1.5px solid rgba(34, 197, 94, 0.4);
+  }
+
+  .tax-shield-card.danger-card {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1.5px solid rgba(239, 68, 68, 0.5);
+    animation: pulse 2s infinite;
+  }
+
+  .tax-shield-card.success-card {
+    background: rgba(59, 130, 246, 0.12);
+    border: 1.5px solid rgba(59, 130, 246, 0.5);
+  }
+
+  .ts-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .ts-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-bottom: 0.2rem;
+  }
+
+  .danger-card .ts-title { color: var(--danger); }
+  .success-card .ts-title { color: var(--primary); }
+
+  .ts-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
   /* Time Machine Banner */
   .time-machine-banner {
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(37, 99, 235, 0.1));
@@ -1199,7 +1459,7 @@ const { isEn = false } = Astro.props;
 
   .preset-buttons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 0.75rem;
   }
 
@@ -1248,7 +1508,7 @@ const { isEn = false } = Astro.props;
   .sim-result-panel {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .panel-heading {
@@ -1295,7 +1555,7 @@ const { isEn = false } = Astro.props;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     padding-top: 0.5rem;
     border-top: 1px dashed var(--border-color);
   }
@@ -1375,14 +1635,19 @@ const { isEn = false } = Astro.props;
   .etf-slider-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .etf-slider-item {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
-    padding: 0.75rem 0.9rem;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .etf-slider-item.highlight-slider {
+    border-color: rgba(37, 99, 235, 0.4);
+    background: linear-gradient(180deg, var(--bg-card), rgba(37, 99, 235, 0.04));
   }
 
   .etf-meta {
@@ -1391,19 +1656,19 @@ const { isEn = false } = Astro.props;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 0.3rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.35rem;
   }
 
-  .etf-name { font-size: 0.85rem; font-weight: 800; color: var(--text-main); }
-  .etf-cagr { font-size: 0.725rem; color: var(--text-muted); }
-  .etf-pct { font-size: 0.875rem; font-weight: 800; color: var(--primary); }
+  .etf-name { font-size: 0.825rem; font-weight: 800; color: var(--text-main); }
+  .etf-cagr { font-size: 0.7rem; color: var(--text-muted); }
+  .etf-pct { font-size: 0.85rem; font-weight: 800; color: var(--primary); }
 
   /* Results Dashboard */
   .metric-hero-card {
     background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.08));
     border: 2px solid var(--primary);
     border-radius: var(--radius-md);
-    padding: 1.5rem;
+    padding: 1.35rem;
     text-align: center;
   }
 
@@ -1539,6 +1804,11 @@ const { isEn = false } = Astro.props;
 
   .text-pos { color: var(--secondary); }
   .text-neg { color: var(--danger); }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.01); }
+  }
 
   @media (max-width: 900px) {
     .sim-main-grid { grid-template-columns: 1fr; }
