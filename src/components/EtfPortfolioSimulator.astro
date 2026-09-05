@@ -411,24 +411,29 @@ const { isEn = false } = Astro.props;
       const fGd = wGd / sumWeight;
 
       // Weighted CAGR & Div Yield
-      // S&P: 10.5% (Price 9.0%, Div 1.5%)
-      // NQ: 14.8% (Price 14.2%, Div 0.6%)
-      // SCHD: 11.2% (Price 7.6%, Div 3.6%)
-      // JEPI: 7.5% (Price -1.0%, Div 8.5%)
-      // K-Value: 8.5% (Price 4.3%, Div 4.2%)
-      // Gold: 8.2% (Price 8.2%, Div 0.0%)
+      // S&P: 10.5% (Price 9.0%, Div 1.5%, DivGrowth 7.0%)
+      // NQ: 14.8% (Price 14.2%, Div 0.6%, DivGrowth 8.5%)
+      // SCHD: 11.2% (Price 7.6%, Div 3.6%, DivGrowth 10.0%)
+      // JEPI: 7.5% (Price -1.0%, Div 8.5%, DivGrowth 1.5%)
+      // K-Value: 8.5% (Price 4.3%, Div 4.2%, DivGrowth 7.0%)
+      // Gold: 8.2% (Price 8.2%, Div 0.0%, DivGrowth 0.0%)
 
       const weightedPriceReturn = (fSp * 0.09) + (fNq * 0.142) + (fSc * 0.076) + (fJp * -0.01) + (fKv * 0.043) + (fGd * 0.082);
       const weightedInitialDiv = (fSp * 0.015) + (fNq * 0.006) + (fSc * 0.036) + (fJp * 0.085) + (fKv * 0.042) + (fGd * 0.0);
+      const weightedDivGrowth = (fSp * 0.07) + (fNq * 0.085) + (fSc * 0.10) + (fJp * 0.015) + (fKv * 0.07) + (fGd * 0.0);
 
-      // Tax Drag
-      const divTaxRate = account === 'general' ? 0.154 : (account === 'isa' ? 0.0 : 0.033);
+      // Yield growth spread: totalAsset already grows at price return.
+      // Yield only expands if Dividend Growth outpaces Price Growth.
+      const yieldSpread = Math.max(0, weightedDivGrowth - Math.max(0, weightedPriceReturn));
 
       // Month-by-month simulation
       let totalAsset = initialWon;
       let totalPrincipal = initialWon;
       let totalDivPaid = 0;
       let totalGeneralTax = 0;
+      let totalActualTaxPaid = 0;
+      let cumulativeIsaDividends = 0;
+      const ISA_TAX_FREE_CAP = 5000000; // 2026 Productive ISA Cap 5M KRW (General 2M)
 
       const milestones: Array<{ year: number; principal: number; asset: number; monthlyDiv: number }> = [];
       const chartPoints: Array<{ year: number; principal: number; profit: number; total: number }> = [];
@@ -436,24 +441,48 @@ const { isEn = false } = Astro.props;
       const totalMonths = years * 12;
 
       for (let m = 1; m <= totalMonths; m++) {
-        // Add monthly contribution
+        // Add monthly contribution at start of month (Annuity Due)
         totalAsset += monthlyWon;
         totalPrincipal += monthlyWon;
 
-        // Current Year for Dividend Growth (SCHD factor ~6% avg div growth)
-        const currentYear = Math.floor(m / 12);
-        const divGrowthFactor = Math.pow(1 + (fSc * 0.07 + fKv * 0.03), currentYear);
-        const effectiveAnnualDivRate = weightedInitialDiv * divGrowthFactor;
+        // Current Year for Dividend Spread Growth
+        const currentYear = Math.floor((m - 1) / 12);
+        const effectiveAnnualDivRate = weightedInitialDiv * Math.pow(1 + yieldSpread, currentYear);
 
         // Monthly Price Growth
         const monthlyPriceRate = Math.pow(1 + weightedPriceReturn, 1 / 12) - 1;
         totalAsset += totalAsset * monthlyPriceRate;
 
-        // Monthly Dividend
+        // Monthly Gross Dividend
         const grossMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12);
-        const netMonthlyDiv = grossMonthlyDiv * (1 - divTaxRate);
-        const generalTaxDrag = grossMonthlyDiv * 0.154;
-        totalGeneralTax += generalTaxDrag;
+
+        // Korean Statutory Tax Engine
+        let appliedTaxRate = 0.154; // General Account standard
+        if (account === 'isa') {
+          if (cumulativeIsaDividends < ISA_TAX_FREE_CAP) {
+            const remainingTaxFree = ISA_TAX_FREE_CAP - cumulativeIsaDividends;
+            if (grossMonthlyDiv <= remainingTaxFree) {
+              appliedTaxRate = 0.0;
+              cumulativeIsaDividends += grossMonthlyDiv;
+            } else {
+              const taxableAmount = grossMonthlyDiv - remainingTaxFree;
+              cumulativeIsaDividends += remainingTaxFree;
+              appliedTaxRate = (taxableAmount / grossMonthlyDiv) * 0.099;
+            }
+          } else {
+            appliedTaxRate = 0.099; // 9.9% separate taxation above limit
+          }
+        } else if (account === 'pension') {
+          // 100% Tax-Deferred during accumulation phase
+          appliedTaxRate = 0.0;
+        }
+
+        const netMonthlyDiv = grossMonthlyDiv * (1 - appliedTaxRate);
+        const benchmarkGeneralTax = grossMonthlyDiv * 0.154;
+        const actualTax = grossMonthlyDiv * appliedTaxRate;
+
+        totalGeneralTax += benchmarkGeneralTax;
+        totalActualTaxPaid += actualTax;
 
         if (isDrip) {
           totalAsset += netMonthlyDiv;
@@ -464,7 +493,7 @@ const { isEn = false } = Astro.props;
         // Record yearly milestones
         if (m % 12 === 0 || m === totalMonths) {
           const yr = Math.ceil(m / 12);
-          const currentMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12) * (1 - divTaxRate);
+          const currentMonthlyDiv = totalAsset * (effectiveAnnualDivRate / 12) * (1 - appliedTaxRate);
           milestones.push({
             year: yr,
             principal: totalPrincipal,
@@ -474,21 +503,22 @@ const { isEn = false } = Astro.props;
           chartPoints.push({
             year: yr,
             principal: Math.round(totalPrincipal),
-            profit: Math.max(0, Math.round(totalAsset - totalPrincipal)),
+            profit: Math.max(0, Math.round(isDrip ? (totalAsset - totalPrincipal) : (totalAsset - totalPrincipal + totalDivPaid))),
             total: Math.round(totalAsset),
           });
         }
       }
 
-      // Output Results
-      const finalProfit = Math.round(totalAsset - totalPrincipal);
+      // Output Results (Accurate Total Return whether DRIP is ON or OFF)
+      const finalProfit = Math.round(isDrip ? (totalAsset - totalPrincipal) : (totalAsset - totalPrincipal + totalDivPaid));
       const totalReturnPct = ((finalProfit / (totalPrincipal || 1)) * 100).toFixed(1);
 
       const lastMilestone = milestones[milestones.length - 1];
       const finalMonthlyDiv = lastMilestone ? lastMilestone.monthlyDiv : 0;
       const finalAnnualDiv = finalMonthlyDiv * 12;
 
-      const taxSavings = account !== 'general' ? Math.round(totalGeneralTax * 0.85) : 0;
+      // Actual Statutory Tax Savings vs Standard 15.4% Account
+      const taxSavings = Math.max(0, Math.round(totalGeneralTax - totalActualTaxPaid));
 
       // Update UI Elements
       const resTotalAsset = document.getElementById('res-total-asset');
@@ -499,9 +529,15 @@ const { isEn = false } = Astro.props;
 
       if (resTotalAsset) resTotalAsset.textContent = formatMoney(Math.round(totalAsset), isEn);
       if (resPrincipalProfit) {
-        resPrincipalProfit.innerHTML = isEn
-          ? `Principal: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | Net Profit: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(finalProfit, isEn)} (+${totalReturnPct}%)</span>`
-          : `총 납입 원금: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | 순수익: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(finalProfit, isEn)} (+${totalReturnPct}%)</span>`;
+        if (isDrip) {
+          resPrincipalProfit.innerHTML = isEn
+            ? `Principal: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | Net Profit: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(finalProfit, isEn)} (+${totalReturnPct}%)</span>`
+            : `총 납입 원금: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | 순수익: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(finalProfit, isEn)} (+${totalReturnPct}%)</span>`;
+        } else {
+          resPrincipalProfit.innerHTML = isEn
+            ? `Principal: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | Cash Dividends: <strong>${formatMoney(Math.round(totalDivPaid), isEn)}</strong> | Total Profit: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(finalProfit, isEn)} (+${totalReturnPct}%)</span>`
+            : `총 원금: <strong>${formatMoney(totalPrincipal, isEn)}</strong> | 누적 수령 배당금: <strong>${formatMoney(Math.round(totalDivPaid), isEn)}</strong> | 총순수익: <span style="color: var(--secondary); font-weight:800;">+${formatMoney(finalProfit, isEn)} (+${totalReturnPct}%)</span>`;
+        }
       }
       if (resMonthlyDiv) resMonthlyDiv.textContent = `${formatMoney(finalMonthlyDiv, isEn)}${isEn ? ' / mo' : ' / 월'}`;
       if (resAnnualDiv) resAnnualDiv.textContent = isEn ? `Annual Dividend: ${formatMoney(finalAnnualDiv, isEn)}/yr` : `연간 총 배당금: ${formatMoney(finalAnnualDiv, isEn)}`;
