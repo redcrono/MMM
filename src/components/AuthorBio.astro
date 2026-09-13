@@ -17,12 +17,24 @@ const {
 ---
 
 <div class="author-card" aria-label={isEn ? "Author Information" : "작성자 정보"}>
-  <div class="author-avatar" aria-hidden="true">
-    MMM
+  <div class="author-avatar" aria-hidden="true" style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95rem; border-radius: 50%; width: 48px; height: 48px; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    ✓
   </div>
   <div class="author-info">
-    <h4>{authorName}</h4>
-    <div class="author-role">✓ {role}</div>
-    <p class="author-bio">{bio}</p>
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+      <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--text-main);">{authorName}</h4>
+      <a
+        href={isEn ? "/en/editorial-guidelines" : "/editorial-guidelines"}
+        style="font-size: 0.75rem; color: var(--primary); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.2rem; background: var(--primary-light); padding: 0.15rem 0.45rem; border-radius: 4px;"
+      >
+        <span>🛡️</span> {isEn ? "Editorial Standards Verified" : "팩트체크 편집 원칙 준수"}
+      </a>
+    </div>
+    <div class="author-role" style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin: 0.25rem 0 0.35rem;">
+      ✓ {role}
+    </div>
+    <p class="author-bio" style="font-size: 0.875rem; line-height: 1.55; color: var(--text-muted); margin: 0;">
+      {bio}
+    </p>
   </div>
 </div>

@@ -1,0 +1,238 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const allPosts = await getCollection("blog");
+const searchIndex = allPosts.map((post) => ({
+  title: post.data.title,
+  description: post.data.description,
+  slug: post.slug,
+  category: post.data.category,
+  categoryName: post.data.categoryName,
+  date: post.data.pubDate.toISOString().slice(0, 10),
+  tags: post.data.tags || [],
+  isEn: post.slug.startsWith("en-") || post.slug.startsWith("korea-") || post.slug.startsWith("open-") || post.slug.startsWith("best-korea-") || post.slug.includes("-expats") || post.slug.includes("-foreigners") || post.slug.includes("travel-cards"),
+}));
+---
+
+<BaseLayout
+  title="금융·세무 가이드 통합 검색 | 메가머니모멘텀"
+  description="메가머니모멘텀의 절세, ISA, 연말정산, 정부지원금, ETF 시뮬레이터 및 경제 트렌드 분석 아티클 통합 검색 서비스입니다."
+>
+  <div class="container-article">
+    <header class="article-header" style="text-align: center; margin-bottom: 2rem;">
+      <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 0.5rem;">
+        Search Articles & Tools
+      </div>
+      <h1 class="article-title">금융·세무 콘텐츠 통합 검색</h1>
+      <p style="font-size: 1.05rem; color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+        궁금한 세무 혜택, 정부지원금, ETF 투자 전략, 금융 계산기를 키워드로 빠르게 검색해 보세요.
+      </p>
+
+      <div style="margin-top: 1.75rem; position: relative; max-width: 640px; margin-left: auto; margin-right: auto;">
+        <input
+          type="search"
+          id="search-input"
+          placeholder="예: ISA 계좌, 연말정산, 커버드콜, 청년월세, 스트레스 DSR..."
+          autofocus
+          style="width: 100%; padding: 1rem 1.25rem 1rem 3rem; font-size: 1.05rem; border-radius: var(--radius-lg); border: 2px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-family: inherit; box-shadow: var(--shadow-sm); outline: none; transition: border-color 0.15s ease;"
+        />
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light); pointer-events: none;"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+
+      <!-- Quick Category Chips -->
+      <div style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;">
+        <button class="filter-chip active" data-cat="all">전체보기</button>
+        <button class="filter-chip" data-cat="tax">절세·세무</button>
+        <button class="filter-chip" data-cat="wealth">자산관리·ISA</button>
+        <button class="filter-chip" data-cat="stocks">주식·ETF</button>
+        <button class="filter-chip" data-cat="subsidy">정부지원금</button>
+        <button class="filter-chip" data-cat="economy">경제이슈</button>
+        <button class="filter-chip" data-cat="en">English Guides</button>
+      </div>
+    </header>
+
+    <div id="search-status" style="margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-muted); font-weight: 600;">
+      전체 <span id="count-display">{searchIndex.length}</span>개의 아티클이 등록되어 있습니다.
+    </div>
+
+    <!-- Search Results Container -->
+    <div id="search-results" style="display: flex; flex-direction: column; gap: 1rem;">
+      {searchIndex.map((post) => (
+        <article
+          class="search-card"
+          data-title={post.title.toLowerCase()}
+          data-desc={post.description.toLowerCase()}
+          data-category={post.category}
+          data-tags={post.tags.join(",").toLowerCase()}
+          data-en={post.isEn ? "true" : "false"}
+          style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; transition: transform 0.15s ease, box-shadow 0.15s ease;"
+        >
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <span class={`badge-category badge-${post.category}`} style="font-size: 0.75rem; padding: 0.2rem 0.5rem;">
+              {post.categoryName || post.category}
+            </span>
+            <span style="font-size: 0.8rem; color: var(--text-light);">{post.date}</span>
+            {post.isEn && (
+              <span style="font-size: 0.7rem; background: #3b82f6; color: #ffffff; padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 700;">
+                EN
+              </span>
+            )}
+          </div>
+          <h2 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.4rem; line-height: 1.4;">
+            <a href={`/blog/${post.slug}`} style="color: var(--text-main); text-decoration: none;">
+              {post.title}
+            </a>
+          </h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 0.75rem;">
+            {post.description}
+          </p>
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+              {post.tags.slice(0, 4).map((tag) => (
+                <span style="font-size: 0.75rem; background: var(--bg-muted); color: var(--text-muted); padding: 0.15rem 0.45rem; border-radius: 3px;">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+            <a
+              href={`/blog/${post.slug}`}
+              style="font-size: 0.85rem; font-weight: 700; color: var(--primary); display: inline-flex; align-items: center; gap: 0.25rem;"
+            >
+              읽기 →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Empty State -->
+    <div id="no-results" style="display: none; text-align: center; padding: 3rem 1rem; background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border-color);">
+      <p style="font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem;">
+        검색 결과가 없습니다
+      </p>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+        다른 키워드로 검색하시거나 아래 추천 금융 도구를 이용해 보세요.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="/etf" class="btn btn-primary">ETF 배당 시뮬레이터</a>
+        <a href="/tools" class="btn btn-secondary">절세 계산기</a>
+        <a href="/ladder" class="btn btn-outline">자산 사다리 진단</a>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .filter-chip {
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .filter-chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .filter-chip.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+    .search-card:hover {
+      border-color: var(--border-focus);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+    #search-input:focus {
+      border-color: var(--primary);
+    }
+  </style>
+
+  <script is:inline>
+    (function () {
+      const input = document.getElementById("search-input");
+      const cards = Array.from(document.querySelectorAll(".search-card"));
+      const countDisplay = document.getElementById("count-display");
+      const noResults = document.getElementById("no-results");
+      const chips = Array.from(document.querySelectorAll(".filter-chip"));
+
+      let activeCat = "all";
+
+      function filterCards() {
+        const query = (input.value || "").trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach((card) => {
+          const title = card.getAttribute("data-title") || "";
+          const desc = card.getAttribute("data-desc") || "";
+          const category = card.getAttribute("data-category") || "";
+          const tags = card.getAttribute("data-tags") || "";
+          const isEn = card.getAttribute("data-en") === "true";
+
+          let matchesCat = true;
+          if (activeCat === "en") {
+            matchesCat = isEn;
+          } else if (activeCat !== "all") {
+            matchesCat = category === activeCat;
+          }
+
+          let matchesQuery = true;
+          if (query) {
+            matchesQuery =
+              title.includes(query) ||
+              desc.includes(query) ||
+              tags.includes(query) ||
+              category.includes(query);
+          }
+
+          if (matchesCat && matchesQuery) {
+            card.style.display = "block";
+            visibleCount++;
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        countDisplay.textContent = visibleCount;
+        noResults.style.display = visibleCount === 0 ? "block" : "none";
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialQ = urlParams.get("q");
+      if (initialQ) {
+        input.value = initialQ;
+      }
+
+      input.addEventListener("input", filterCards);
+
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          chips.forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+          activeCat = chip.getAttribute("data-cat") || "all";
+          filterCards();
+        });
+      });
+
+      filterCards();
+    })();
+  </script>
+</BaseLayout>

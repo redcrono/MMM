@@ -21,6 +21,63 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://www.mega
 const siteTitle = '메가머니모멘텀(MegaMoneyMomentum) | 금융·세무·정책 나침반';
 const fullTitle = title === siteTitle ? title : `${title} | 메가머니모멘텀`;
 
+const currentPath = Astro.url.pathname;
+const isEn =
+  currentPath.startsWith('/en') ||
+  currentPath.includes('/en-') ||
+  currentPath.includes('/korea-') ||
+  currentPath.includes('/open-korea-') ||
+  currentPath.includes('/best-korea-') ||
+  currentPath.includes('-expats') ||
+  currentPath.includes('-foreigners') ||
+  currentPath.includes('travel-cards');
+
+const siteRoot = 'https://www.megamomo.co.kr';
+let koUrl = `${siteRoot}${currentPath}`;
+let enUrl = `${siteRoot}/en`;
+
+if (isEn) {
+  enUrl = `${siteRoot}${currentPath}`;
+  if (currentPath === '/en' || currentPath === '/en/') {
+    koUrl = `${siteRoot}/`;
+  } else if (currentPath.startsWith('/en/category/')) {
+    koUrl = `${siteRoot}${currentPath.replace('/en/category/', '/category/')}`;
+  } else if (currentPath.startsWith('/en/')) {
+    koUrl = `${siteRoot}${currentPath.replace('/en/', '/')}`;
+  } else if (currentPath.startsWith('/blog/en-')) {
+    koUrl = `${siteRoot}${currentPath.replace('/blog/en-', '/blog/')}`;
+  } else {
+    koUrl = `${siteRoot}/`;
+  }
+} else {
+  koUrl = `${siteRoot}${currentPath}`;
+  if (currentPath === '/' || currentPath === '') {
+    enUrl = `${siteRoot}/en`;
+  } else if (currentPath.startsWith('/category/')) {
+    enUrl = `${siteRoot}${currentPath.replace('/category/', '/en/category/')}`;
+  } else if (currentPath.startsWith('/blog/')) {
+    enUrl = `${siteRoot}${currentPath.replace('/blog/', '/blog/en-')}`;
+  } else if (
+    currentPath.startsWith('/about') ||
+    currentPath.startsWith('/privacy') ||
+    currentPath.startsWith('/terms') ||
+    currentPath.startsWith('/disclaimer') ||
+    currentPath.startsWith('/contact') ||
+    currentPath.startsWith('/editorial-guidelines') ||
+    currentPath.startsWith('/tools') ||
+    currentPath.startsWith('/etf') ||
+    currentPath.startsWith('/ladder') ||
+    currentPath.startsWith('/battle') ||
+    currentPath.startsWith('/calendar') ||
+    currentPath.startsWith('/qna')
+  ) {
+    enUrl = `${siteRoot}/en${currentPath}`;
+  } else {
+    enUrl = `${siteRoot}/en`;
+  }
+}
+const xDefaultUrl = koUrl;
+
 // Schema.org Structured Data
 const jsonLd = articleDate
   ? {
@@ -30,19 +87,21 @@ const jsonLd = articleDate
       description: description,
       author: {
         '@type': 'Organization',
-        name: articleAuthor || '메가머니모멘텀 금융리서치팀',
-        url: Astro.site?.toString() || 'https://www.megamomo.co.kr',
+        name: articleAuthor || (isEn ? 'MegaMoneyMomentum Editorial Team' : '메가머니모멘텀 금융데이터 리서치팀'),
+        url: isEn ? `${siteRoot}/en/about` : `${siteRoot}/about`,
       },
       publisher: {
         '@type': 'Organization',
-        name: '메가머니모멘텀(MegaMoneyMomentum)',
+        name: isEn ? 'MegaMoneyMomentum (MMM)' : '메가머니모멘텀(MegaMoneyMomentum)',
+        url: siteRoot,
         logo: {
           '@type': 'ImageObject',
-          url: new URL('/favicon.svg', Astro.site || 'https://www.megamomo.co.kr').toString(),
+          url: `${siteRoot}/favicon.svg`,
         },
+        publishingPrinciples: isEn ? `${siteRoot}/en/editorial-guidelines` : `${siteRoot}/editorial-guidelines`,
       },
       datePublished: articleDate.toISOString(),
-      dateModified: (articleDate).toISOString(),
+      dateModified: articleDate.toISOString(),
       mainEntityOfPage: {
         '@type': 'WebPage',
         '@id': canonicalURL.toString(),
@@ -51,11 +110,12 @@ const jsonLd = articleDate
   : {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
-      name: '메가머니모멘텀',
-      url: Astro.site?.toString() || 'https://www.megamomo.co.kr',
+      name: isEn ? 'MegaMoneyMomentum (MMM)' : '메가머니모멘텀',
+      url: isEn ? `${siteRoot}/en` : siteRoot,
+      publishingPrinciples: isEn ? `${siteRoot}/en/editorial-guidelines` : `${siteRoot}/editorial-guidelines`,
       potentialAction: {
         '@type': 'SearchAction',
-        target: `${Astro.site || 'https://www.megamomo.co.kr'}/search?q={search_term_string}`,
+        target: `${siteRoot}/search?q={search_term_string}`,
         'query-input': 'required name=search_term_string',
       },
     };
@@ -69,9 +129,9 @@ const jsonLd = articleDate
 <meta name="generator" content={Astro.generator} />
 
 <!-- Multilingual SEO (hreflang) -->
-<link rel="alternate" hreflang="ko" href="https://www.megamomo.co.kr" />
-<link rel="alternate" hreflang="en" href="https://www.megamomo.co.kr/en" />
-<link rel="alternate" hreflang="x-default" href="https://www.megamomo.co.kr" />
+<link rel="alternate" hreflang="ko" href={koUrl} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
 
 <!-- Google Search Console Verification -->
 <meta name="google-site-verification" content="Tl7XeCiQwyPZHv-fPvAk0iAufVKjxUDzYuBF7bO3Dr4" />
