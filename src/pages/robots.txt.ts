@@ -25,6 +25,7 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
+Sitemap: https://www.megamomo.co.kr/sitemap.xml
 Sitemap: https://www.megamomo.co.kr/sitemap-index.xml
 `.trim();
 
