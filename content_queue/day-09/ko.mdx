@@ -16,10 +16,10 @@ officialSources:
     url: "https://www.bokjiro.go.kr"
 ---
 
-import InfographicCard from '../../components/InfographicCard.astro';
-import StepFlow from '../../components/StepFlow.astro';
+import InfographicCard from "../../components/InfographicCard.astro";
+import StepFlow from "../../components/StepFlow.astro";
 
-동절기 난방비 부담이 급증하는 겨울철을 앞두고, 정부가 취약계층의 냉·난방 에너지 비용을 현금성 바우처로 지원하는 **'2026년 에너지바우처 사업'**을 본격 집행합니다.
+동절기 난방비 부담이 급증하는 겨울철을 앞두고, 정부가 취약계층의 냉·난방 에너지 비용을 현금성 바우처로 지원하는 **2026년 에너지바우처 사업**을 본격 집행합니다.
 
 전기, 도시가스, 지역난방 요금을 자동으로 차감받거나, 등유·LPG·연탄을 직접 구매할 수 있는 국민행복카드를 발급받아 **가구원 수에 따라 최대 59만 원 이상**을 지원받을 수 있습니다.
 
@@ -33,8 +33,108 @@ import StepFlow from '../../components/StepFlow.astro';
     <ul>
       <li><strong>신청 자격:</strong> 국민기초생활보장법상 수급자(생계·의료·주거·교육급여)이면서, 가구원 중 노인, 영유아, 장애인, 임산부, 중증질환자 등이 포함된 가구.</li>
       <li><strong>지원 금액:</strong> 1인 가구 약 29.5만 원, 2인 가구 약 40.7만 원, 3인 가구 약 53.2만 원, 4인 이상 가구 최대 59.2만 원 지원.</li>
-      <li><strong>사용 방식:</strong> 도시가스·전기요금 청구서에서 자동차감받는 '가상카드' 또는 등유·LPG를 결제하는 '국민행복카드 실물카드' 중 택1.</li>
-      <li><strong>신청 방법:</strong> 주민등록지 읍·면·동 행정복지센터 방문 또는 '복지로(bokjiro.go.kr)' 온라인 간편 신청.</li>
+      <li><strong>사용 방식:</strong> 도시가스·전기요금 청구서에서 자동차감받는 가상카드 또는 등유·LPG를 결제하는 국민행복카드 실물카드 중 택1.</li>
+      <li><strong>신청 방법:</strong> 주민등록지 읍·면·동 행정복지센터 방문 또는 복지로(bokjiro.go.kr) 온라인 간편 신청.</li>
     </ul>
   </div>
 </div>
+
+---
+
+## 1. 2026 에너지바우처 가구원수별 지원 금액표
+
+에너지바우처 지원 금액은 가구원 수에 따라 차등 지급되며, 여름철 냉방 바우처 잔액은 겨울철 난방용으로 자동 이월되어 사용할 수 있습니다:
+
+<InfographicCard title="2026년 가구원수별 에너지바우처 총 지원 한도" type="primary" subtitle="산업통상자원부 및 한국에너지공단 공식 기준">
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+      <thead>
+        <tr style="background: var(--primary-light);">
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">가구 구분</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">동절기 난방 바우처</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">총 지원 금액(연간)</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">1인 가구</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800; color: #3b82f6;">265,600원</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800;">295,200원</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">하절기 잔액 겨울철 합산 사용 가능</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">2인 가구</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800; color: #3b82f6;">362,300원</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800;">407,500원</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">부부 또는 한부모 가구</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">3인 가구</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800; color: #3b82f6;">473,200원</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800;">532,700원</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">자녀 또는 부모 동거 가구</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">4인 이상 가구</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800; color: #ef4444;">517,800원</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800; color: #ef4444;">592,400원</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">최대 59만 원 이상 혜택</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</InfographicCard>
+
+---
+
+## 2. 신청 자격 2대 요건 (소득 기준 + 세대원 특성)
+
+에너지바우처를 수령하려면 다음 **2가지 요건을 모두 충족**해야 합니다:
+
+1. **소득 기준 요건**: 국민기초생활보장법에 따른 생계급여, 의료급여, 주거급여, 교육급여 수급 가구여야 합니다.
+2. **세대원 특성 요건**: 수급자 본인 또는 주민등록표상 동일 세대원 중 아래 항목에 해당하는 자가 1명 이상 포함되어 있어야 합니다:
+   - **노인**: 1959년 12월 31일 이전 출생자
+   - **영유아**: 2017년 1월 1일 이후 출생자
+   - **장애인**: 장애인복지법상 등록 장애인
+   - **임산부**: 임신 중이거나 분만 후 6개월 미만 여성
+   - **중증·희귀질환자**: 국민건강보험법 시행령에 따른 중증난치질환자
+
+---
+
+## 3. 결제 방식 선택: 가상카드 vs 실물카드(국민행복카드)
+
+* **가상카드 (요금 자동 차감)**: 아파트나 빌라 거주자로 전기, 도시가스, 지역난방 요금 고지서에서 매월 자동으로 청구 금액을 감면받고 싶은 가구에 적합합니다. 고지서 상의 고객번호를 등록하면 고지서 발행 시 바우처 잔액 한도 내에서 자동차감됩니다.
+* **실물카드 (국민행복카드)**: 등유, LPG, 연탄 등을 주유소나 배달업체에서 직접 결제하여 사용하는 단독주택 거주 가구에 적합합니다. 비씨, 롯데, 삼성, KB국민, 신한 등 주요 카드사 국민행복카드로 결제할 수 있습니다.
+
+---
+
+## 4. 원스톱 신청 로드맵 (온라인 & 오프라인)
+
+<StepFlow steps={[
+  {
+    step: "01",
+    title: "자격 사전 조회 및 에너지 고지서 준비",
+    desc: "복지로 웹사이트 또는 행정복지센터에서 기초생활수급 및 세대원 자격을 확인하고, 최근 전기·도시가스 요금 고지서의 고객번호를 확인합니다."
+  },
+  {
+    step: "02",
+    title: "신청서 제출 (방문 또는 온라인)",
+    desc: "주민등록상 주소지 관할 읍·면·동 행정복지센터에 방문하거나, 복지로(bokjiro.go.kr)에 공동·금융인증서로 로그인하여 에너지바우처를 신청합니다."
+  },
+  {
+    step: "03",
+    title: "카드 발급 및 자동 차감 개시",
+    desc: "가상카드는 다음 달 고지서부터 자동 요금 감면이 적용되며, 실물카드는 전담 카드사에서 국민행복카드를 발급받아 가맹점에서 결제합니다."
+  }
+]} />
+
+---
+
+## 5. 자주 묻는 질문 (FAQ)
+
+**Q1. 겨울철 동안 다 쓰지 못한 바우처 잔액은 환불받을 수 있나요?**  
+A. 아니오, 에너지바우처는 현금 환급이 불가능한 전자 바우처입니다. 당해 지원 기간(다음 해 5월 25일까지) 내에 모두 소진하지 않은 잔액은 국고로 자동 환수되므로 난방철 기간 동안 적극적으로 차감받으셔야 합니다.
+
+**Q2. 겨울 중간에 다른 주소지로 이사하면 바우처는 취소되나요?**  
+A. 취소되지 않습니다. 이사 후 전입신고를 마친 뒤, 새로운 거주지의 읍·면·동 행정복지센터에 방문하여 에너지바우처 정보 변경 신청을 하시면 새로운 도시가스/전기 고객번호로 남은 잔액이 그대로 이관됩니다.

@@ -1,40 +1,127 @@
 ---
-title: "2026 미국주식 양도소득세 250만원 비과세 한도 채우기: 연말 손익통산(Tax-Loss Harvesting) 절세 및 결제일 D-2 주의사항 (최신)"
-description: "서학개미 필수 연말 정산 테크닉인 미국 해외주식 양도소득세 250만 원 기본공제 100% 활용법. 수익 난 종목과 손실 난 마이너스 종목을 함께 매도하여 과세표준을 0원으로 만드는 손익통산(Tax-Loss Harvesting) 실전 매매법, 한국-미국 시차 및 결제일(D-2일) 매매 마감일 팩트체크."
+title: "2026 미국주식 양도소득세 250만원 비과세 한도 & 12월 연말 손익통산 절세 매뉴얼 (최신)"
+description: "서학개미를 위한 2026년 해외주식 양도소득세 완벽 절세 가이드. 연간 250만 원 기본공제 100% 활용법, 12월 말 손실 종목 매도 후 재매수(Tax-Loss Harvesting)로 세금 0원 만들기, 미국 결제일(T+2일) 12월 거래 마감 시한, 배우자 6억 증여 취득가액 리셋 기법 총정리."
 pubDate: 2026-01-01
 category: "stocks"
-categoryName: "주식·ETF 투자"
-tags: ["해외주식양도세", "미국주식250만원비과세", "손익통산", "TaxLossHarvesting", "서학개미절세", "미국주식결제일", "양도세22퍼센트"]
-author: "메가머니모멘텀 글로벌주식 리서치팀"
+categoryName: "미국주식·ETF"
+tags: ["미국주식양도세", "해외주식250만원비과세", "연말손익통산", "택스로스하베스팅", "해외주식세금신고", "서학개미절세", "미국주식결제일"]
+author: "메가머니모멘텀 글로벌투자 리서치팀"
 featured: true
-readingTime: "8분"
+readingTime: "9분"
 heroImage: "/images/us_stock_tax_250m_2026_hero.jpg"
 officialSources:
-  - name: "국세청 해외주식 양도소득세 법령 가이드"
+  - name: "국세청 해외주식 양도소득세 신고 안내 포털"
     url: "https://www.nts.go.kr"
-  - name: "한국예탁결제원 외화증권 결제 안내"
-    url: "https://www.ksd.or.kr"
+  - name: "한국예탁결제원 외화증권 결제 정보 시스템"
+    url: "https://www.seibro.or.kr"
 ---
 
 import InfographicCard from '../../components/InfographicCard.astro';
 import StepFlow from '../../components/StepFlow.astro';
 
-미국 주식(테슬라, 엔비디아, 애플 등)과 미국 ETF로 수익을 낸 서학개미라면 반드시 매년 12월 말 전에 **'양도소득세 250만 원 기본공제'**와 **'손익통산(Tax-Loss Harvesting)'**을 실행해야 합니다.
+미국 주식과 ETF 투자로 매매 차익을 거둔 서학개미들이 매년 5월에 마주하는 가장 큰 세금은 바로 **'해외주식 양도소득세(지방소득세 포함 22%)'**입니다.
 
-해외주식 매매차익은 1년간 발생한 이익에서 기본공제 250만 원을 뺀 나머지 금액에 대해 **무려 22%(지방세 포함)의 무거운 양도소득세**가 부과됩니다. 하지만 손실 중인 종목을 적절히 매도하여 과세소득을 250만 원 이하로 맞추면 세금을 단 1원도 내지 않아도 됩니다.
+해외주식은 연간 누적 매매 차익에서 **법정 기본공제 250만 원**을 차감한 뒤 초과 금액에 대해 22%의 단일세율이 부과됩니다. 12월 말 폐장 전 어떻게 손익을 통산(Tax-Loss Harvesting)하느냐에 따라 **수백만 원의 세금을 합법적으로 0원으로 줄일 수 있습니다.**
 
 <div class="smart-brief-box">
   <div class="smart-brief-header">
     <span class="smart-brief-badge">💡 3분 스마트 브리프</span>
-    <span class="smart-brief-time">해외주식 양도세 절세 요약</span>
+    <span class="smart-brief-time">미국주식 양도세 핵심 팩트체크</span>
   </div>
   <div class="smart-brief-content">
-    <p><strong>📌 4줄 핵심 요약:</strong></p>
+    <p><strong>📌 4줄 요약:</strong></p>
     <ul>
-      <li><strong>250만 원 비과세 챙기기:</strong> 수익이 250만 원 이하인 종목은 12월에 매도 후 재매수하여 취득단가를 높여두면 미래 세금을 55만 원 이상 아낄 수 있습니다.</li>
-      <li><strong>손익통산 치트키:</strong> A종목에서 +1,000만 원 이익이 났다면, 마이너스 -750만 원인 B종목을 함께 매도하여 순이익을 +250만 원으로 맞추면 양도세가 0원이 됩니다.</li>
-      <li><strong>결제일 D-2 주의보:</strong> 미국 증시는 매매 체결일로부터 결제까지 영업일 기준 2일(T+1-2)이 걸리므로, 12월 31일이 아니라 **12월 27-28일 전까지 체결**을 마쳐야 당해 연도 실적으로 인정됩니다.</li>
-      <li><strong>재매수 전략:</strong> 손실 확정 매도 후 동일 종목을 곧바로 다시 사도 한국 세법상 워시세일(Wash-Sale) 규제가 적용되지 않아 합법적입니다.</li>
+      <li><strong>250만 원 기본공제:</strong> 1월 1일부터 12월 31일까지 결제 완료된 해외주식 실현손익 합계가 250만 원 이하이면 세금이 0원입니다.</li>
+      <li><strong>연말 손익통산(Tax-loss Harvesting):</strong> 수익이 1,000만 원 났다면, 마이너스 750만 원 상태인 손실 종목을 12월 말에 매도하여 합산 수익을 250만 원으로 맞추면 양도세가 165만 원에서 0원으로 사라집니다.</li>
+      <li><strong>동일 종목 당일 재매수 가능:</strong> 한국 세법은 미국과 달리 '워시세일 룰(Wash Sale Rule)'이 없어 손실 종목을 매도한 당일 즉시 다시 매수해도 손익통산이 100% 인정됩니다.</li>
+      <li><strong>결제일 T+2 주의:</strong> 주문 체결일이 아니라 '결제일' 기준이므로 12월 31일 폐장일보다 영업일 기준 최소 2일 전에 매도를 완료해야 합니다.</li>
     </ul>
   </div>
 </div>
+
+---
+
+## 1. 해외주식 양도소득세 과세 체계 및 계산 공식
+
+소득세법 제118조의2에 따른 해외주식 양도세 산출 구조는 다음과 같습니다:
+
+<InfographicCard title="미국주식 양도소득세 표준 산출 공식" type="primary" subtitle="소득세법 및 지방세법 단일세율 22%">
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+      <thead>
+        <tr style="background: var(--primary-light);">
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">단계</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">산출 항목</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">계산 방식 및 법정 기준</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">1단계</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">양도차익 합산</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">1년 동안 매도 체결된 종목별 (양도가액 - 취득가액 - 제비용) 합산</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">2단계</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); color: #10b981; font-weight: 800;">기본공제 차감</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); color: #10b981; font-weight: 800;">연간 1인당 250만 원 법정 비과세 차감</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">3단계</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">과세표준 확정</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">(양도차익 - 250만 원)</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">4단계</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); color: #ef4444; font-weight: 800;">최종 납부 세액</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); color: #ef4444; font-weight: 800;">과세표준 × 22% (양도세 20% + 지방소득세 2%)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</InfographicCard>
+
+---
+
+## 2. 연말 손익통산(Tax-loss Harvesting) 실전 절세 시뮬레이션
+
+투자자 D씨가 애플 주식에서 1,000만 원의 수익을 실현한 상태이고, 포트폴리오에 마이너스 750만 원 손실 중인 테슬라 주식을 보유하고 있을 때의 비교입니다:
+
+| 전략 구분 | 연간 확정 손익 | 과세표준 (250만 공제 후) | 최종 양도세 (22%) | 실제 절감액 |
+| :--- | :--- | :--- | :---: | :---: |
+| **A. 그대로 방치** | 수익 +1,000만 원 | 750만 원 | **165만 원** | 기준 |
+| **B. 12월 손익통산 실행** | 수익 1,000만 - 손실 750만 = **+250만 원** | **0원** | **0원** | **165만 원 전액 세이브!** |
+
+* **손실 종목 유지 방법:** 테슬라 주식을 12월에 매도하여 -750만 원 손실을 실현시킨 직후, 그 매도 대금으로 테슬라 주식을 곧바로 다시 사들이면 내 포트폴리오 주식 수는 그대로 유지하면서 세금 165만 원만 공짜로 지워버리는 마법이 완성됩니다.
+
+---
+
+## 3. 12월 미국주식 절세 매도 3단계 로드맵
+
+<StepFlow steps={[
+  {
+    step: "01",
+    title: "증권사 앱에서 당해 실현손익 조회",
+    desc: "증권사 MTS 메뉴의 '해외주식 양도세 가계산'을 열어 올해 현재까지 확정된 순수익(양도차익)을 정확히 확인합니다."
+  },
+  {
+    step: "02",
+    title: "손실 종목 선별 및 T+2 결제일 계산",
+    desc: "미국 증시 폐장일(12월 마지막 평일)로부터 최소 2영업일 전(통상 12월 27-28일)까지 손실 중인 종목을 필요한 만큼 매도합니다."
+  },
+  {
+    step: "03",
+    title: "필요 시 매도 직후 동일 종목 재매수",
+    desc: "장기 보유하고 싶은 우량주라면 매도 체결 즉시 다시 매수하여 주식 수량을 그대로 확보해 둡니다."
+  }
+]} />
+
+---
+
+## 4. 자주 묻는 질문 (FAQ)
+
+**Q1. 미국주식 양도세는 다른 가족에게 피부양자 탈락 영향을 주나요?**  
+A. 네, 매우 중요합니다. 배우자나 부모님이 직장 가입자의 건강보험 피부양자로 등록되어 있는 경우, 해외주식 양도차익(기본공제 250만 원 제외 전 금액)이 연간 100만 원을 초과하면 피부양자 자격에서 즉시 탈락하여 지역가입자로 전환됩니다. 피부양자라면 연간 양도차익을 100만 원 이내로 맞추셔야 합니다.
+
+**Q2. 다음 해 5월 양도세 신고는 어떻게 하나요?**  
+A. 대부분의 대형 증권사(키움, 미래에셋, 삼성, 토스증권 등)가 매년 4월에 '해외주식 양도소득세 무료 신고대행 서비스'를 제공합니다. 앱에서 클릭 한 번으로 대행 신청을 하면 세무사가 국세청에 대신 신고해 줍니다.
