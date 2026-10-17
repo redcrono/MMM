@@ -35,6 +35,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit. Queue may be empty."
           else
-            git commit -m "chore(auto-publish): release daily article package [skip ci]"
+            git commit -m "chore(auto-publish): release daily article package"
             git push origin main
           fi
