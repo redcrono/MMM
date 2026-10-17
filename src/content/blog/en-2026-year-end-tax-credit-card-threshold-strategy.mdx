@@ -19,43 +19,132 @@ officialSources:
 import InfographicCard from '../../components/InfographicCard.astro';
 import StepFlow from '../../components/StepFlow.astro';
 
-In mid-October, South Korea's National Tax Service (NTS) officially opens the **Year-End Tax Settlement Preview (연말정산 미리보기)** service on Hometax.
-
-The Korean card expense deduction operates under a unique two-stage rule: **Zero deduction until total card expenditure surpasses 25% of your gross annual salary**, followed by differential deduction rates (15% for credit cards vs 30% for debit/check cards and cash receipts).
-
-Here is how wage earners and expats in Korea can optimize their payment mix in Q4 to maximize February cash tax refunds.
-
 <div class="smart-brief-box">
-  <div class="smart-brief-header">
-    <span class="smart-brief-badge">💡 3-Minute Smart Brief</span>
-    <span class="smart-brief-time">Executive Summary for Wage Earners</span>
-  </div>
-  <div class="smart-brief-content">
-    <p><strong>📌 4 Key Facts:</strong></p>
-    <ul>
-      <li><strong>25% Threshold Rule:</strong> For a worker earning ₩50 million, the first ₩12.5 million spent provides ₩0 in tax deduction. Use high-reward credit cards up to this mark.</li>
-      <li><strong>Q4 Debit Switching:</strong> Once the 25% threshold is cleared from Jan-Sept spending, switch all October-December expenditures to **Check/Debit Cards (30%)** and **Traditional Markets (40%)**.</li>
-      <li><strong>Dual-Income Couples:</strong> Concentrate spending on the lower-earning spouse if struggling to cross the 25% threshold, or on the higher-earning spouse if easily exceeded.</li>
-      <li><strong>Excluded Expenses:</strong> Utilities, apartment maintenance fees, public taxes, and foreign currency transactions do not qualify for card tax deductions.</li>
-    </ul>
-  </div>
+  <h3>Executive Summary: 2026 Card Income Deduction Golden Ratio</h3>
+  <ul>
+    <li><strong>The 25% Minimum Spending Hurdle:</strong> Under Article 126-2 of the Restriction of Special Taxation Act, card spending only generates an income tax deduction on the amount **exceeding 25% of your Annual Gross Salary (총급여액)**.</li>
+    <li><strong>The 15% vs. 30% Switching Formula:</strong> Use **Credit Cards (15% deduction rate)** until your cumulative annual card spending hits exactly **25% of your gross salary** to maximize airline miles and cashback; then switch 100% of remaining spending to **Check/Debit Cards & Cash Receipts (30% deduction rate)**.</li>
+    <li><strong>Separate ₩3,000,000 Bonus Pocket:</strong> Even after you max out your base card deduction cap (₩2.5M–₩3.0M), spending on **Traditional Markets (40%)**, **Public Transit (80%)**, and **Culture/Books/Museums (30%)** grants up to an extra **₩3,000,000** deduction!</li>
+  </ul>
 </div>
 
+## 1. How the 25% Gross Salary Threshold Works in Korea's Tax Code
+
+Every October and November, the National Tax Service (NTS) opens the **Year-End Tax Settlement Preview Service (연말정산 미리보기)** on HomeTax, summarizing your cumulative credit card, debit card, and cash receipt spending from January through September. Understanding the mathematical mechanics of the **Credit Card Income Deduction (신용카드 등 사용금액 소득공제)** during Q4 can easily swing your February paycheck by **₩300,000 to ₩800,000**.
+
+First, no matter which payment method you use, the **first 25% of your Gross Salary (총급여액)** yields **₩0 tax deduction**. Crucially, the National Tax Service automatically fills this 25% hurdle using your **lowest-deduction-rate spending first (Credit Cards at 15%)**!
+
+$$\text{Deductible Card Amount} = \left( \text{Credit Card}_{\text{excess}} \times 15\% \right) + \left( \text{Check Card / Cash Receipt} \times 30\% \right) + \left( \text{Traditional Market} \times 40\% \right) + \left( \text{Public Transit} \times 80\% \right)$$
+
+For example, if your annual gross salary is **₩60,000,000**, your 25% minimum hurdle is **₩15,000,000**:
+- **First ₩15,000,000 of annual spending:** Put 100% of this on **Credit Cards** (which pay 1.5%–3.0% cashback or airline miles). Because the first ₩15M gets zero tax deduction anyway, using a debit card here wastes credit card rewards!
+- **Every Won spent above ₩15,000,000:** Switch immediately to **Check/Debit Cards, ZeroPay, or Cash Receipts (현금영수증)**, which earn a **30% tax deduction rate**—double the 15% rate of credit cards!
+
 ---
 
-## 1. Deduction Rates by Payment Instrument
+## 2. 2026 Deduction Rates & Salary-Tier Caps Matrix
 
-Under Article 126-2 of the Restriction of Special Taxation Act:
-
-| Payment Method | Deduction Rate | Statutory Limit |
-| :--- | :---: | :--- |
-| **Credit Card** | **15%** | Basic ₩3.0M cap (salary ≤ ₩70M) |
-| **Check / Debit Card** | **30%** | Twice the efficiency of credit cards |
-| **Traditional Markets** | **40% - 80%** | Additional ₩1M-₩2M separate allowance |
+<InfographicCard title="2026 Card & Cash Receipt Income Deduction Rates and Limits" subtitle="Base Cap vs. Integrated Additional ₩3,000,000 Bonus Cap by Gross Salary Bracket">
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.93rem;">
+      <thead>
+        <tr style="background:#0f172a; color:#ffffff; text-align:left;">
+          <th style="padding:12px; border:1px solid #cbd5e1;">Payment Category</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Deduction Rate</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Gross Salary ≤ ₩70M Cap</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Gross Salary > ₩70M Cap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Credit Cards (신용카드)</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>15%</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;" rowspan="3"><strong>Base Cap: ₩3,000,000</strong><br/>(Combined across Credit, Check, Cash)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;" rowspan="3"><strong>Base Cap: ₩2,500,000</strong><br/>(Combined across Credit, Check, Cash)</td>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Check/Debit Cards & Cash Receipts</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>30%</strong></td>
+        </tr>
+        <tr>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>10% Increased Card Spending YoY</strong><br/>(소비증가분 추가공제)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>+10% Bonus</strong></td>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Culture / Books / Museums / Gym</strong><br/>(도서·공연·박물관·체육시설)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>30%</strong> (Only if Salary ≤ ₩70M)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;" rowspan="3"><strong>Bonus Cap: +₩3,000,000</strong><br/>(Total Max Deduction: <strong>₩6,000,000</strong>)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;" rowspan="3"><strong>Bonus Cap: +₩2,000,000</strong><br/>(Traditional Market & Transit only;<br/>Total Max: <strong>₩4,500,000</strong>)</td>
+        </tr>
+        <tr>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Traditional Markets (전통시장)</strong><br/>(Includes Onnuri Digital Gift Certificates)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>40%</strong></td>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Public Transit (대중교통)</strong><br/>(Subway, Bus, KTX/SRT High-Speed Rail)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>80%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</InfographicCard>
 
 ---
 
-## 2. Action Plan for October
+## 3. Dual-Income Couples (맞벌이 부부): Which Card Should You Use in Q4?
 
-1. **Check Year-to-Date Spend on Hometax:** Verify whether you have surpassed the 25% gross salary threshold.
-2. **Switch Daily Cards to Debit:** For grocery shopping and dining out, switch default mobile pay cards to Korean debit cards.
+For married dual-income couples, choosing whose card to swipe during November and December depends on where each spouse stands relative to the 25% threshold:
+1. **Scenario A (One Spouse Can Easily Clear 25%, the Other Cannot):**
+   Suppose Spouse A earns ₩80M (25% hurdle = ₩20M) and Spouse B earns ₩40M (25% hurdle = ₩10M), and the household spends ₩22M per year on cards. If they split spending ₩11M each, Spouse A gets **₩0** deduction and Spouse B only gets a deduction on ₩1M. Instead, concentrating **all ₩22M onto Spouse B's card** clears the ₩10M hurdle early and generates a tax deduction on **₩12,000,000** of spending!
+2. **Scenario B (Both Spouses Have Already Cleared Their 25% Hurdle):**
+   Once both spouses exceed 25% of their respective salaries, shift remaining Q4 spending onto the card of the **higher-earning spouse** (who sits in a higher marginal income tax bracket, e.g., 26.4% vs. 16.5%) until their ₩2.5M/₩3.0M base deduction ceiling is full.
+
+---
+
+## 4. What Does NOT Count Toward the Card Tax Deduction (Double-Dip Rules)
+
+Not every card swipe is recognized by the National Tax Service. However, several major categories allow **Double Dipping (중복 공제)**—meaning you get **both** the 15%–30% Card Income Deduction **and** a special Tax Credit!
+- **100% Excluded from Card Deduction:** New car purchases (신차 구입비 - though **used cars** count up to 10% of purchase price!), national and local taxes, utility bills (electricity, water, gas), apartment management fees, highway tolls, insurance premiums, overseas duty-free/foreign card spending, and **kindergarten/school/university tuition**.
+- **Allowed Double-Dipping (Card Deduction + Tax Credit Simultaneously):**
+  1. **Medical Expenses (의료비):** Hospital, pharmacy, dental, and LASIK/orthodontic bills paid by card earn **both** the 15%/30% card deduction and the 15% Medical Tax Credit!
+  2. **Preschool Private Academy Fees (취학 전 아동 학원비):** Art, music, or sports academy fees for children **before elementary school entry** earn **both** the card deduction and the 15% Education Tax Credit!
+  3. **Middle/High School Uniforms & Book Purchases (교복구입비).**
+
+<StepFlow
+  title="4-Step October–December Card Optimization Checklist"
+  steps={[
+    {
+      step: "01",
+      title: "Run HomeTax 'Year-End Tax Settlement Preview' in Late October",
+      desc: "Log into hometax.go.kr and open '연말정산 미리보기' to check your Jan–Sep cumulative card spend against 25% of your annual gross salary."
+    },
+    {
+      step: "02",
+      title: "Switch to Check Cards / Cash Receipts the Day You Cross 25%",
+      desc: "Once your credit card total clears 25% of gross salary, put your credit card away and use a Check/Debit card or Cash Receipt (30% deduction) for the rest of the year."
+    },
+    {
+      step: "03",
+      title: "Register Card-Linked Onnuri App for 10% Discount + 40% Tax Deduction",
+      desc: "Link your existing card to the Digital Onnuri Gift Certificate app (디지털 온누리) to buy groceries and dining at a 10% instant discount plus a 40% Traditional Market tax deduction."
+    },
+    {
+      step: "04",
+      title: "Register Your Phone Number & K-Pass Card on HomeTax",
+      desc: "Verify that your mobile number is registered under 'Consumer Cash Receipt' on HomeTax and that your K-Pass transit card is registered in your name to claim the 80% transit rate."
+    }
+  ]}
+/>
+
+---
+
+## 5. Frequently Asked Questions (FAQ)
+
+### Q1. If I pay a ₩3,000,000 hospital bill on a 6-month credit card installment in December, which year gets the deduction?
+Under the Restriction of Special Taxation Act, credit card installment purchases (할부 결제) are deducted in the tax year of the **initial purchase approval date (결제 승인일 기준)**, not when you pay the monthly card bill! Therefore, a ₩3,000,000 purchase made on December 28 on a 6-month installment counts 100% toward your **current year's** tax return.
+
+### Q2. Can foreign workers on the 19% Flat Tax Rate (외국인 단일세율) claim the Credit Card Income Deduction?
+**No.** Foreign employees in South Korea who elect the special **19% Flat Income Tax Rate (20.9% including local tax)** waive all income deductions and tax credits, including the credit card deduction. However, foreign employees taxed under the **standard progressive tax brackets (6%–45%)** qualify for the exact same credit/debit card, traditional market, and public transit deductions as Korean citizens.
+
+### Q3. Can I claim my spouse's credit card spending if my spouse earned ₩1,200,000 in net income this year?
+**No.** You can only combine a spouse's or parent/child's card spending onto your tax return if that family member qualifies as a **Basic Deduction Dependent (기본공제 대상자)**—meaning their annual net income amount is **₩1,000,000 or less** (or gross salary ₩5,000,000 or less if they have only earned income). Note that siblings' (형제자매) card spending can **never** be claimed, even if they live with you as dependents.

@@ -41,7 +41,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
 
       <h2>온라인 빠른 문의 접수</h2>
-      <form style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem; background: var(--bg-card); padding: 1.75rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);" onsubmit="event.preventDefault(); alert('문의가 성공적으로 접수되었습니다. 담당자가 확인 후 회신드리겠습니다.');">
+      <form id="mmm-contact-form" style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.5rem; background: var(--bg-card); padding: 1.75rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
         <div>
           <label for="name" style="display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--text-main);">성함 또는 닉네임 *</label>
           <input type="text" id="name" required placeholder="홍길동" style="width: 100%; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main); font-family: inherit;" />
@@ -67,10 +67,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <textarea id="message" rows="5" required placeholder="문의하실 내용을 구체적으로 작성해 주세요." style="width: 100%; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main); font-family: inherit; resize: vertical;"></textarea>
         </div>
 
-        <button type="submit" style="background: var(--primary); color: #ffffff; padding: 0.85rem 1.5rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 1rem; align-self: flex-start; transition: background 0.15s ease;">
+        <button type="submit" style="background: var(--primary); color: #ffffff; padding: 0.85rem 1.5rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 1rem; align-self: flex-start; cursor: pointer; border: none; transition: background 0.15s ease;">
           문의 내용 전송하기
         </button>
+
+        <div id="contact-status" style="display: none; padding: 1rem 1.25rem; border-radius: var(--radius-sm); background: var(--secondary-light); color: var(--secondary); font-weight: 700; font-size: 0.92rem; line-height: 1.5;">
+          ✓ 메일 클라이언트가 실행되었습니다. 영업일 기준 24~48시간 이내에 담당 에디터(contact@megamomo.co.kr)가 확인 후 회신드리겠습니다.
+        </div>
       </form>
+
+      <script is:inline>
+        document.getElementById('mmm-contact-form')?.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var name = document.getElementById('name').value.trim();
+          var email = document.getElementById('email').value.trim();
+          var subject = document.getElementById('subject').value;
+          var message = document.getElementById('message').value.trim();
+          var mailtoSubject = encodeURIComponent('[메가머니모멘텀 문의] ' + subject + ' - ' + name);
+          var mailtoBody = encodeURIComponent('작성자: ' + name + '\n회신 이메일: ' + email + '\n문의 유형: ' + subject + '\n\n[상세 내용]\n' + message);
+          var statusEl = document.getElementById('contact-status');
+          if (statusEl) statusEl.style.display = 'block';
+          window.location.href = 'mailto:contact@megamomo.co.kr?subject=' + mailtoSubject + '&body=' + mailtoBody;
+        });
+      </script>
     </div>
   </div>
 </BaseLayout>

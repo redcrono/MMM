@@ -19,48 +19,124 @@ officialSources:
 import InfographicCard from '../../components/InfographicCard.astro';
 import StepFlow from '../../components/StepFlow.astro';
 
-Jeonse deposit guarantee insurance (전세보증금 반환보증) is South Korea's statutory shield against landlord insolvency. If your landlord fails to return your deposit upon lease expiration, public institutions like **HUG** or **HF** repay the full amount directly to you.
-
 <div class="smart-brief-box">
-  <div class="smart-brief-header">
-    <span class="smart-brief-badge">💡 3-Minute Brief</span>
-    <span class="smart-brief-time">Core Guidelines</span>
-  </div>
-  <div class="smart-brief-content">
-    <ul>
-      <li><strong>126% Rule:</strong> Your jeonse deposit plus senior liens must not exceed 126% of the officially published housing price (공시가격).</li>
-      <li><strong>No Landlord Consent:</strong> Tenants can unilaterally enroll via mobile apps (Naver Pay, Toss, KakaoPay).</li>
-      <li><strong>₩300,000 Fee Refund:</strong> Young adults (under 39) with annual income below ₩50M receive up to ₩300k cash reimbursement from local governments.</li>
-    </ul>
-  </div>
+  <h3>Executive Summary: 2026 Jeonse Deposit Return Guarantee (전세보증금반환보증)</h3>
+  <ul>
+    <li><strong>The Strict "126% Rule" (140% × 90%):</strong> For multi-family villas, row houses, and residences without KB market prices, HUG and HF only insure Jeonse deposits that do not exceed <strong>126% of the Government Official Published Price (공시가격 × 126%)</strong>.</li>
+    <li><strong>Up to ₩300,000 Guarantee Fee Cash Refund:</strong> Local governments nationwide refund up to <strong>₩300,000</strong> (100% for youth and newlyweds; 90% for general low-to-middle-income tenants) of the guarantee insurance premium you paid to HUG, HF, or SGI.</li>
+    <li><strong>Expat Tenant Protection (전입신고 / 체류지변경신고):</strong> Foreign residents who file a Change of Residence (체류지변경신고) or Foreigner Registration and obtain a Fixed Date (확정일자) enjoy the exact same statutory Housing Lease Protection Act rights and HUG guarantee eligibility.</li>
+  </ul>
 </div>
+
+## 1. Understanding the "126% Rule" Before Signing Any Jeonse Lease
+
+In South Korea's unique **Jeonse (전세)** lump-sum deposit lease system, your entire life savings can be wiped out if a landlord becomes insolvent or an underwater villa ("깡통전세") goes to court auction. To protect your deposit, enrolling in a **Jeonse Deposit Return Guarantee (전세보증금반환보증)** through the Korea Housing & Urban Guarantee Corporation (**HUG**), Korea Housing Finance Corporation (**HF**), or Seoul Guarantee Insurance (**SGI**) guarantees that the state agency pays back 100% of your deposit if the landlord fails to return it at lease maturity.
+
+However, following nationwide Jeonse fraud crackdowns, HUG and HF tightened their **Property Valuation & LTV Cap**:
+- **Recognized Property Value:** `Official Published Price (공동주택/단독주택 공시가격) × 140%`
+- **Maximum Guaranteed Deposit Ratio:** `Recognized Property Value × 90%`
+
+$$\text{Maximum Insurable Jeonse Deposit} = (\text{Official Published Price} \times 140\% \times 90\%) - \text{Senior Mortgages (선순위 채권)} = \text{Published Price} \times 126\% - \text{Senior Debt}$$
+
+For example, if a multi-family villa in Mapo-gu has an Official Published Price of **₩200,000,000** and zero landlord mortgage, the maximum Jeonse deposit eligible for HUG guarantee insurance is exactly **₩252,000,000** (`₩200M × 1.26`). If the landlord demands ₩260,000,000, HUG will **reject 100% of your insurance application**! Always check the property's published price on `realtyprice.kr` or the **HUG Safe Jeonse App (안심전세 App)** before wiring a contract deposit.
 
 ---
 
-## 1. Guarantee Institutions Comparison
+## 2. Comparing the Big Three Providers: HUG vs. HF vs. SGI
 
-<InfographicCard title="Korean Rental Deposit Guarantee Institutions" type="primary" subtitle="2026 Comparison Matrix">
-  <div style="overflow-x: auto;">
-    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+<InfographicCard title="2026 Jeonse Deposit Return Guarantee Provider Comparison" subtitle="Deposit Caps, Application Deadlines, and Annual Premium Rates Across HUG, HF, and SGI">
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.93rem;">
       <thead>
-        <tr style="background: var(--primary-light);">
-          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">Institution</th>
-          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">Deposit Cap</th>
-          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">Annual Fee Rate</th>
+        <tr style="background:#0f172a; color:#ffffff; text-align:left;">
+          <th style="padding:12px; border:1px solid #cbd5e1;">Criteria</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">HUG (Housing & Urban Guarantee)</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">HF (Korea Housing Finance)</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">SGI (Seoul Guarantee Insurance)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">HUG</td>
-          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">₩700M Seoul / ₩500M Non-Seoul</td>
-          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">0.115% - 0.154%</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Max Deposit Cap</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Capital Area: <strong>₩700M</strong><br/>Other Regions: <strong>₩500M</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Capital Area: <strong>₩700M</strong><br/>Other Regions: <strong>₩500M</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Apartments: <strong>No Limit</strong><br/>Other Housing: <strong>₩1 Billion</strong></td>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Eligible Applicants</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">All Tenants (Direct or via Naver/Kakao/Toss)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Must hold an <strong>HF-backed Jeonse Loan</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">All Tenants (Ideal for High-Value >₩700M)</td>
         </tr>
         <tr>
-          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">HF</td>
-          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">₩700M Seoul / ₩500M Non-Seoul</td>
-          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #10b981; font-weight: 800;">0.02% - 0.04% (Lowest)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Annual Premium Rate</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>0.115% – 0.154%</strong> p.a.</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>0.04%</strong> p.a. (Lowest Rate!)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>0.183% – 0.208%</strong> p.a.</td>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Application Deadline</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Before <strong>50% of lease term</strong> elapses</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Before <strong>50% of lease term</strong> elapses</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Before <strong>10 months</strong> elapse (2-yr lease)</td>
         </tr>
       </tbody>
     </table>
   </div>
 </InfographicCard>
+
+---
+
+## 3. Claim Your Up to ₩300,000 Government Guarantee Fee Refund!
+
+To encourage every tenant to insure their deposit, the Ministry of Land, Infrastructure and Transport and all 17 provincial/metropolitan governments operate the **Jeonse Deposit Return Guarantee Fee Support Program (전세보증금반환보증 보증료 지원사업)**, refunding up to **₩300,000** in cash directly to your bank account once you enroll in HUG, HF, or SGI insurance:
+- **Deposit Limit:** Jeonse deposit of **₩300,000,000 or less** nationwide.
+- **Income Limits (Homeless Tenants):**
+  - **Youth (Aged 19–39):** Annual income **≤ ₩50,000,000** (100% of fee refunded up to ₩300,000).
+  - **General Citizens (All Ages):** Annual income **≤ ₩60,000,000** (90% of fee refunded up to ₩300,000).
+  - **Newlyweds (Married within 7 years):** Combined couple income **≤ ₩75,000,000** (100% of fee refunded up to ₩300,000).
+
+---
+
+## 4. Step-by-Step Enrollment & ₩300,000 Cash Refund Workflow
+
+<StepFlow
+  title="4-Step Jeonse Deposit Protection & Fee Refund Roadmap"
+  steps={[
+    {
+      step: "01",
+      title: "Insert Mandatory Escape Clause Before Signing Lease",
+      desc: "Add the special contract clause: 'If HUG/HF Jeonse Return Guarantee enrollment is rejected due to landlord or property reasons, this contract is void and 100% of deposit is returned immediately.'"
+    },
+    {
+      step: "02",
+      title: "Complete Move-In Report (전입신고/체류지변경) & Fixed Date (확정일자)",
+      desc: "On the day you pay the balance and receive the keys, register your move-in and obtain a Fixed Date at the Community Center or Supreme Court Registry to secure Priority Repayment Rights."
+    },
+    {
+      step: "03",
+      title: "Enroll in HUG/HF Guarantee Before Halfway Mark of Lease",
+      desc: "Apply via the HUG Mobile App, Naver Real Estate, KakaoPay, or Toss (with an extra 3% mobile discount) before 12 months elapse on a 24-month lease."
+    },
+    {
+      step: "04",
+      title: "Claim Your ₩300,000 Fee Refund via Gov24 (정부24)",
+      desc: "Download your Guarantee Certificate and Payment Receipt, then apply online at gov.kr (Search '전세보증금반환보증 보증료 지원') or Seoul Youth Portal (몽땅정보만능키) to receive up to ₩300,000 cash."
+    }
+  ]}
+/>
+
+---
+
+## 5. Frequently Asked Questions (FAQ)
+
+### Q1. Do I need the landlord's permission or signature to enroll in HUG Jeonse Guarantee Insurance?
+**No!** You never need your landlord's consent or signature to enroll in HUG, HF, or SGI Jeonse Deposit Return Guarantee insurance. As long as your lease contract was signed through a licensed real estate agent (공인중개사) and you have completed your Move-In Report and Fixed Date, you can enroll unilaterally online.
+
+### Q2. Can foreign nationals (E-7, D-2, F-2, F-4, F-5, F-6 visa holders) enroll in HUG Jeonse Guarantee Insurance?
+**Yes!** Under Article 88 of the Immigration Act and the Housing Lease Protection Act, when a registered foreign national files a **Change of Place of Stay (체류지변경신고)** or **Domestic Residence Report (거소신고 for F-4 holders)** at their local district office/community center and obtains a **Fixed Date (확정일자)** on their lease contract, it carries the exact same legal opposing power (대항력) and priority repayment right (우선변제권) as a Korean citizen's move-in report, making them fully eligible for HUG and SGI deposit guarantees.
+
+### Q3. What should I do if the official published price × 126% is slightly lower than my landlord's asking Jeonse price?
+You have two legal options:
+1. **Negotiate a Semi-Jeonse (반전세) Split:** Lower the lump-sum Jeonse deposit to fit strictly inside the `126%` HUG limit, and convert the difference into a small monthly rent.
+2. **Request a HUG Certified Appraisal (인정감정평가):** If recent market sales prove the property is worth significantly more than the outdated published price, the landlord or tenant can request a formal appraisal through a HUG-designated appraisal firm (though you must weigh the appraisal fee first).

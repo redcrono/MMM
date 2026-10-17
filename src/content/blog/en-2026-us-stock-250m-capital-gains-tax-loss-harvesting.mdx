@@ -19,18 +19,122 @@ officialSources:
 import InfographicCard from '../../components/InfographicCard.astro';
 import StepFlow from '../../components/StepFlow.astro';
 
-Under Korean tax law, realized gains on foreign securities (such as US equities and ETFs) are subject to a **flat 22% capital gains tax** (20% national tax + 2% local income tax) on net annual gains exceeding the statutory **₩2,500,000 threshold**.
-
 <div class="smart-brief-box">
-  <div class="smart-brief-header">
-    <span class="smart-brief-badge">💡 3-Minute Brief</span>
-    <span class="smart-brief-time">Core Rules</span>
-  </div>
-  <div class="smart-brief-content">
-    <ul>
-      <li><strong>₩2.5M Annual Allowance:</strong> Net capital gains under ₩2,500,000 incur zero capital gains tax.</li>
-      <li><strong>Tax-Loss Harvesting:</strong> Offset realized capital gains by selling underperforming stocks before late December. Korea does NOT enforce a Wash Sale Rule, meaning you can rebuy immediately.</li>
-      <li><strong>T+2 Settlement Warning:</strong> Trade settlement takes 2 business days. Executing orders past the cutoff results in gains carrying over into next year's tax basket.</li>
-    </ul>
-  </div>
+  <h3>Executive Summary: 2026 Overseas Equity Tax Optimization</h3>
+  <ul>
+    <li><strong>Statutory 22% Flat Tax Rate:</strong> South Korean tax residents face a 22% combined tax (20% national capital gains tax + 2% local income tax) on net realized profits from foreign-listed equities exceeding <strong>₩2,500,000</strong> per calendar year.</li>
+    <li><strong>No Wash-Sale Prohibition in Korea:</strong> Unlike the US IRS 30-day Wash-Sale rule, South Korea's Income Tax Act permits investors to sell underwater positions to realize capital losses and immediately repurchase the exact same shares within minutes.</li>
+    <li><strong>Spousal Cost-Basis Step-Up (₩600M Limit):</strong> Transferring appreciated US equities to a spouse utilizes the 10-year ₩600M gift tax exemption to reset the acquisition cost basis, subject to the compulsory 1-year holding rule under the 2025–2026 carryover taxation reform.</li>
+  </ul>
 </div>
+
+## 1. How South Korea Taxes Overseas Equity Capital Gains
+
+For domestic retail investors ("Seohak Ants") and foreign expats who qualify as tax residents in South Korea (having a domicile in Korea for 183 days or more, or over 5 years of cumulative residence for foreign nationals under the Foreign Tax Resident exception), profits earned from selling overseas stocks—such as US-listed S&P 500 ETFs (`VOO`, `SPY`), Nasdaq-100 ETFs (`QQQ`), or individual tech equities (`NVDA`, `AAPL`, `MSFT`)—are classified as foreign asset capital gains.
+
+Unlike domestic KOSPI or KOSDAQ shares, which remain exempt from capital gains tax for retail investors following the abolition of the Financial Investment Income Tax (금투세 폐지), overseas equities are strictly taxed on a calendar-year realized basis (January 1 through December 31).
+
+$$	ext{Final Capital Gains Tax} = \left( \sum 	ext{Realized Gains} - \sum 	ext{Realized Losses} - 	ext{₩2,500,000 Basic Deduction} - 	ext{Brokerage Fees} ight) 	imes 22\%$$
+
+Crucially, the National Tax Service (NTS) calculates your gain or loss in **Korean Won (KRW)** using the base exchange rate (매매기준율) on the **settlement date**, not the trade execution date. This means even if a US stock's dollar price remains flat, a sharp depreciation of the Korean Won between your purchase date and sale date can generate a taxable FX capital gain in KRW terms.
+
+---
+
+## 2. Three Core Tax-Defense Architectures Compared
+
+<InfographicCard title="2026 US Stock Capital Gains Tax Defense Matrix" subtitle="Comparing Annual Exemption Harvesting, Loss Offset Harvesting, and Spousal Gift Step-Up">
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.93rem;">
+      <thead>
+        <tr style="background:#0f172a; color:#ffffff; text-align:left;">
+          <th style="padding:12px; border:1px solid #cbd5e1;">Strategy Type</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Annual Tax Shield</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Execution Mechanism</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Key Regulatory Constraint</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>1. ₩2.5M Gain Harvesting</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Saves <strong>₩550,000</strong>/yr</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Sell winning shares up to ₩2.5M net profit & rebuy immediately</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Unused ₩2.5M deduction expires Dec 31 (Never carries forward)</td>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>2. Tax-Loss Harvesting</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Unlimited offset against same-year gains</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Sell losing positions before year-end to cancel realized profits</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Net annual losses cannot be carried forward to future tax years</td>
+        </tr>
+        <tr>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>3. Spousal Gift Step-Up</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Up to <strong>₩600M</strong> over 10 yrs</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Gift appreciated shares to spouse to reset cost basis to market value</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>1-Year Compulsory Holding Rule</strong> before spouse sells (since 2025)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</InfographicCard>
+
+### Strategy 1: Annual ₩2.5M Capital Gain Harvesting (Cost-Basis Step-Up)
+Because the ₩2,500,000 annual basic deduction evaporates on December 31 if unused, long-term buy-and-hold investors should never let a calendar year pass without realizing at least ₩2.5M in profits. By selling just enough shares of an appreciated ETF (e.g., `QQQ`) to realize ₩2,500,000 in gain and immediately repurchasing those shares on the same trading night, you permanently raise your average acquisition cost basis and save **₩550,000** in future taxes—minus roughly ₩10,000 in round-trip trading commissions.
+
+### Strategy 2: December Tax-Loss Harvesting Without Wash-Sale Penalties
+If you realized ₩15,000,000 in profits earlier in the year on semiconductor stocks (`NVDA`) and currently hold a ₩12,500,000 unrealized loss in secondary battery or biotech stocks, holding the losers past December 31 forces you to pay `((₩15M - ₩2.5M) × 22%) = ₩2,750,000` in tax next May.
+Instead, selling the losing position in late December realizes the ₩12.5M loss, reducing your net annual gain to exactly ₩2.5M (₩0 tax liability). If you still believe in the long-term thesis of the losing stock, you can repurchase it 30 seconds later—Korea's tax code has **no wash-sale waiting period**.
+
+---
+
+## 3. Critical Pitfall: Moving Average vs. FIFO Accounting Across Brokers
+
+One of the most expensive mistakes retail investors make during December tax-loss harvesting is failing to check how their Korean brokerage calculates cost basis:
+- **Moving Average Method (이동평균법):** Used by Kiwoom Securities, Toss Securities, NH Investment & Securities, and KB Securities. Every purchase blends into a single average cost price per share.
+- **First-In, First-Out (선입선출법 - FIFO):** Used by Samsung Securities, Mirae Asset Securities, and Korea Investment & Securities. When you sell a partial position, the earliest shares purchased are sold first.
+
+If you bought `TSLA` at $150 in 2023 and added more at $380 in late 2025, your overall dashboard in a FIFO brokerage might show a modest gain, yet selling 30% of your holdings will liquidate the $150 shares first—triggering a massive unexpected capital gain rather than a loss! Always check the **"Overseas Stock Capital Gains Tax Simulation (해외주식 양도소득세 가계산)"** screen inside your brokerage app before executing December trades.
+
+---
+
+## 4. Year-End Settlement Deadline & May NTS Filing Workflow
+
+Following the US Securities and Exchange Commission's transition to **T+1 settlement** (one business day after trade execution), your final trade execution date for the 2026 tax year is typically **December 29 or December 30** (US Eastern Time), depending on weekend alignment. However, to prevent holiday liquidity slippage or broker batch cutoff delays, complete all harvesting trades by **December 26**.
+
+<StepFlow
+  title="4-Step Year-End Harvesting & May NTS Tax Filing Roadmap"
+  steps={[
+    {
+      step: "01",
+      title: "Run Multi-Brokerage P&L Aggregation (Mid-December)",
+      desc: "Open the 'Overseas Stock Capital Gains Tax Inquiry' menu in every Korean brokerage you use to sum total realized gains and losses in KRW."
+    },
+    {
+      step: "02",
+      title: "Execute Gain/Loss Harvesting Before Dec 28",
+      desc: "Sell underwater equities to offset excess gains above ₩2.5M, or realize up to ₩2.5M of profit to step up your cost basis tax-free, then rebuy if desired."
+    },
+    {
+      step: "03",
+      title: "Beware the ₩1 Million Dependent Income Trap",
+      desc: "If your spouse or child is claimed as a Year-End Tax Settlement dependent, keep their net realized overseas stock gain at or below ₩1,000,000 so they are not disqualified."
+    },
+    {
+      step: "04",
+      title: "File Final Return in May (HomeTax or Broker Proxy)",
+      desc: "Between May 1 and May 31 of the following year, use your broker's free proxy filing service (양도세 무료 대행신고) or combine multiple brokers on NTS HomeTax."
+    }
+  ]}
+/>
+
+---
+
+## 5. Frequently Asked Questions (FAQ)
+
+### Q1. If I stay under the ₩2.5M annual profit threshold, do I still have to file a return in May?
+**No.** If your net realized overseas equity gain across all brokerages for the calendar year is ₩2,500,000 or less, your payable tax is ₩0 and you have no legal obligation to file a capital gains tax return with the National Tax Service.
+
+### Q2. Does realizing ₩2.5M in US stock gains disqualify my spouse as a tax dependent?
+**Yes, if net income exceeds ₩1,000,000!** This is a notorious trap. While the *capital gains tax exemption* is ₩2.5M, the **basic dependent deduction (인적공제 부양가족 요건)** in Korea's Year-End Tax Settlement caps a dependent's total annual income (including realized overseas stock gains) at **₩1,000,000**. If your non-working spouse realizes ₩2.4M in US stock gains, they pay ₩0 capital gains tax, but you lose their ₩1.5M personal deduction and all their medical/credit card deductions on your salary tax return! Keep dependents' realized US stock profits under **₩1,000,000**.
+
+### Q3. Do US stock capital gains increase my National Health Insurance (NHIS) premiums?
+**No.** In South Korea, National Health Insurance premiums (건강보험료) and the ₩20M dependent disqualification threshold are assessed on interest, dividends, business, pension, and earned income—**not** on capital gains (양도소득). Even if you realize ₩100 million in US stock capital gains, your NHIS premium and dependent status remain completely unaffected.

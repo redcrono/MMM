@@ -1,5 +1,5 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ArticleReadingModeSwitch from '../components/ArticleReadingModeSwitch.astro';
@@ -17,7 +17,16 @@ export interface Props {
 const { post, headings } = Astro.props;
 const { title, description, pubDate, updatedDate, category, categoryName, author, officialSources, readingTime, tags, heroImage } = post.data;
 
-const isEn = post.slug.startsWith('en-') || post.slug.startsWith('korea-') || post.slug.startsWith('open-') || post.slug.startsWith('best-korea-') || post.slug.includes('-expats') || post.slug.includes('-foreigners') || post.slug.includes('travel-cards');
+const isEnPost = (slug: string) =>
+  slug.startsWith('en-') ||
+  slug.startsWith('korea-') ||
+  slug.startsWith('open-') ||
+  slug.startsWith('best-korea-') ||
+  slug.includes('-expats') ||
+  slug.includes('-foreigners') ||
+  slug.includes('travel-cards');
+
+const isEn = isEnPost(post.slug);
 
 const formattedDate = new Intl.DateTimeFormat(isEn ? 'en-US' : 'ko-KR', {
   year: 'numeric',
@@ -26,12 +35,101 @@ const formattedDate = new Intl.DateTimeFormat(isEn ? 'en-US' : 'ko-KR', {
 }).format(pubDate);
 
 const badgeClass = `badge-${category}`;
+
+// Fetch Related Posts (Same language + Same category prioritized)
+const allPosts = await getCollection('blog');
+const sameLangPosts = allPosts.filter((p) => p.slug !== post.slug && isEnPost(p.slug) === isEn);
+const sameCategoryPosts = sameLangPosts
+  .filter((p) => p.data.category === category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const otherCategoryPosts = sameLangPosts
+  .filter((p) => p.data.category !== category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const relatedPosts = [...sameCategoryPosts, ...otherCategoryPosts].slice(0, 3);
+
+// Category-Matched Interactive Simulator Banner Config
+const toolCtaMap: Record<string, { koTitle: string; koDesc: string; koHref: string; koBtn: string; enTitle: string; enDesc: string; enHref: string; enBtn: string }> = {
+  tax: {
+    koTitle: '🧮 내 연말정산·세액공제·종부세 실제 절세액은 얼마일까?',
+    koDesc: '소득 구간과 공제 한도를 입력하면 10초 만에 내 환급액과 절세 전략을 실시간 시뮬레이션해 드립니다.',
+    koHref: '/tools',
+    koBtn: '실시간 세금·절세 계산기 바로가기 →',
+    enTitle: '🧮 Calculate Your Exact Korean Tax Refund & Deductions',
+    enDesc: 'Simulate your year-end tax settlement, pension credits, and net tax savings in 10 seconds.',
+    enHref: '/en/tools',
+    enBtn: 'Launch Interactive Tax Calculator →',
+  },
+  stocks: {
+    koTitle: '📈 S&P500·나스닥100·SCHD 배당 복리 & 절세계좌 수익률 비교',
+    koDesc: '일반계좌 vs ISA vs 연금저축 계좌별 세후 실수령액과 월배당 재투자(DRIP) 30년 복리 결과를 직접 확인하세요.',
+    koHref: '/etf',
+    koBtn: 'ETF 포트폴리오·배당 시뮬레이터 실행 →',
+    enTitle: '📈 ETF Dividend Compounding & Tax-Advantaged Account Simulator',
+    enDesc: 'Compare General vs. ISA vs. IRP after-tax returns and 30-year DRIP dividend growth interactively.',
+    enHref: '/en/etf',
+    enBtn: 'Launch ETF Portfolio Simulator →',
+  },
+  wealth: {
+    koTitle: '🏆 내 순자산은 대한민국 상위 몇 %일까? 절세 건강검진',
+    koDesc: '연령대별 순자산 백분위 진단과 함께 내가 매년 놓치고 있는 숨은 비과세·세액공제 금액을 진단해 보세요.',
+    koHref: '/ladder',
+    koBtn: '부의 사다리 & 절세 진단기 시작하기 →',
+    enTitle: '🏆 Where Do You Rank on the Wealth Ladder? Tax Health Check',
+    enDesc: 'Discover your net worth percentile and uncover hidden annual tax-free allowances in Korea.',
+    enHref: '/en/ladder',
+    enBtn: 'Start Wealth Ladder Diagnosis →',
+  },
+  credit: {
+    koTitle: '🏦 스트레스 DSR 주담대 한도 및 금리 갈아타기 이자 계산기',
+    koDesc: '내 연소득 기준 최대 대출 가능 한도와 금리 인하 시 매월 아낄 수 있는 원리금을 즉시 계산해 보세요.',
+    koHref: '/tools',
+    koBtn: '대출 한도·이자 절감 계산기 열기 →',
+    enTitle: '🏦 Stress DSR Mortgage Limit & Refinance Savings Calculator',
+    enDesc: 'Calculate your maximum borrowing limit and monthly interest savings when switching to fixed rates.',
+    enHref: '/en/tools',
+    enBtn: 'Open Mortgage & DSR Calculator →',
+  },
+  subsidy: {
+    koTitle: '📅 놓치면 소멸되는 2026 정부지원금·세무 신청 골든 캘린더',
+    koDesc: '월별 핵심 지원금 신청 기간과 세금 감면 마감일을 D-Day 타임라인으로 한눈에 점검하세요.',
+    koHref: '/calendar',
+    koBtn: '2026 금융·지원금 골든 캘린더 보기 →',
+    enTitle: '📅 2026 Financial Subsidies & Tax Deadlines Golden Calendar',
+    enDesc: 'Track critical application windows and tax exemption deadlines with our interactive D-Day calendar.',
+    enHref: '/en/calendar',
+    enBtn: 'View 2026 Financial Calendar →',
+  },
+  economy: {
+    koTitle: '⚔️ 금리 변동기의 승자는? 6대 자산 10년 복리 배틀 시뮬레이터',
+    koDesc: '미국주식, 배당ETF, 국채, 금, 예금 중 거시경제 사이클에서 내 자산을 지켜줄 최적의 조합을 시뮬레이션하세요.',
+    koHref: '/battle',
+    koBtn: '6대 자산 복리 배틀 시뮬레이터 실행 →',
+    enTitle: '⚔️ 6-Asset Class 10-Year Compounding Battle Simulator',
+    enDesc: 'Compare US equities, dividend ETFs, treasury bonds, gold, and deposits across rate cycles.',
+    enHref: '/en/battle',
+    enBtn: 'Run Asset Battle Simulator →',
+  },
+  expats: {
+    koTitle: '🌏 외국인 맞춤형 세금 환급 & 금융 계산기 허브',
+    koDesc: '19% 단일세율 vs 종합소득세 유리한 방식 비교 및 건강보험 환급액을 간편하게 확인하세요.',
+    koHref: '/en/tools',
+    koBtn: 'Expat Financial Tools 바로가기 →',
+    enTitle: '🌏 Expat Tax Settlement (19% Flat Rate) & Financial Calculators',
+    enDesc: 'Compare the 19% flat tax rate against progressive brackets and estimate your statutory refunds.',
+    enHref: '/en/tools',
+    enBtn: 'Open Expat Financial Calculators →',
+  },
+};
+
+const activeCta = toolCtaMap[category] || toolCtaMap.tax;
 ---
 
 <BaseLayout
   title={title}
   description={description}
+  image={heroImage}
   articleDate={pubDate}
+  updatedDate={updatedDate}
   articleAuthor={author}
   category={category}
   lang={isEn ? 'en' : 'ko'}
@@ -105,6 +203,30 @@ const badgeClass = `badge-${category}`;
       <slot />
     </div>
 
+    <!-- Interactive Financial Tool CTA Box (Boosts Engagement & E-E-A-T Utility) -->
+    <aside
+      aria-label={isEn ? "Interactive Financial Simulator" : "맞춤형 금융 시뮬레이터"}
+      style="margin: 2.5rem 0; padding: 1.5rem 1.75rem; border-radius: var(--radius-lg); background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-card) 100%); border: 1.5px solid var(--primary); display: flex; flex-direction: column; gap: 0.75rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);"
+    >
+      <div style="font-size: 0.78rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.04em;">
+        {isEn ? "⚡ Interactive Financial Tool" : "⚡ 메가머니모멘텀 전용 인터랙티브 시뮬레이터"}
+      </div>
+      <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--text-main); line-height: 1.4;">
+        {isEn ? activeCta.enTitle : activeCta.koTitle}
+      </h3>
+      <p style="margin: 0; font-size: 0.93rem; color: var(--text-muted); line-height: 1.55;">
+        {isEn ? activeCta.enDesc : activeCta.koDesc}
+      </p>
+      <div style="margin-top: 0.35rem;">
+        <a
+          href={isEn ? activeCta.enHref : activeCta.koHref}
+          style="display: inline-flex; align-items: center; gap: 0.4rem; background: var(--primary); color: #ffffff; font-weight: 700; font-size: 0.9rem; padding: 0.65rem 1.25rem; border-radius: var(--radius-sm); text-decoration: none; box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);"
+        >
+          {isEn ? activeCta.enBtn : activeCta.koBtn}
+        </a>
+      </div>
+    </aside>
+
     <!-- Official Source Citations (E-E-A-T) -->
     <OfficialSourceBadge sources={officialSources} isEn={isEn} />
 
@@ -121,6 +243,51 @@ const badgeClass = `badge-${category}`;
             </span>
           ))}
         </div>
+      )
+    }
+
+    <!-- Related Articles Section (Internal Linking & Crawl Circulation) -->
+    {
+      relatedPosts.length > 0 && (
+        <section
+          aria-label={isEn ? "Related Financial Guides" : "함께 읽으면 돈이 되는 연관 리포트"}
+          style="margin: 2.5rem 0; padding-top: 2rem; border-top: 1px solid var(--border-color);"
+        >
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.15rem;">
+            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: var(--text-main);">
+              {isEn ? "📚 Related Deep-Dive Guides" : "📚 함께 읽으면 돈이 되는 연관 심층 리포트"}
+            </h3>
+            <a
+              href={isEn ? `/en/category/${category}` : `/category/${category}`}
+              style="font-size: 0.85rem; font-weight: 700; color: var(--primary); text-decoration: none;"
+            >
+              {isEn ? "View All →" : "카테고리 전체보기 →"}
+            </a>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+            {relatedPosts.map((rel) => (
+              <a
+                href={`/blog/${rel.slug}`}
+                style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border-radius: var(--radius-md); background: var(--bg-card); border: 1px solid var(--border-color); text-decoration: none; transition: transform 0.15s ease, box-shadow 0.15s ease;"
+              >
+                <div>
+                  <span style="display: inline-block; font-size: 0.72rem; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 0.15rem 0.45rem; border-radius: 4px; margin-bottom: 0.5rem;">
+                    {rel.data.categoryName}
+                  </span>
+                  <h4 style="margin: 0 0 0.45rem 0; font-size: 0.98rem; font-weight: 700; color: var(--text-main); line-height: 1.4;">
+                    {rel.data.title}
+                  </h4>
+                  <p style="margin: 0; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                    {rel.data.description}
+                  </p>
+                </div>
+                <div style="margin-top: 0.85rem; font-size: 0.78rem; font-weight: 700; color: var(--primary);">
+                  {isEn ? `Read Guide (${rel.data.readingTime}) →` : `리포트 전문 보기 (${rel.data.readingTime}) →`}
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
       )
     }
 

@@ -14,4 +14,140 @@ officialSources:
     url: "https://nhuf.molit.go.kr"
 ---
 
-As commercial mortgage rates across South Korea remain volatile between 5% and 6%, the government's **National Housing and Urban Fund (NHUF) Didimdol (Home Purchase) and Stepping Stone (Jeonse Deposit) Loans** remain the premier lifeline for first-time buyers and families.
+import InfographicCard from '../../components/InfographicCard.astro';
+import StepFlow from '../../components/StepFlow.astro';
+
+South Korea's **Didimdol Loan (내집마련 디딤돌대출)**, administered by the Ministry of Land, Infrastructure and Transport (MOLIT) and the Korea Housing Finance Corporation (HF), remains the most powerful government-subsidized mortgage program for non-homeowners. Offering fixed or 5-year periodic interest rates **1.5%p to 2.0%p below commercial bank mortgages**, it can save a household over 30 million KRW in interest over a 30-year term.
+
+However, 2026 policy updates to preferential rate caps, regional small-tenant deposit deductions (**방공제**), and net asset verification rules require precise financial planning before signing a real estate purchase contract. Here is the complete 2026 Didimdol Mortgage guide.
+
+<div class="smart-brief-box">
+  <div class="smart-brief-header">
+    <span class="smart-brief-badge">💡 3-Minute Smart Brief</span>
+    <span class="smart-brief-time">2026 Didimdol Mortgage Overhaul</span>
+  </div>
+  <div class="smart-brief-content">
+    <p><strong>📌 4 Core Takeaways:</strong></p>
+    <ul>
+      <li><strong>Income & Net Worth Thresholds:</strong> Combined spousal annual pre-tax income must not exceed 60M KRW (general), 70M KRW (first-time buyer or 2+ children), or 85M KRW (newlyweds within 7 years). Household net worth must be ≤ 469M KRW.</li>
+      <li><strong>Property Valuation & Loan Caps:</strong> Eligible properties up to 500M KRW (600M KRW for newlyweds/2+ children) and ≤ 85㎡ exclusive area. Maximum loan limits range from 250M KRW (general) to 300M KRW (first-time) and 400M KRW (newlyweds/multi-child).</li>
+      <li><strong>Preferential Rate Stacking:</strong> Combine Housing Subscription Savings tenure (up to -0.5%p), MOlIT Electronic Contract (-0.1%p), first-time buyer (-0.2%p), and multi-child discounts (-0.3%p to -0.7%p) to reach the statutory rate floor (1.5%~2.15%).</li>
+      <li><strong>Exempt from Stress DSR Surcharges:</strong> Unlike commercial bank mortgages subject to strict Stress DSR Phase 2/3 cuts, Didimdol only evaluates standard DTI (60%), preserving your borrowing capacity.</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+## 1. 2026 Didimdol Mortgage Eligibility, Limits & LTV Matrix
+
+Your maximum borrowing limit and property price cap depend directly on your household classification:
+
+<InfographicCard title="2026 Didimdol Mortgage Eligibility & Limit Comparison" type="primary" subtitle="National Housing Urban Fund & HF Underwriting Standards">
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+      <thead>
+        <tr style="background: var(--primary-light);">
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">Applicant Track</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">Max Combined Income</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">Max Home Price</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">Max Loan Limit</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">LTV / DTI Limit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">General Non-Homeowner</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">≤ ₩60,000,000</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">≤ ₩500M</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 700;">₩250,000,000</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">LTV 70% / DTI 60%</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">First-Time Homebuyer</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">≤ ₩70,000,000</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">≤ ₩500M</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800; color: #3b82f6;">₩300,000,000</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 700; color: #3b82f6;">LTV 80% / DTI 60%</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">Newlyweds (≤ 7 Years)</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #10b981; font-weight: 700;">≤ ₩85,000,000</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">≤ ₩600M</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800; color: #10b981;">₩400,000,000</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">LTV 70~80% / DTI 60%</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">2+ Children Household</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">≤ ₩70,000,000</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">≤ ₩600M</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; font-weight: 800; color: #10b981;">₩400,000,000</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center;">LTV 70% / DTI 60%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</InfographicCard>
+
+---
+
+## 2. How to Stack Preferential Discounts Down to 1.5%~2.15%
+
+Base rates for Didimdol range between **2.45% and 3.55% APR** depending on income bracket and maturity (10, 15, 20, or 30 years). You can slash your rate by combining these official discounts:
+
+1. **Housing Subscription Savings Account (청약저축) Discount (Up to -0.5%p):**
+   * 5+ years & 60+ monthly installments: **-0.3%p**
+   * 10+ years & 120+ installments: **-0.4%p**
+   * 15+ years & 180+ installments: **-0.5%p**
+2. **Real Estate Electronic Contract System (부동산 전자계약) (-0.1%p):**
+   * Asking your licensed realtor to execute the purchase agreement via MOLIT's digital contract system (`irts.molit.go.kr`) automatically shaves **0.1%p** off your mortgage rate for the entire 30-year life of the loan.
+3. **Household & Demographic Discounts:**
+   * 3+ children (**-0.7%p**), 2 children (**-0.5%p**), 1 child (**-0.3%p**), Newlywed (**-0.2%p**), First-time buyer (**-0.2%p**).
+   * Additionally, if you give birth to a child *after* loan origination, each newborn triggers an additional **-0.2%p rate reduction** on your existing balance.
+
+---
+
+## 3. Crucial Underwriting Pitfall: Small-Tenant Deposit Deduction (방공제)
+
+Under the Housing Lease Protection Act, lenders must reserve a statutory priority deposit amount per room—**55M KRW in Seoul, 48M KRW in the Greater Seoul Overcrowding Control Zone, and 25M–28M KRW in regional cities**.
+* If Mortgage Credit Guarantee (MCG) insurance is restricted for your region/property type, your effective max loan is calculated as `(Property Price × LTV) - 55M KRW`. Always verify MCG eligibility with your handling bank (Woori, KB, Shinhan, Hana, NH) before paying your non-refundable 10% contract deposit.
+
+---
+
+## 4. 4-Step Application & Closing Timeline
+
+<StepFlow steps={[
+  {
+    step: "01",
+    title: "Verify KB Market Price & Request Electronic Contract Before Signing",
+    desc: "Confirm the property's KB Real Estate valuation is ≤ 500M/600M KRW and request an electronic purchase contract with the realtor to lock in the -0.1%p rate discount."
+  },
+  {
+    step: "02",
+    title: "Submit Online Application 50–60 Days Before Closing Date",
+    desc: "Apply via the GiGeum e-Deundeun (enhuf.molit.go.kr) or HF portal at least 50 days before your balance payment date to allow time for pre- and post-asset screening."
+  },
+  {
+    step: "03",
+    title: "Complete Automated Income & Net Asset (≤ 469M KRW) Verification",
+    desc: "Authenticate with your digital certificate to scrape tax, real estate, financial asset, and debt records. Submit supplemental proof if an existing Jeonse loan is double-counted."
+  },
+  {
+    step: "04",
+    title: "Sign Loan Agreement at Partner Bank & Register Move-In Within 30 Days",
+    desc: "Visit your designated commercial bank branch to sign final documents. You must move in, file your resident registration (전입신고) within 1 month of closing, and reside there for at least 1 year."
+  }
+]} />
+
+---
+
+## 5. Frequently Asked Questions (FAQ)
+
+**Q1. Can I combine Didimdol with Bogeumjari Loan if the Didimdol cap isn't enough?**  
+A. **Yes!** If your property qualifies and your LTV/DTI ratios allow higher borrowing than the Didimdol cap (e.g., 250M KRW), you can simultaneously apply for a secondary **Bogeumjari Loan (보금자리론)** to cover the remaining LTV balance.
+
+**Q2. What happens if our combined income exceeds 60M/85M KRW next year after getting the loan?**  
+A. Eligibility is assessed strictly at the **time of loan application**. Even if your household income doubles after loan disbursement, your Didimdol loan and preferential interest rate remain 100% intact until maturity.
+
+**Q3. Is there an early repayment penalty (중도상환수수료) if I pay off the loan early?**  
+A. A sliding prepayment fee of up to **1.2%** applies only during the first 3 years from origination. Once **36 months (3 years)** have elapsed, prepayment penalties drop to **0 KRW**, allowing you to make lump-sum principal payments completely free of charge.

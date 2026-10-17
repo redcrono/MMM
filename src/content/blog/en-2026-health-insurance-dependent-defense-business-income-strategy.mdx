@@ -17,18 +17,114 @@ officialSources:
 import InfographicCard from '../../components/InfographicCard.astro';
 import StepFlow from '../../components/StepFlow.astro';
 
-Under South Korea's National Health Insurance Act, family dependents pay **₩0 in healthcare premiums** under an employed family member. However, earning even **₩1 of taxable net business income** with a business registration triggers automatic disqualification.
+For retirees, spouses, and parents registered as **National Health Insurance (NHIS) dependents (건강보험 피부양자)** under an employed family member, losing dependent status is one of the most expensive hidden tax shocks in South Korea. The moment you are disqualified, you are converted into a **Local Subscriber (지역가입자)**—triggering monthly health insurance bills assessed not only on your income, but also on your home property tax base and net assets, often costing **250,000 to 450,000 KRW every single month (3M–5.4M KRW/year)**.
+
+The single most dangerous trap in 2026 is the **"1 KRW Registered Business Income Rule."** Here is the exact statutory breakdown of NHIS dependent income/property thresholds and how to legally defend your dependent qualification.
 
 <div class="smart-brief-box">
   <div class="smart-brief-header">
-    <span class="smart-brief-badge">💡 3-Minute Brief</span>
-    <span class="smart-brief-time">Core Guidelines</span>
+    <span class="smart-brief-badge">💡 3-Minute Smart Brief</span>
+    <span class="smart-brief-time">2026 NHIS Dependent Qualification Rules</span>
   </div>
   <div class="smart-brief-content">
+    <p><strong>📌 4 Core Defense Rules:</strong></p>
     <ul>
-      <li><strong>Registered Business:</strong> Net income exceeding ₩0 immediately strips dependent status.</li>
-      <li><strong>Unregistered Freelance (3.3%):</strong> Allowed up to ₩5,000,000 in net annual business income.</li>
-      <li><strong>Contract Termination Defense:</strong> Submitting a Certificate of Termination (해촉증명서) voids regional premium bills for one-off freelance gigs.</li>
+      <li><strong>20M KRW Combined Annual Income Cap:</strong> Total combined taxable income (interest, dividends, pensions, employment, rental, and business) must not exceed 20,000,000 KRW per year.</li>
+      <li><strong>Registered Business Income = 0 KRW Limit:</strong> If you hold a Business Registration Certificate (사업자등록증), earning even 10,000 KRW in net business income (after expenses) triggers immediate disqualification.</li>
+      <li><strong>Unregistered Freelancer (3.3%) 5M KRW Exception:</strong> Individuals without a business registration (e.g., 3.3% freelance lecturers/writers) retain dependent status as long as net business income is ≤ 5,000,000 KRW per year.</li>
+      <li><strong>Property Tax Base Threshold (540M / 900M KRW):</strong> Your local property tax base (재산세 과세표준, roughly 45~60% of official price) must be ≤ 540M KRW (or ≤ 900M KRW if annual income is ≤ 10M KRW).</li>
     </ul>
   </div>
 </div>
+
+---
+
+## 1. 2026 NHIS Dependent Disqualification Thresholds (Income & Property)
+
+The National Health Insurance Service updates dependent eligibility every November/December based on the prior year's finalized tax filings from the National Tax Service (NTS):
+
+<InfographicCard title="2026 NHIS Dependent Eligibility Matrix" type="primary" subtitle="National Health Insurance Act Enforcement Decree Standards">
+  <div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+      <thead>
+        <tr style="background: var(--primary-light);">
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">Assessment Category</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: left;">Statutory Threshold to Keep Dependent Status</th>
+          <th style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #ef4444;">Trigger for Immediate Loss</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">Total Combined Income</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Sum of all taxable income streams ≤ <strong>₩20,000,000 / year</strong></td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #ef4444; font-weight: 700;">&gt; ₩20,000,000</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">Registered Business Income</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Net business income (Revenue minus Expenses) = <strong>₩0</strong></td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #ef4444; font-weight: 800;">≥ ₩1 (Any positive net profit)</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">Unregistered Freelancer (3.3%)</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">Net business income ≤ <strong>₩5,000,000 / year</strong> (No housing rental registration)</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #ef4444; font-weight: 700;">&gt; ₩5,000,000</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); font-weight: 700;">Property Tax Base (과세표준)</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color);">≤ <strong>₩540M</strong> (or ₩540M–₩900M if annual income ≤ ₩10M)</td>
+          <td style="padding: 0.75rem; border: 1px solid var(--border-color); text-align: center; color: #ef4444; font-weight: 700;">&gt; ₩900M (Unconditional loss)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</InfographicCard>
+
+> **💡 Critical Distinction:** If a husband and wife both meet the dependent criteria except one spouse gets disqualified for exceeding the 20M KRW income cap, **both spouses are simultaneously disqualified (부부 동반 탈락)** and converted to local subscribers!
+
+---
+
+## 2. How to Defend Against Business, Pension, and Financial Income Traps
+
+1. **Closing Dormant Business Registrations & Deducting Necessary Expenses:**
+   * NHIS evaluates **Net Business Income Amount (사업소득금액 = Gross Revenue - Necessary Expenses)**, NOT gross sales. If a registered business has 15M KRW in revenue and 15M KRW (or more) in deductible expenses, net business income is 0 KRW, preserving dependent status.
+   * If you have an inactive Business Registration Certificate, file for formal closure (폐업신고) on HomeTax immediately so accidental side income is not classified under registered business rules.
+2. **Public Pension vs. Private Pension Rules:**
+   * **Public Pensions (National Pension, Civil Servant, Military, Teachers):** 100% of the gross annual payout is counted toward the 20M KRW cap! If you receive 1,670,000 KRW/month (20.04M KRW/year) in National Pension, you lose dependent status.
+   * **Private Pensions (IRP, Pension Savings):** As long as private pension withdrawals are kept within **15 million KRW per year** and you opt for separate taxation (3.3%~5.5%), they are **excluded** from the NHIS 20M KRW dependent income calculation!
+3. **Shifting Interest & Dividends into ISA Accounts:**
+   * Interest and dividends earned inside a Korean **Intermediary ISA** are 100% excluded from NHIS income assessment regardless of size.
+
+---
+
+## 3. 3-Step Action Plan to Restore or Protect Dependent Status
+
+<StepFlow steps={[
+  {
+    step: "01",
+    title: "Audit May Comprehensive Income Tax Net Figures on HomeTax",
+    desc: "Verify that registered business net income is 0 KRW, unregistered freelance net income is ≤ 5M KRW, and combined interest/dividend income is ≤ 20M KRW."
+  },
+  {
+    step: "02",
+    title: "File 'Income Adjustment Petition (소득정리 및 정산신청)' After Retirement/Closure",
+    desc: "If you were disqualified due to prior-year income but have since closed your business or retired, submit a Certificate of Business Closure (폐업사실증명원) and current year Income Certificate to NHIS."
+  },
+  {
+    step: "03",
+    title: "Re-Register as Dependent Immediately via The-Geongang-Boheom App",
+    desc: "Once NHIS verifies that current ongoing business/employment income has ceased, dependent status is restored immediately without waiting for next November's cycle."
+  }
+]} />
+
+---
+
+## 4. Frequently Asked Questions (FAQ)
+
+**Q1. If my combined interest and dividends are 19.5M KRW (under 20M), does NHIS count it as 0 KRW?**  
+A. **Wait—be extremely careful!** Under NHIS rules, if your combined financial income (interest + dividends) is **10,000,000 KRW or less**, it is ignored (counted as 0 KRW). However, if your financial income is **between 10,000,001 KRW and 20,000,000 KRW**, the *entire* amount is added to your other income (such as National Pension or freelance income) to test the 20M KRW total cap!
+
+**Q2. Do overseas stock capital gains (US stock profits) cause NHIS dependent disqualification?**  
+A. **No.** Capital gains from selling overseas stocks (or domestic stocks) are classified as Capital Gains Income (양도소득), which is NOT included in the NHIS dependent income calculation. (However, exceeding 1M KRW in capital gains does disqualify you from the year-end tax 1.5M KRW personal income deduction.)
+
+**Q3. Does housing rental income of 4 million KRW/year disqualify me?**  
+A. Even if housing rental revenue is under 20M KRW (eligible for separate taxation), if you registered as a rental business and have positive taxable rental income after expenses (over 4M KRW gross for unregistered, or over 10M KRW gross for registered), you will be disqualified.

@@ -9,12 +9,13 @@ export interface Props {
   description: string;
   image?: string;
   articleDate?: Date;
+  updatedDate?: Date;
   articleAuthor?: string;
   category?: string;
   lang?: string;
 }
 
-const { title, description, image, articleDate, articleAuthor, category, lang = 'ko' } = Astro.props;
+const { title, description, image, articleDate, updatedDate, articleAuthor, category, lang = 'ko' } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,6 +26,7 @@ const { title, description, image, articleDate, articleAuthor, category, lang = 
       description={description}
       image={image}
       articleDate={articleDate}
+      updatedDate={updatedDate}
       articleAuthor={articleAuthor}
       category={category}
     />

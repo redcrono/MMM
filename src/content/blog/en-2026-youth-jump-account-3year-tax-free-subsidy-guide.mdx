@@ -14,6 +14,135 @@ officialSources:
     url: "https://www.fsc.go.kr"
 ---
 
-The Financial Services Commission (FSC) has officially eased the stringent 5-year lockup period of the **Youth Jump Account (청년도약계좌)**. 
+import InfographicCard from '../../components/InfographicCard.astro';
+import StepFlow from '../../components/StepFlow.astro';
 
-Beginning in 2026, participants aged 19 to 34 who maintain the account for at least **3 years** are permitted to exit with **100% tax-exempt interest treatment and 60% of accrued government matching subsidies**.
+<div class="smart-brief-box">
+  <h3>Executive Summary: 2026 Youth Jump Account (청년도약계좌) Overhaul</h3>
+  <ul>
+    <li><strong>3-Year Early Termination Penalty Eliminated:</strong> Savers who hold the account for at least <strong>3 years (36 months)</strong> and terminate early now keep <strong>100% of the 15.4% interest tax exemption</strong>, a favorable bank early-termination rate (3.8%–4.5%), and <strong>60% of their accrued government cash contributions</strong>.</li>
+    <li><strong>Expanded Monthly Government Matching (Up to ₩33,000/mo):</strong> The Financial Services Commission raised the matching contribution cap across all income brackets to match the full <strong>₩700,000 monthly deposit ceiling</strong>, lifting the maximum effective yield to <strong>9.54% p.a.</strong></li>
+    <li><strong>Partial Withdrawal (부분인출) & Credit Score Boost:</strong> After 2 years of membership, savers can withdraw up to <strong>40% of accumulated principal</strong> without closing the account, and earn an automatic <strong>5–10 point KCB/NICE credit score boost</strong>.</li>
+  </ul>
+</div>
+
+## 1. Why the 3-Year Rule Change Transforms Youth Asset Building
+
+When the South Korean government first launched the **Youth Jump Account (청년도약계좌)**—a 5-year policy savings program allowing young adults aged 19–34 to deposit up to ₩700,000 per month to build a ₩50,000,000 nest egg—its biggest weakness was liquidity lock-in. Previously, if a subscriber needed cash in Year 3 or Year 4 for a wedding, Jeonse deposit, or tuition and canceled the account outside strict statutory hardship exceptions, the government clawed back 100% of its matching grants, revoked the 15.4% tax-free status, and slashed the bank interest rate to ~1.0%.
+
+Under the **3-Year Holding Reform**, any subscriber who maintains the account for **36 months or longer** can terminate at will for any personal reason and still lock in:
+1. **Full 15.4% Tax-Free Exemption (비과세 유지)** on all interest and subsidies earned.
+2. **60% of Accrued Government Contributions (정부기여금 60% 지급)**.
+3. **Upgraded Bank Early-Termination Rate of 3.8%–4.5% p.a.** (matching commercial 3-year time deposit rates), resulting in an effective 3-year yield of up to **7.6% p.a.**
+
+---
+
+## 2. 2026 Expanded Government Matching Matrix Across All Brackets
+
+Previously, young adults earning ₩24M or less only received government matching on the first ₩400,000 of their monthly deposit—leaving the remaining ₩300,000 unmatched even if they deposited the full ₩700,000 limit. Under the revised structure, **every eligible income tier receives an extra 3.0% matching contribution on deposits up to the full ₩700,000 monthly cap**:
+
+<InfographicCard title="2026 Youth Jump Account Government Matching & Effective Yield Table" subtitle="Monthly Deposit Cap: ₩700,000 | Household Median Income ≤ 250%">
+  <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse; font-size:0.93rem;">
+      <thead>
+        <tr style="background:#0f172a; color:#ffffff; text-align:left;">
+          <th style="padding:12px; border:1px solid #cbd5e1;">Personal Income Bracket (Gross Wage / Comprehensive)</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Base Matching Limit</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Expanded Matching Cap</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">Max Monthly Gov Grant</th>
+          <th style="padding:12px; border:1px solid #cbd5e1;">5-Yr Effective Yield (Tax-Free Equivalent)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Wage ≤ ₩24M</strong> (Comp ≤ ₩16M)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">₩400,000 (6.0%)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">+₩300,000 (3.0%) = ₩700k</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>₩33,000 / mo</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Up to <strong>9.54% p.a.</strong></td>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Wage ≤ ₩36M</strong> (Comp ≤ ₩26M)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">₩500,000 (4.6%)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">+₩200,000 (3.0%) = ₩700k</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>₩29,000 / mo</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Up to <strong>8.92% p.a.</strong></td>
+        </tr>
+        <tr>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Wage ≤ ₩48M</strong> (Comp ≤ ₩36M)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">₩600,000 (3.7%)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">+₩100,000 (3.0%) = ₩700k</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>₩25,200 / mo</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Up to <strong>8.45% p.a.</strong></td>
+        </tr>
+        <tr style="background:#f8fafc;">
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Wage ≤ ₩60M</strong> (Comp ≤ ₩48M)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">₩700,000 (3.0%)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">₩700,000 (Full Cap)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>₩21,000 / mo</strong></td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Up to <strong>8.01% p.a.</strong></td>
+        </tr>
+        <tr>
+          <td style="padding:12px; border:1px solid #cbd5e1;"><strong>Wage ≤ ₩75M</strong> (Comp ≤ ₩63M)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Tax-Free Only</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">15.4% Tax-Free Interest</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">₩0 (Tax-Free Shield)</td>
+          <td style="padding:12px; border:1px solid #cbd5e1;">Up to <strong>6.85% p.a.</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</InfographicCard>
+
+---
+
+## 3. Two Liquidity Lifelines: 40% Partial Withdrawal & Special Mid-Term Termination
+
+Before closing your account at the 3-year mark, check whether one of these two superior options applies to your situation:
+1. **40% Partial Withdrawal Service (부분인출서비스):**
+   Once you have held the account for **2 years (24 months)** or longer, you can make a one-time partial withdrawal of **up to 40% of your accumulated deposit principal** directly inside your banking app. The remaining 60% continues compounding toward the full 5-year 6.0% maturity rate and 100% government subsidy!
+2. **100% Subsidy Preservation via Special Mid-Term Termination (특별중도해지):**
+   If you terminate early due to **marriage, childbirth, first-time home purchase (생애최초 주택구입)**, retirement, business closure, or death/disability, you do **not** suffer the 40% subsidy haircut of a standard 3-year withdrawal. Submitting your Marriage Relation Certificate, Childbirth Certificate, or Home Purchase Contract within 6 months of the event entitles you to **100% of the government subsidy and the full 6.0% contract interest rate** regardless of how many months you held the account.
+
+---
+
+## 4. Monthly Application & Credit Boost Execution Steps
+
+<StepFlow
+  title="4-Step Youth Jump Account Optimization Workflow"
+  steps={[
+    {
+      step: "01",
+      title: "Apply During the Monthly 2-Week Window via Bank App",
+      desc: "Open any of the 11 participating bank apps (KB, Shinhan, Hana, Woori, NH, IBK, Busan, iM, Kwangju, Jeonbuk, Kyongnam) during the first two weeks of the month."
+    },
+    {
+      step: "02",
+      title: "Complete KINFA Household Income Consent (가구원 동의)",
+      desc: "Respond to the KakaoTalk notification from the Korea Inclusive Finance Agency (서민금융진흥원) so household members on your registration card consent to the 250% median income check."
+    },
+    {
+      step: "03",
+      title: "Leverage Flexible Monthly Deposits (자유적립식)",
+      desc: "Because the account is a flexible installment plan, never cancel during a tight month—simply deposit ₩1,000 or ₩0 that month and resume ₩700,000 when cash flow recovers."
+    },
+    {
+      step: "04",
+      title: "Claim Your Automatic KCB/NICE Credit Score Boost",
+      desc: "After maintaining the account for 24 months with at least ₩8,000,000 in cumulative deposits, KINFA automatically transmits your record to KCB and NICE for a 5–10 point credit boost."
+    }
+  ]}
+/>
+
+---
+
+## 5. Frequently Asked Questions (FAQ)
+
+### Q1. If I already opened my Youth Jump Account in 2023 or 2024, do I automatically get the expanded government matching and 3-year rule?
+**Yes, 100% automatically!** Both the expanded monthly government contribution ceiling (up to ₩33,000/month) and the 3-year early withdrawal tax-free/60%-subsidy benefit apply retroactively and automatically to all existing Youth Jump Account holders without requiring re-enrollment.
+
+### Q2. What happens if my salary rises above ₩75,000,000 after I open the account?
+Your account is **never canceled**, and your **15.4% tax-free interest exemption is permanently locked in** for the full 5 years based on your initial enrollment eligibility. The Korea Inclusive Finance Agency (KINFA) recalculates your personal income tier once a year solely to adjust your monthly government matching grant rate for the upcoming 12 months.
+
+### Q3. Can I transfer my maturing Youth Hope Savings (청년희망적금) lump sum into this account?
+**Yes.** Through the official **Lump-Sum Payment (일시납입)** program, maturing Youth Hope Savings funds (up to ₩12,600,000) can be deposited upfront as an 18-month prepaid block, immediately earning compound interest and government matching from Day 1.
