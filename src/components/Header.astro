@@ -1,5 +1,10 @@
 ---
+import { getCollection } from 'astro:content';
+
 const currentPath = Astro.url.pathname;
+const allPosts = await getCollection('blog');
+const allSlugs = new Set(allPosts.map((p) => p.slug));
+
 const isEn =
   currentPath.startsWith('/en') ||
   currentPath.includes('/en-') ||
@@ -34,7 +39,7 @@ const enNavItems = [
 
 const navItems = isEn ? enNavItems : koNavItems;
 
-// Intelligent Language Switcher URL Mapping
+// Intelligent Language Switcher URL Mapping (Verified against actual slugs)
 let targetLangUrl = isEn ? '/' : '/en';
 if (isEn) {
   if (currentPath === '/en' || currentPath === '/en/') targetLangUrl = '/';
@@ -47,9 +52,17 @@ if (isEn) {
   else if (currentPath.startsWith('/en/qna')) targetLangUrl = '/qna';
   else if (currentPath.startsWith('/en/about')) targetLangUrl = '/about';
   else if (currentPath.startsWith('/en/privacy')) targetLangUrl = '/privacy';
+  else if (currentPath.startsWith('/en/terms')) targetLangUrl = '/terms';
+  else if (currentPath.startsWith('/en/disclaimer')) targetLangUrl = '/disclaimer';
+  else if (currentPath.startsWith('/en/editorial-guidelines')) targetLangUrl = '/editorial-guidelines';
   else if (currentPath.startsWith('/en/contact')) targetLangUrl = '/contact';
-  else if (currentPath.startsWith('/blog/en-')) targetLangUrl = currentPath.replace('/blog/en-', '/blog/');
-  else if (currentPath.startsWith('/blog/')) targetLangUrl = '/';
+  else if (currentPath.startsWith('/blog/en-')) {
+    const rawSlug = currentPath.replace(/^\/blog\/en-/, '').replace(/\/$/, '');
+    const strippedKorea = rawSlug.replace(/-korea$/, '');
+    if (allSlugs.has(rawSlug)) targetLangUrl = `/blog/${rawSlug}/`;
+    else if (allSlugs.has(strippedKorea)) targetLangUrl = `/blog/${strippedKorea}/`;
+    else targetLangUrl = '/';
+  } else if (currentPath.startsWith('/blog/')) targetLangUrl = '/';
 } else {
   if (currentPath === '/' || currentPath === '') targetLangUrl = '/en';
   else if (currentPath.startsWith('/category/')) targetLangUrl = currentPath.replace('/category/', '/en/category/');
@@ -61,8 +74,18 @@ if (isEn) {
   else if (currentPath.startsWith('/qna')) targetLangUrl = '/en/qna';
   else if (currentPath.startsWith('/about')) targetLangUrl = '/en/about';
   else if (currentPath.startsWith('/privacy')) targetLangUrl = '/en/privacy';
+  else if (currentPath.startsWith('/terms')) targetLangUrl = '/en/terms';
+  else if (currentPath.startsWith('/disclaimer')) targetLangUrl = '/en/disclaimer';
+  else if (currentPath.startsWith('/editorial-guidelines')) targetLangUrl = '/en/editorial-guidelines';
   else if (currentPath.startsWith('/contact')) targetLangUrl = '/en/contact';
-  else if (currentPath.startsWith('/blog/')) targetLangUrl = currentPath.replace('/blog/', '/blog/en-');
+  else if (currentPath.startsWith('/blog/')) {
+    const rawSlug = currentPath.replace(/^\/blog\//, '').replace(/\/$/, '');
+    const enCandidate = `en-${rawSlug}`;
+    const enKoreaCandidate = `en-${rawSlug}-korea`;
+    if (allSlugs.has(enCandidate)) targetLangUrl = `/blog/${enCandidate}/`;
+    else if (allSlugs.has(enKoreaCandidate)) targetLangUrl = `/blog/${enKoreaCandidate}/`;
+    else targetLangUrl = '/en';
+  }
 }
 ---
 

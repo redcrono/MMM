@@ -29,6 +29,11 @@ def update_frontmatter_pubdate(content: str, pub_date_str: str) -> str:
         content,
         count=1
     )
+    parts = updated.split('---', 2)
+    if len(parts) >= 3:
+        fm, body = parts[1], parts[2]
+        body = body.replace('~', '～')
+        updated = f'---{fm}---{body}'
     return updated
 
 def main():
