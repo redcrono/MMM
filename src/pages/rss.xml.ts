@@ -4,7 +4,16 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async (context) => {
   const blog = await getCollection('blog');
-  const sortedPosts = blog.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const koPosts = blog.filter(
+    (post) =>
+      !post.slug.startsWith('en-') &&
+      !post.slug.startsWith('korea-') &&
+      !post.slug.startsWith('open-korea-') &&
+      !post.slug.startsWith('best-korea-') &&
+      !post.slug.includes('-expats') &&
+      !post.slug.includes('-foreigners')
+  );
+  const sortedPosts = koPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({
     title: '메가머니모멘텀(MegaMoneyMomentum) | 금융·세무·정책 나침반',

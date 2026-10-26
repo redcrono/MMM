@@ -9,6 +9,7 @@ export interface Props {
   updatedDate?: Date;
   articleAuthor?: string;
   category?: string;
+  noindex?: boolean;
 }
 
 const categoryHeroMap: Record<string, string> = {
@@ -29,14 +30,12 @@ const {
   updatedDate,
   articleAuthor,
   category,
+  noindex = false,
 } = Astro.props;
 
 const resolvedImage = image || (category && categoryHeroMap[category]) || '/images/og-default.png';
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://www.megamomo.co.kr');
-const siteTitle = '메가머니모멘텀(MegaMoneyMomentum) | 금융·세무·정책 나침반';
-const fullTitle = title === siteTitle ? title : `${title} | 메가머니모멘텀`;
-
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isEn =
   currentPath.startsWith('/en') ||
@@ -47,6 +46,15 @@ const isEn =
   currentPath.includes('-expats') ||
   currentPath.includes('-foreigners') ||
   currentPath.includes('travel-cards');
+
+const siteTitle = isEn
+  ? 'MegaMoneyMomentum (MMM) | South Korea Finance, Tax & Policy Research'
+  : '메가머니모멘텀(MegaMoneyMomentum) | 금융·세무·정책 나침반';
+const brandSuffix = isEn ? 'MegaMoneyMomentum' : '메가머니모멘텀';
+const fullTitle =
+  title === siteTitle || title.includes('MegaMoneyMomentum') || title.includes('메가머니모멘텀')
+    ? title
+    : `${title} | ${brandSuffix}`;
 
 const siteRoot = 'https://www.megamomo.co.kr';
 const allBlogSlugs = new Set((await getCollection('blog')).map((p) => p.slug));
@@ -69,6 +77,8 @@ if (currentPath.startsWith('/blog/')) {
   enUrl = `${siteRoot}${Astro.url.pathname}`;
   if (currentPath === '/en') {
     koUrl = `${siteRoot}/`;
+  } else if (currentPath === '/en/category/expats') {
+    koUrl = null;
   } else if (currentPath.startsWith('/en/category/')) {
     koUrl = `${siteRoot}${currentPath.replace('/en/category/', '/category/')}`;
   } else if (currentPath.startsWith('/en/')) {
@@ -170,7 +180,10 @@ const jsonLd = articleDate
 <title>{fullTitle}</title>
 <meta name="title" content={fullTitle} />
 <meta name="description" content={description} />
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta
+  name="robots"
+  content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+/>
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={articleDate ? 'article' : 'website'} />

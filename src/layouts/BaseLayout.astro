@@ -13,9 +13,31 @@ export interface Props {
   articleAuthor?: string;
   category?: string;
   lang?: string;
+  noindex?: boolean;
 }
 
-const { title, description, image, articleDate, updatedDate, articleAuthor, category, lang = 'ko' } = Astro.props;
+const currentPath = Astro.url.pathname;
+const autoIsEn =
+  currentPath.startsWith('/en') ||
+  currentPath.includes('/en-') ||
+  currentPath.includes('/korea-') ||
+  currentPath.includes('/open-korea-') ||
+  currentPath.includes('/best-korea-') ||
+  currentPath.includes('-expats') ||
+  currentPath.includes('-foreigners') ||
+  currentPath.includes('travel-cards');
+
+const {
+  title,
+  description,
+  image,
+  articleDate,
+  updatedDate,
+  articleAuthor,
+  category,
+  lang = autoIsEn ? 'en' : 'ko',
+  noindex = false,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -29,6 +51,7 @@ const { title, description, image, articleDate, updatedDate, articleAuthor, cate
       updatedDate={updatedDate}
       articleAuthor={articleAuthor}
       category={category}
+      noindex={noindex}
     />
   </head>
   <body>

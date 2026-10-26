@@ -43,6 +43,7 @@ const navItems = isEn ? enNavItems : koNavItems;
 let targetLangUrl = isEn ? '/' : '/en';
 if (isEn) {
   if (currentPath === '/en' || currentPath === '/en/') targetLangUrl = '/';
+  else if (currentPath.startsWith('/en/category/expats')) targetLangUrl = '/';
   else if (currentPath.startsWith('/en/category/')) targetLangUrl = currentPath.replace('/en/category/', '/category/');
   else if (currentPath.startsWith('/en/tools')) targetLangUrl = '/tools';
   else if (currentPath.startsWith('/en/etf')) targetLangUrl = '/etf';

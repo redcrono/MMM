@@ -1,31 +1,43 @@
 ---
 export interface Props {
+  title?: string;
   steps: Array<{
-    num: string;
+    num?: string;
     title: string;
-    desc: string;
+    desc?: string;
+    description?: string;
     icon?: string;
   }>;
 }
 
-const { steps } = Astro.props;
+const { title, steps = [] } = Astro.props;
 ---
 
-<div class="step-flow-wrapper" style="margin: 2rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+{title && (
+  <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin: 1.75rem 0 0.75rem 0;">
+    {title}
+  </h3>
+)}
+<div class="step-flow-wrapper" style="margin: 1.25rem 0 2rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
   {
-    steps.map((step) => (
-      <div style="background: var(--bg-muted); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; position: relative; display: flex; flex-direction: column;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-          <span style="display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: var(--radius-full); background: var(--primary); color: #ffffff; font-weight: 800; font-size: 0.9rem;">
-            {step.num}
-          </span>
-          {step.icon && <span style="font-size: 1.35rem;">{step.icon}</span>}
+    steps.map((step, idx) => {
+      const stepNum = step.num ?? String(idx + 1);
+      const stepTitle = (step.title ?? '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      const stepDesc = (step.desc ?? step.description ?? '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      return (
+        <div style="background: var(--bg-muted); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; position: relative; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+            <span style="display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: var(--radius-full); background: var(--primary); color: #ffffff; font-weight: 800; font-size: 0.9rem;">
+              {stepNum}
+            </span>
+            {step.icon && <span style="font-size: 1.35rem;">{step.icon}</span>}
+          </div>
+          <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;" set:html={stepTitle}>
+          </h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0;" set:html={stepDesc}>
+          </p>
         </div>
-        <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.35rem;" set:html={step.title.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}>
-        </h4>
-        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin: 0;" set:html={step.desc.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}>
-        </p>
-      </div>
-    ))
+      );
+    })
   }
 </div>
