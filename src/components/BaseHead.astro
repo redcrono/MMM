@@ -35,8 +35,22 @@ const {
 
 const resolvedImage = image || (category && categoryHeroMap[category]) || '/images/og-default.png';
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://www.megamomo.co.kr');
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonicalURL = new URL(currentPath, Astro.site || 'https://www.megamomo.co.kr');
+const isUtilityPage = [
+  '/404',
+  '/404.html',
+  '/search',
+  '/contact',
+  '/privacy',
+  '/terms',
+  '/disclaimer',
+  '/en/contact',
+  '/en/privacy',
+  '/en/terms',
+  '/en/disclaimer',
+].includes(currentPath);
+const shouldLoadAdSenseScript = !noindex && !isUtilityPage;
 const isEn =
   currentPath.startsWith('/en') ||
   currentPath.includes('/en-') ||
@@ -210,9 +224,11 @@ const jsonLd = articleDate
 <!-- Google AdSense Account Ownership Verification (Meta Tag) -->
 <meta name="google-adsense-account" content="ca-pub-1414525586943831" />
 
-<!-- Google AdSense Verification & Auto Ads Script -->
-<script
-  async
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1414525586943831"
-  crossorigin="anonymous"
-></script>
+<!-- Google AdSense Verification & Auto Ads Script (Editorial Content Pages Only) -->
+{shouldLoadAdSenseScript && (
+  <script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1414525586943831"
+    crossorigin="anonymous"
+  ></script>
+)}
