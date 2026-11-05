@@ -32,6 +32,18 @@ def update_frontmatter_pubdate(content: str, pub_date_str: str) -> str:
     parts = updated.split('---', 2)
     if len(parts) >= 3:
         fm, body = parts[1], parts[2]
+        valid_categories = {'tax', 'wealth', 'subsidy', 'credit', 'economy', 'stocks', 'expats'}
+        cat_match = re.search(r'^category:\s*[\'\"]?([^\'\"\n\r]+)[\'\"]?', fm, flags=re.MULTILINE)
+        if cat_match:
+            cat_val = cat_match.group(1).strip()
+            if cat_val not in valid_categories:
+                fm = re.sub(
+                    r'^(category:\s*)[\'\"]?[^\'\"\n\r]+[\'\"]?',
+                    r'\g<1>"wealth"',
+                    fm,
+                    count=1,
+                    flags=re.MULTILINE
+                )
         body = body.replace('~', '～')
         updated = f'---{fm}---{body}'
     return updated
