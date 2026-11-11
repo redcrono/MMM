@@ -60,8 +60,8 @@ if (isEn) {
   else if (currentPath.startsWith('/blog/en-')) {
     const rawSlug = currentPath.replace(/^\/blog\/en-/, '').replace(/\/$/, '');
     const strippedKorea = rawSlug.replace(/-korea$/, '');
-    if (allSlugs.has(rawSlug)) targetLangUrl = `/blog/${rawSlug}/`;
-    else if (allSlugs.has(strippedKorea)) targetLangUrl = `/blog/${strippedKorea}/`;
+    if (allSlugs.has(rawSlug)) targetLangUrl = `/blog/${rawSlug}`;
+    else if (allSlugs.has(strippedKorea)) targetLangUrl = `/blog/${strippedKorea}`;
     else targetLangUrl = '/';
   } else if (currentPath.startsWith('/blog/')) targetLangUrl = '/';
 } else {
@@ -83,8 +83,8 @@ if (isEn) {
     const rawSlug = currentPath.replace(/^\/blog\//, '').replace(/\/$/, '');
     const enCandidate = `en-${rawSlug}`;
     const enKoreaCandidate = `en-${rawSlug}-korea`;
-    if (allSlugs.has(enCandidate)) targetLangUrl = `/blog/${enCandidate}/`;
-    else if (allSlugs.has(enKoreaCandidate)) targetLangUrl = `/blog/${enKoreaCandidate}/`;
+    if (allSlugs.has(enCandidate)) targetLangUrl = `/blog/${enCandidate}`;
+    else if (allSlugs.has(enKoreaCandidate)) targetLangUrl = `/blog/${enKoreaCandidate}`;
     else targetLangUrl = '/en';
   }
 }

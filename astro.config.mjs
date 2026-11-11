@@ -15,10 +15,16 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/admin') && !page.includes('/search'),
-      changefreq: 'weekly',
-      priority: 0.8,
-      lastmod: new Date(),
+      filter: (page) =>
+        !page.includes('/admin') &&
+        !page.includes('/search') &&
+        !page.endsWith('/contact') &&
+        !page.endsWith('/privacy') &&
+        !page.endsWith('/terms') &&
+        !page.endsWith('/disclaimer') &&
+        !page.endsWith('/battle') &&
+        !page.endsWith('/calendar') &&
+        !page.endsWith('/ladder'),
     }),
     mdx(),
   ],

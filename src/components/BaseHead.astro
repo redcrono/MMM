@@ -37,7 +37,7 @@ const resolvedImage = image || (category && categoryHeroMap[category]) || '/imag
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const canonicalURL = new URL(currentPath, Astro.site || 'https://www.megamomo.co.kr');
-const isUtilityPage = [
+const isNoindexUtilityPage = [
   '/404',
   '/404.html',
   '/search',
@@ -45,12 +45,23 @@ const isUtilityPage = [
   '/privacy',
   '/terms',
   '/disclaimer',
+  '/battle',
+  '/calendar',
+  '/ladder',
   '/en/contact',
   '/en/privacy',
   '/en/terms',
   '/en/disclaimer',
+  '/en/battle',
+  '/en/calendar',
+  '/en/ladder',
 ].includes(currentPath);
-const shouldLoadAdSenseScript = !noindex && !isUtilityPage;
+const effectiveNoindex = noindex || isNoindexUtilityPage;
+const isEditorialAdPage =
+  currentPath === '/' ||
+  currentPath === '/en' ||
+  currentPath.startsWith('/blog/');
+const shouldLoadAdSenseScript = !effectiveNoindex && isEditorialAdPage;
 const isEn =
   currentPath.startsWith('/en') ||
   currentPath.includes('/en-') ||
@@ -196,7 +207,7 @@ const jsonLd = articleDate
 <meta name="description" content={description} />
 <meta
   name="robots"
-  content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+  content={effectiveNoindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
 />
 
 <!-- Open Graph / Facebook -->
