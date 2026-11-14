@@ -1,9 +1,9 @@
 name: Daily Auto Publish
 
 on:
-  schedule:
-    # Runs everyday at 00:00 UTC (09:00 AM KST)
-    - cron: '0 0 * * *'
+  # Paused during Google AdSense site review to maintain stable indexing & crawl state
+  # schedule:
+  #   - cron: '0 0 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub Actions tab
 
 jobs:

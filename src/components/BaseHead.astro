@@ -37,6 +37,16 @@ const resolvedImage = image || (category && categoryHeroMap[category]) || '/imag
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const canonicalURL = new URL(currentPath, Astro.site || 'https://www.megamomo.co.kr');
+const isEn =
+  currentPath.startsWith('/en') ||
+  currentPath.includes('/en-') ||
+  currentPath.includes('/korea-') ||
+  currentPath.includes('/open-korea-') ||
+  currentPath.includes('/best-korea-') ||
+  currentPath.includes('-expats') ||
+  currentPath.includes('-foreigners') ||
+  currentPath.includes('travel-cards');
+
 const isNoindexUtilityPage = [
   '/404',
   '/404.html',
@@ -48,6 +58,9 @@ const isNoindexUtilityPage = [
   '/battle',
   '/calendar',
   '/ladder',
+  '/tools',
+  '/etf',
+  '/qna',
   '/en/contact',
   '/en/privacy',
   '/en/terms',
@@ -55,22 +68,17 @@ const isNoindexUtilityPage = [
   '/en/battle',
   '/en/calendar',
   '/en/ladder',
+  '/en/tools',
+  '/en/etf',
+  '/en/qna',
 ].includes(currentPath);
-const effectiveNoindex = noindex || isNoindexUtilityPage;
+const effectiveNoindex = noindex || isNoindexUtilityPage || isEn;
 const isEditorialAdPage =
-  currentPath === '/' ||
-  currentPath === '/en' ||
-  currentPath.startsWith('/blog/');
+  !isEn &&
+  (currentPath === '/' ||
+    currentPath.startsWith('/blog/') ||
+    currentPath.startsWith('/category/'));
 const shouldLoadAdSenseScript = !effectiveNoindex && isEditorialAdPage;
-const isEn =
-  currentPath.startsWith('/en') ||
-  currentPath.includes('/en-') ||
-  currentPath.includes('/korea-') ||
-  currentPath.includes('/open-korea-') ||
-  currentPath.includes('/best-korea-') ||
-  currentPath.includes('-expats') ||
-  currentPath.includes('-foreigners') ||
-  currentPath.includes('travel-cards');
 
 const siteTitle = isEn
   ? 'MegaMoneyMomentum (MMM) | South Korea Finance, Tax & Policy Research'
@@ -190,10 +198,9 @@ const jsonLd = articleDate
 <link rel="canonical" href={canonicalURL} />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Multilingual SEO (hreflang - Verified Existing Routes Only) -->
-{koUrl && <link rel="alternate" hreflang="ko" href={koUrl} />}
-{enUrl && <link rel="alternate" hreflang="en" href={enUrl} />}
-<link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
+<!-- Language SEO (Korean Primary Canonical) -->
+{!isEn && koUrl && <link rel="alternate" hreflang="ko" href={koUrl} />}
+{!isEn && <link rel="alternate" hreflang="x-default" href={koUrl || siteRoot} />}
 
 <!-- Google Search Console Verification -->
 <meta name="google-site-verification" content="Tl7XeCiQwyPZHv-fPvAk0iAufVKjxUDzYuBF7bO3Dr4" />

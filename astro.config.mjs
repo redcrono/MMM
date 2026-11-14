@@ -18,13 +18,25 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/admin') &&
         !page.includes('/search') &&
+        !page.includes('/en/') &&
+        !page.endsWith('/en') &&
+        !page.includes('/blog/en-') &&
+        !page.includes('/blog/korea-') &&
+        !page.includes('/blog/open-korea-') &&
+        !page.includes('/blog/best-korea-') &&
+        !page.includes('-expats') &&
+        !page.includes('-foreigners') &&
+        !page.includes('travel-cards') &&
         !page.endsWith('/contact') &&
         !page.endsWith('/privacy') &&
         !page.endsWith('/terms') &&
         !page.endsWith('/disclaimer') &&
         !page.endsWith('/battle') &&
         !page.endsWith('/calendar') &&
-        !page.endsWith('/ladder'),
+        !page.endsWith('/ladder') &&
+        !page.endsWith('/tools') &&
+        !page.endsWith('/etf') &&
+        !page.endsWith('/qna'),
     }),
     mdx(),
   ],

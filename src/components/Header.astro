@@ -22,8 +22,7 @@ const koNavItems = [
   { name: '자산관리', href: '/category/wealth' },
   { name: '정부지원금', href: '/category/subsidy' },
   { name: '대출·신용', href: '/category/credit' },
-  { name: '계산기', href: '/tools' },
-  { name: 'Q&A', href: '/qna' },
+  { name: '미디어 소개', href: '/about' },
 ];
 
 const enNavItems = [
@@ -123,33 +122,8 @@ if (isEn) {
         </ul>
       </nav>
 
-      <!-- Right Actions (Language Switcher + Theme Toggle) -->
+      <!-- Right Actions (Search + Theme Toggle) -->
       <div class="nav-actions">
-        <!-- Language Switcher Button -->
-        <a
-          href={targetLangUrl}
-          class="lang-switch-btn"
-          title={isEn ? "한국어로 변경" : "Switch to English"}
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-          <span class="lang-text">{isEn ? '한국어 (KO)' : 'English (EN)'}</span>
-        </a>
-
-        <!-- Global Reading Mode Quick Toggle -->
-        <button
-          id="global-reading-mode-toggle"
-          class="reading-mode-toggle-btn"
-          aria-label={isEn ? "Toggle Reading Mode (Pro / Smart Brief)" : "읽기 모드 전환 (프로 / 스마트 요약)"}
-          title={isEn ? "Switch between Pro Deep-Dive and 3-Min Smart Brief" : "프로 정밀 분석 ⟷ 3분 스마트 요약 전환"}
-        >
-          <span class="mode-icon-display" id="header-mode-icon">📊</span>
-          <span class="mode-text-display" id="header-mode-text">{isEn ? 'Pro' : '프로'}</span>
-        </button>
-
         <!-- Search Button -->
         <a
           href="/search"
@@ -227,33 +201,5 @@ if (isEn) {
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateIcons(!isDark);
-  });
-
-  // Global Reading Mode Toggle Functionality
-  const readingModeToggle = document.getElementById('global-reading-mode-toggle');
-  const modeIcon = document.getElementById('header-mode-icon');
-  const modeText = document.getElementById('header-mode-text');
-
-  function updateReadingModeHeader(mode: string) {
-    const isSmart = mode === 'smart';
-    if (modeIcon && modeText) {
-      modeIcon.textContent = isSmart ? '💡' : '📊';
-      modeText.textContent = isSmart ? 'Smart' : 'Pro';
-    }
-  }
-
-  const currentMode = localStorage.getItem('mmm-reading-mode') || 'pro';
-  document.documentElement.setAttribute('data-reading-mode', currentMode);
-  updateReadingModeHeader(currentMode);
-
-  readingModeToggle?.addEventListener('click', () => {
-    const activeMode = document.documentElement.getAttribute('data-reading-mode') || 'pro';
-    const nextMode = activeMode === 'pro' ? 'smart' : 'pro';
-    document.documentElement.setAttribute('data-reading-mode', nextMode);
-    localStorage.setItem('mmm-reading-mode', nextMode);
-    updateReadingModeHeader(nextMode);
-
-    // Dispatch global event for in-article switchers
-    window.dispatchEvent(new CustomEvent('mmm:reading-mode-change', { detail: { mode: nextMode } }));
   });
 </script>
